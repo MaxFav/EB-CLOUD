@@ -1,0 +1,170 @@
+<odoo>
+	<data noupdate="1">
+	
+		<!-- Function to update the noupdate field on existing taxes from the l10n_uk module to allow us to change them-->
+		<function name="write" model="ir.model.data">
+            <function name="search" model="ir.model.data">
+                <value eval="[('model', '=', 'account.tax'), ('module', '=', 'l10n_uk')]"/>
+            </function>
+            <value eval="{'noupdate': False}" />
+       	</function>
+       	
+       	<!-- Setting the mtd tags on the default taxes -->
+		<record model="account.tax" id="l10n_uk.1_ST0">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box1'), ref('smart_mtd.mtd_tag_box6')])]"/>
+	       	<field name="noupdate" eval="False"/>
+	    </record>
+	    <record model="account.tax" id="l10n_uk.1_ST1">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box1'), ref('smart_mtd.mtd_tag_box6')])]"/>
+	    </record>
+	    <record model="account.tax" id="l10n_uk.1_ST2">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box1'), ref('smart_mtd.mtd_tag_box6')])]"/>
+	    </record>
+	    
+	    <record model="account.tax" id="l10n_uk.1_ST11">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box1'), ref('smart_mtd.mtd_tag_box6')])]"/>
+	    </record>
+
+	    <record model="account.tax" id="l10n_uk.1_PT11">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box4'), ref('smart_mtd.mtd_tag_box7')])]"/>
+	    </record>
+	    <record model="account.tax" id="l10n_uk.1_PT5">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box4'), ref('smart_mtd.mtd_tag_box7')])]"/>
+	    </record>
+	    <record model="account.tax" id="l10n_uk.1_PT2">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box4'), ref('smart_mtd.mtd_tag_box7')])]"/>
+	    </record>
+	    <record model="account.tax" id="l10n_uk.1_PT1">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box4'), ref('smart_mtd.mtd_tag_box7')])]"/>
+	    </record>
+	    <record model="account.tax" id="l10n_uk.1_PT0">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box4'), ref('smart_mtd.mtd_tag_box7')])]"/>
+	    </record>
+	    
+	    <record model="account.tax" id="l10n_uk.1_ST4">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box8')])]"/>
+	    </record>
+
+	    <record model="account.tax" id="l10n_uk.1_PT7">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box9')])]"/>
+	    </record>
+	    <record model="account.tax" id="l10n_uk.1_PT8">
+			<field name="include_in_vat_return" eval="True"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box9')])]"/>
+	    </record>
+	   	
+	    <record model="account.tax" id="smart_mtd.RC_Output_EC">
+			<field name="name">RC VAT on Notional Sale (EU)</field>
+			<field name="description">RCEUSale</field>
+			<field name="amount_type">percent</field>
+			<field name="amount">20</field>
+			<field name="tax_group_id" ref="l10n_uk.tax_group_20"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box1'), ref('smart_mtd.mtd_tag_box6')])]"/>
+	        <field name="include_in_vat_return">True</field>
+	        <field name="type_tax_use">sale</field>
+	        <field name="account_id" eval="ref('smart_mtd.hmrc_reverse_charge_vat')"/>
+	    </record>
+	    
+	    <record model="account.tax" id="smart_mtd.RC_Input_EC">
+			<field name="name">RC VAT on Notional Purchase (EU)</field>
+			<field name="description">RCEUPurchase</field>
+			<field name="amount_type">percent</field>
+			<field name="amount">20</field>
+			<field name="tax_group_id" ref="l10n_uk.tax_group_20"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box4')])]"/>
+	        <field name="include_in_vat_return">True</field>
+	        <field name="type_tax_use">purchase</field>
+	        <field name="account_id" eval="ref('smart_mtd.hmrc_reverse_charge_vat')"/>
+	    </record>
+	    
+	    <record model="account.tax" id="smart_mtd.Reverse_Charge_EU">
+			<field name="name">Reverse Charge EU VAT</field>
+			<field name="description">RCEU</field>
+			<field name="type_tax_use">purchase</field>
+			<field name="amount_type">percent</field>
+			<field name="amount">0</field>
+			<field name="tax_group_id" ref="l10n_uk.tax_group_0"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box7')])]"/>
+	        <field name="include_in_vat_return">True</field>
+	        <field name="reverse_charge">True</field>
+	    </record>
+	    
+		<record model="account.tax" id="smart_mtd.RC_Output_UK">
+			<field name="name">RC VAT on Notional Sale (UK)</field>
+			<field name="description">RCUKSale</field>
+			<field name="amount_type">percent</field>
+			<field name="amount">20</field>
+			<field name="tax_group_id" ref="l10n_uk.tax_group_20"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box1'), ref('smart_mtd.mtd_tag_box6')])]"/>
+	        <field name="include_in_vat_return">True</field>
+	        <field name="type_tax_use">sale</field>
+	        <field name="account_id" eval="ref('smart_mtd.hmrc_reverse_charge_vat_uk')"/>
+	    </record>
+	    
+	    <record model="account.tax" id="smart_mtd.RC_Input_UK">
+			<field name="name">RC VAT on Notional Purchase (UK)</field>
+			<field name="description">RCUKPurchase</field>
+			<field name="amount_type">percent</field>
+			<field name="amount">20</field>
+			<field name="tax_group_id" ref="l10n_uk.tax_group_20"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box4')])]"/>
+	        <field name="include_in_vat_return">True</field>
+	        <field name="type_tax_use">purchase</field>
+	        <field name="account_id" eval="ref('smart_mtd.hmrc_reverse_charge_vat_uk')"/>
+	    </record>
+	    
+	    <record model="account.tax" id="smart_mtd.Reverse_Charge_UK">
+			<field name="name">Reverse Charge UK VAT</field>
+			<field name="description">RCUK</field>
+			<field name="type_tax_use">purchase</field>
+			<field name="amount_type">percent</field>
+			<field name="amount">0</field>
+			<field name="tax_group_id" ref="l10n_uk.tax_group_0"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box7')])]"/>
+	        <field name="include_in_vat_return">True</field>
+	        <field name="reverse_charge">True</field>
+	    </record>
+	    
+	    <!-- Import VAT Tax and Import VAT Product -->
+	    <record model="account.tax" id="smart_mtd.Import_VAT">
+			<field name="name">Import VAT</field>
+			<field name="type_tax_use">purchase</field>
+			<field name="amount_type">division</field>
+			<field name="amount">100</field>
+			<field name="price_include">True</field>
+			<field name="include_base_amount">False</field>
+			<field name="tax_group_id" ref="account.tax_group_taxes"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box4')])]"/>
+	        <field name="include_in_vat_return">True</field>
+	        <field name="account_id" ref="l10n_uk.2201"/>
+	        <field name="refund_account_id" ref="l10n_uk.2201"/>
+	    </record>
+
+	    <!-- Fuel Scale Tax and Fuel Scale Account -->
+	    <record model="account.tax" id="smart_mtd.fuel_scale_tax">
+			<field name="name">Fuel Scale Tax</field>
+			<field name="type_tax_use">sale</field>
+			<field name="amount_type">division</field>
+			<field name="amount">20</field>
+			<field name="tax_group_id" ref="l10n_uk.tax_group_20"/>
+	        <field name="mtd_tag_ids" eval="[(6, 0, [ref('smart_mtd.mtd_tag_box1'),ref('smart_mtd.mtd_tag_box6')])]"/>
+	        <field name="include_in_vat_return">True</field>
+	        <field name="account_id" ref="l10n_uk.2200"/>
+	        <field name="refund_account_id" ref="l10n_uk.2200"/>
+	        <field name="price_include">True</field>
+	        <field name="include_base_amount">False</field>
+	    </record>
+	    
+	</data>
+</odoo>

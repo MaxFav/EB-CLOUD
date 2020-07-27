@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<!-- Records for making changes to the original financial report lines for the UK HMRC report 
+		 Changes made to the domains to look at the new tags fields and name changes
+		 Change made so that the layout follows a standard HMRC report, a line for each of the 9 boxes-->
+	 <record id="financial_report_line_uk_mtd" model="account.financial.html.report.line">
+        <field name="name">VAT Return</field>
+        <field name="sequence" eval="1"/>
+        <field name="level" eval="0"/>
+        <field name="financial_report_id" ref="l10n_uk_reports.financial_report_l10n_uk"/>
+        <field name="parent_id" eval="False"/>
+    </record>
+
+    <record id="l10n_uk_reports.financial_report_line_uk_01" model="account.financial.html.report.line">
+        <field name="name">Net VAT to be paid to Customs or reclaimed by you (Difference between boxes 3 and 4) (BOX 5)</field>
+        <field name="code">UKTAX_01</field>
+        <field name="code">UKTAX_5</field>
+        <field name="sequence" eval="5"/>
+        <field name="level" eval="3"/>
+        <field name="formulas">balance = UKTAX_1.balance + UKTAX_2.balance - UKTAX_4.balance</field>
+        <field name="financial_report_id" eval="False"/>
+        <field name="special_date_changer">strict_range</field>
+        <field name="parent_id" ref="financial_report_line_uk_mtd"/>
+    </record>
+     
+    <record id="l10n_uk_reports.financial_report_line_uk_0101" model="account.financial.html.report.line">
+        <field name="name">VAT due on sales and other outputs (BOX 1)</field>
+        <field name="sequence" eval="1"/>
+        <field name="level" eval="0"/>
+        <field name="financial_report_id" eval="False"/>
+        <field name="parent_id" ref="financial_report_line_uk_mtd"/>
+        <field name="domain" eval="[('tax_line_id.mtd_tag_ids', 'in', [ref('smart_mtd.mtd_tag_box1')]), ('tax_line_id.include_in_vat_return', '=', True)]"/>
+    </record>
+    
+    <record id="l10n_uk_reports.financial_report_line_uk_0102" model="account.financial.html.report.line">
+        <field name="name">VAT due on acquisitions from other EC Member states (BOX 2)</field>
+        <field name="sequence" eval="2"/>
+        <field name="level" eval="0"/>
+        <field name="financial_report_id" eval="False"/>
+        <field name="parent_id" ref="financial_report_line_uk_mtd"/>
+        <field name="domain" eval="[('tax_line_id.mtd_tag_ids', 'in', [ref('smart_mtd.mtd_tag_box2')]), ('tax_line_id.include_in_vat_return', '=', True)]"/>
+    </record>
+    
+    <record id="financial_report_line_uk_03" model="account.financial.html.report.line">
+        <field name="name">Total VAT due (the sum of boxes 1 and 2) (BOX 3)</field>
+        <field name="code">UKTAX_3</field>
+        <field name="sequence" eval="3"/>
+        <field name="level" eval="3"/>
+        <field name="formulas">balance = UKTAX_1.balance + UKTAX_2.balance</field>
+        <field name="special_date_changer">strict_range</field>
+        <field name="parent_id" ref="financial_report_line_uk_mtd"/>
+        <field name="financial_report_id" eval="False"/>
+    </record>
+     
+    
+    <record id="l10n_uk_reports.financial_report_line_uk_0103" model="account.financial.html.report.line">
+        <field name="name">VAT reclaimed on purchases and other inputs (including acquisitions from the EC) (BOX 4)</field>
+        <field name="sequence" eval="4"/>
+        <field name="level" eval="0"/>
+        <field name="financial_report_id" eval="False"/>
+        <field name="parent_id" ref="financial_report_line_uk_mtd"/>
+        <field name="domain" eval="[('tax_line_id.mtd_tag_ids', 'in', [ref('smart_mtd.mtd_tag_box4')]), ('tax_line_id.include_in_vat_return', '=', True)]"/>
+    </record>
+    
+    <record id="l10n_uk_reports.financial_report_line_uk_02" model="account.financial.html.report.line">
+        <field name="name">Total value of sales and all other outputs excluding any VAT (BOX 6)</field>
+        <field name="sequence" eval="6"/>
+        <field name="level" eval="0"/>
+        <field name="financial_report_id" eval="False"/>
+        <field name="parent_id" ref="financial_report_line_uk_mtd"/>
+        <field name="formulas">balance = - sum.balance + UKTAX_8.balance</field>
+        <field name="domain" eval="[('tax_ids.mtd_tag_ids', 'in', [ref('smart_mtd.mtd_tag_box6')]), ('tax_ids.include_in_vat_return', '=', True)]"/>
+        <field name="search_domain" eval="[('tax_ids.mtd_tag_ids', 'in', [ref('smart_mtd.mtd_tag_box6'), ref('smart_mtd.mtd_tag_box8')]), ('tax_ids.include_in_vat_return', '=', True)]"/>
+    </record>
+    
+    <record id="l10n_uk_reports.financial_report_line_uk_0201" model="account.financial.html.report.line">
+        <field name="name">Total value of all supplies of goods and related costs, excluding any VAT, to other EC member states. (BOX 8)</field>
+        <field name="sequence" eval="8"/>
+        <field name="level" eval="0"/>
+        <field name="financial_report_id" eval="False"/>
+        <field name="parent_id" ref="financial_report_line_uk_mtd"/>
+        <field name="domain" eval="[('tax_ids.mtd_tag_ids', 'in', [ref('smart_mtd.mtd_tag_box8')]), ('tax_ids.include_in_vat_return', '=', True)]"/>
+    </record>
+    
+    <record id="l10n_uk_reports.financial_report_line_uk_03" model="account.financial.html.report.line">
+        <field name="name">Total value of purchases and all other inputs excluding any VAT (BOX 7)</field>
+        <field name="sequence" eval="7"/>
+        <field name="level" eval="0"/>
+        <field name="financial_report_id" eval="False"/>
+        <field name="parent_id" ref="financial_report_line_uk_mtd"/>
+        <field name="domain" eval="[('tax_ids.mtd_tag_ids', 'in', [ref('smart_mtd.mtd_tag_box7')]), ('tax_ids.include_in_vat_return', '=', True)]"/>
+    </record>
+    
+    <record id="l10n_uk_reports.financial_report_line_uk_04" model="account.financial.html.report.line">
+        <field name="name">Total value of acquisitions of goods and related costs excluding any VAT, from other EC member states (BOX 9)</field>
+        <field name="sequence" eval="9"/>
+        <field name="level" eval="0"/>
+        <field name="financial_report_id" eval="False"/>
+        <field name="parent_id" ref="financial_report_line_uk_mtd"/>
+        <field name="domain" eval="[('tax_ids.mtd_tag_ids', 'in', [ref('smart_mtd.mtd_tag_box9')]), ('tax_ids.include_in_vat_return', '=', True)]"/>
+    </record>
+        
+</odoo>

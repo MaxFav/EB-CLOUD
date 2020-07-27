@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="bad_debt_wizard_form" model="ir.ui.view">
+            <field name="name">smart_mtd.bad.debt.wizard.form</field>
+            <field name="model">smart_mtd.bad.debt.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="account_id" required="1"/>
+                    </group>
+                    <footer>
+                        <button string="Write Off" class="oe_highlight" type="object" name="write_off"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
