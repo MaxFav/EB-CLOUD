@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <data>
+        <record id="fuel_scale_wizard_form" model="ir.ui.view">
+            <field name="name">smart_mtd.fuel.scale.wizard.form</field>
+            <field name="model">smart_mtd.fuel.scale.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                    <field name="date" required ="1"/>
+                    <field name="driver_name" required ="1"/>
+                    <field name="registration_number" required ="1"/>
+                    <field name="total_charge" required ="1"/>
+                    </group>
+                    <footer>
+                        <button string="Create Journal Entry" class="oe_highlight" type="object" name="create_journal_entry"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <act_window
+          name="Fuel Scale Wizard"
+	       res_model="smart_mtd.fuel.scale.wizard"         
+	       view_type="form"
+	       view_mode="form"
+	       target="new"
+	       id="action_fuel_scale_wizard" />
+         
+	     <menuitem
+			 name="Fuel Scale Wizard"	 
+			 action="action_fuel_scale_wizard"
+			 id="menu_fuel_scale_wizard"
+			 sequence="140"
+			 parent="account.menu_finance_receivables"
+			 />
+	 
+    </data>
+</odoo> 

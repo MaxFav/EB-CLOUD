@@ -1,0 +1,40 @@
+<odoo>
+	<data noupdate="1">
+		<!-- EU -->
+	    <record model="account.account" id="smart_mtd.hmrc_reverse_charge_vat">
+			<field name="name">HMRC Reverse Charge VAT (EU)</field>
+			<field name="code">220500</field>
+			<field name="user_type_id" ref="account.data_account_type_expenses"/>
+			<field name="reconcile">True</field>
+	    </record>
+	    
+	    <record model="account.account" id="smart_mtd.hmrc_reverse_charge_sales">
+			<field name="name">HMRC Reverse Charge Sales (EU)</field>
+			<field name="code">410000</field>
+			<field name="user_type_id" ref="account.data_account_type_expenses"/>
+			<field name="reconcile">True</field>
+	    </record>
+	    
+	    <!-- UK -->
+	    <record model="account.account" id="smart_mtd.hmrc_reverse_charge_vat_uk">
+			<field name="name">HMRC Reverse Charge VAT (UK)</field>
+			<field name="code">220501</field>
+			<field name="user_type_id" ref="account.data_account_type_expenses"/>
+			<field name="reconcile">True</field>
+	    </record>
+	    
+	    <record model="account.account" id="smart_mtd.hmrc_reverse_charge_sales_uk">
+			<field name="name">HMRC Reverse Charge Sales (UK)</field>
+			<field name="code">410001</field>
+			<field name="user_type_id" ref="account.data_account_type_expenses"/>
+			<field name="reconcile">True</field>
+	    </record>
+	   
+	   	<record model="account.account" id="smart_mtd.account_fuel_scale_charge">
+			<field name="name">Fuel Scale Charge</field>
+			<field name="code">888888</field>
+			<field name="user_type_id" ref="account.data_account_type_expenses"/>
+	    </record>
+	      
+	</data>
+</odoo>
