@@ -1,0 +1,37 @@
+<odoo>
+  <data>
+
+    <template id="assets_frontend" inherit_id="website.assets_frontend">
+      <xpath expr="script[last()]" position="after">
+        <script type="text/javascript" src="/product_listing_cart/static/src/js/website_sale_grid_cart.js"></script>
+      </xpath>
+      <xpath expr="//link[last()]" position="after">
+        <link rel="stylesheet" type="text/scss" href="/product_listing_cart/static/src/scss/product_grid.scss"/>
+    </xpath>
+    </template>
+
+    <template id="product_list_add_to_cart" inherit_id="website_sale.products_item" active="True" name="add qty product grid" priority="999">
+      <xpath expr="//div[hasclass('product_price')]" position="inside">
+        <div class="js_add_to_cart">
+          <t t-set="product_variant_id" t-value="product._get_first_possible_variant_id()"/>
+          <input name="product_id" t-att-value="product_variant_id" type="hidden"/>
+          <div class="css_quantity input-group oe_website_spinner" contenteditable="false">
+            <div class="input-group-prepend">
+              <a t-attf-href="#" class="btn btn-secondary js_add_cart_json" aria-label="Remove one" title="Remove one">
+                <i class="fa fa-minus"></i>
+              </a>
+          </div>
+          <input type="text" class="form-control quantity" data-min="1" name="add_qty_grid" t-att-value="add_qty or 1" />
+          <div class="input-group-append">
+            <a t-attf-href="#" class="btn btn-secondary float_left js_add_cart_json" aria-label="Add one" title="Add one">
+              <i class="fa fa-plus"></i>
+            </a>
+          </div>
+        </div>
+        <a role="button" href="#" class="btn btn-primary btn-lg mt4 submit-qty" aria-label="Add to cart" title="Add to cart">Add to Cart</a>
+      </div>
+      </xpath>
+    </template>
+
+  </data>
+</odoo>
