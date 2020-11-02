@@ -8,10 +8,11 @@
     'maintainer': "Smart IT ltd",
     'website': 'smart-ltd.co.uk',
     'images': [],
-    "depends" : ['base', 'account', 'sale'],
+    "depends" : ['base', 'account', 'sale', 'account_reports'],
     "init_xml": [],
     "demo_xml": [],
     "data": [
+        'data/account_financial_report_data.xml',
         'views/res_partner_views.xml',
         'views/account_views.xml',
         ],
