@@ -32,3 +32,13 @@ class AccountInvoiceLine(models.Model):
     _inherit = 'account.invoice.line'
 
     mandatory_analytic_account = fields.Boolean('Analytic Mandatory', related='account_id.mandatory_analytic_account', readonly=True)
+    single_analytic_tag_id = fields.Many2one('account.analytic.tag', string="Analytic Tag",
+                                             compute="_compute_single_analytic_tag_id", store=True)
+
+    @api.depends('analytic_tag_ids', 'analytic_tag_ids.active')
+    def _compute_single_analytic_tag_id(self):
+        for line in self:
+            if line.analytic_tag_ids.filtered(lambda r: r.active):
+                line.single_analytic_tag_id = line.analytic_tag_ids.filtered(lambda r: r.active)[0]
+            else:
+                line.single_analytic_tag_id = False

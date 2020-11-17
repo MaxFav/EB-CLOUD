@@ -22,4 +22,15 @@
         </field>
     </record>
 
+    <record id="account_invoice_form_view_eb" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='analytic_tag_ids']" position="after">
+                <field name="single_analytic_tag_id" groups="analytic.group_analytic_tags" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
 </odoo>
