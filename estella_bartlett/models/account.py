@@ -22,7 +22,7 @@ class AccountInvoice(models.Model):
             if record.type == 'in_invoice':
                 for line in record.invoice_line_ids:
                     if line.account_id and line.account_id.mandatory_analytic_account:
-                        if not line.account_analytic_id or line.analytic_tag_ids:
+                        if not line.account_analytic_id or not line.analytic_tag_ids:
                             raise UserError(_("Analytic Account or Analytic Tag not set for one or more invoice lines"))
         res = super(AccountInvoice, self).action_invoice_open()
 
