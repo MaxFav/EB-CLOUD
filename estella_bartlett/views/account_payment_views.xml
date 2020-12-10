@@ -1,0 +1,23 @@
+<odoo>
+    <record id="account_payment_estella" model="ir.ui.view">
+        <field name="name">account.payment.inherit</field>
+        <field name="model">account.payment</field>
+        <field name="inherit_id" ref="account.view_account_payment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="generated_from_wizard" invisible="1"/>
+                <field name="linked_purchase_order_id" attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('generated_from_wizard', '=', True)]}"/>
+            </xpath>
+            <!-- Making these fields readonly if the payment form has been opened from the wizard on the PO, to avoid possible inconsistencies. -->
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="attrs">{'required': [('state', '=', 'draft'), ('payment_type', 'in', ('inbound', 'outbound'))], 'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))], 'readonly': ['|', ('state', '!=', 'draft'), ('generated_from_wizard', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='payment_type']" position="attributes">
+                <attribute name="attrs">{'readonly': ['|', ('state', '!=', 'draft'), ('generated_from_wizard', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='partner_type']" position="attributes">
+                <attribute name="attrs">{'required': [('state', '=', 'draft'), ('payment_type', 'in', ('inbound', 'outbound'))], 'invisible': [('payment_type', 'not in', ('inbound', 'outbound'))], 'readonly': ['|', ('state', '!=', 'draft'), ('generated_from_wizard', '=', True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
