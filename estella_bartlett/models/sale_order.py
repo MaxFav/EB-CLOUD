@@ -30,6 +30,95 @@ class SaleOrder(models.Model):
         }
         self.update(values)
 
+    # The main difference between this and action_invoice_create is the lines parameter and the 'for sale in lines'
+    # block which restricts the sale order lines that are gone through for each sale order.
+    # Otherwise, other previous returned-but-unrefunded SO lines from affected SOs are involved too.
+    @api.multi
+    def create_bulk_return_credit_note(self, grouped=False, final=False, lines=False):
+        inv_obj = self.env['account.invoice']
+        precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
+        invoices = {}
+        references = {}
+        invoices_origin = {}
+        invoices_name = {}
+
+        # Keep track of the sequences of the lines
+        # To keep lines under their section
+        inv_line_sequence = 0
+        for order in self:
+            group_key = order.id if grouped else (order.partner_invoice_id.id, order.currency_id.id)
+
+            # We only want to create sections that have at least one invoiceable line
+            pending_section = None
+
+            # Create lines in batch to avoid performance problems
+            line_vals_list = []
+            # sequence is the natural order of order_lines
+            for sale in lines:
+                if sale.get('sale') == order.id:
+                    sale_lines = sale.get('lines')
+                    sale_line_ids = []
+                    for sale_line in sale_lines:
+                        sale_line_ids.append(sale_line['line'])
+                    sale_lines_objs = self.env['sale.order.line'].browse(sale_line_ids)
+                    break
+            for line in sale_lines_objs:
+                if line.display_type == 'line_section':
+                    pending_section = line
+                    continue
+                if float_is_zero(line.qty_to_invoice, precision_digits=precision):
+                    continue
+                if group_key not in invoices:
+                    inv_data = order._prepare_invoice()
+                    invoice = inv_obj.create(inv_data)
+                    references[invoice] = order
+                    invoices[group_key] = invoice
+                    invoices_origin[group_key] = [invoice.origin]
+                    invoices_name[group_key] = [invoice.name]
+                elif group_key in invoices:
+                    if order.name not in invoices_origin[group_key]:
+                        invoices_origin[group_key].append(order.name)
+                    if order.client_order_ref and order.client_order_ref not in invoices_name[group_key]:
+                        invoices_name[group_key].append(order.client_order_ref)
+
+                if line.qty_to_invoice > 0 or (line.qty_to_invoice < 0 and final):
+                    if pending_section:
+                        section_invoice = pending_section.invoice_line_create_vals(
+                            invoices[group_key].id,
+                            pending_section.qty_to_invoice
+                        )
+                        inv_line_sequence += 1
+                        section_invoice[0]['sequence'] = inv_line_sequence
+                        line_vals_list.extend(section_invoice)
+                        pending_section = None
+
+                    inv_line_sequence += 1
+                    inv_line = line.invoice_line_create_vals(
+                        invoices[group_key].id, line.qty_to_invoice
+                    )
+                    inv_line[0]['sequence'] = inv_line_sequence
+                    line_vals_list.extend(inv_line)
+
+            if references.get(invoices.get(group_key)):
+                if order not in references[invoices[group_key]]:
+                    references[invoices[group_key]] |= order
+
+            self.env['account.invoice.line'].create(line_vals_list)
+
+        for group_key in invoices:
+            invoices[group_key].write({'name': ', '.join(invoices_name[group_key])[:2000],
+                                       'origin': ', '.join(invoices_origin[group_key])})
+            sale_orders = references[invoices[group_key]]
+            if len(sale_orders) == 1:
+                invoices[group_key].reference = sale_orders.reference
+
+        if not invoices:
+            raise UserError(_(
+                'There is no invoiceable line. If a product has a Delivered quantities invoicing policy, please make sure that a quantity has been delivered.'))
+
+        self._finalize_invoices(invoices, references)
+        return [inv.id for inv in invoices.values()]
+
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
