@@ -17,8 +17,8 @@
         'views/sale_order_views.xml',
         'views/res_partner_views.xml',
         'views/account_views.xml',
-        'views/general_settings_view.xml'
-        'wizard/bulk_return_view.xml'
+        'views/general_settings_view.xml',
+        'wizard/bulk_return_view.xml',
         ],
     'qweb': [],
     "auto_install": False,
