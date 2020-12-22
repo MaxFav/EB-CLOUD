@@ -19,16 +19,25 @@ class SaleOrder(models.Model):
         """
         super(SaleOrder, self).onchange_partner_id()
 
-        if not self.partner_id:
+        if not self.partner_id and not self.partner_id.parent_id:
             self.update({
                 'analytic_account_id': False
             })
             return
 
         values = {
-            'analytic_account_id': self.partner_id.territory_id.id or False
+            'analytic_account_id': self.partner_id.territory_id.id or self.partner_id.parent_id.territory_id.id or False
         }
         self.update(values)
+
+    # If the sale order is from the website shop, set the analytic account to the partner's/partner's parent's.
+    # If not from that shop, then don't.
+    @api.model
+    def create(self, vals):
+        res = super(SaleOrder, self).create(vals)
+        if res.website_id and not res.analytic_account_id:
+            res.analytic_account_id = res.partner_id.territory_id.id or res.partner_id.parent_id.territory_id.id or False
+        return res
 
     # The main difference between this and action_invoice_create is the lines parameter and the 'for sale in lines'
     # block which restricts the sale order lines that are gone through for each sale order.
@@ -134,6 +143,8 @@ class SaleOrderLine(models.Model):
                 order = SaleOrder.browse(vals['order_id'])
                 if order.partner_id and order.partner_id.sales_channel_ids:
                     vals['analytic_tag_ids'] = [[6, False, order.partner_id.sales_channel_ids.ids]]
+                elif order.partner_id.parent_id and order.partner_id.parent_id.sales_channel_ids:
+                    vals['analytic_tag_ids'] = [[6, False, order.partner_id.parent_id.sales_channel_ids.ids]]
 
         return super(SaleOrderLine, self).create(vals_list)
 
@@ -149,6 +160,8 @@ class SaleOrderLine(models.Model):
         vals = {}
         if self.order_id.partner_id and self.order_id.partner_id.sales_channel_ids:
             vals['analytic_tag_ids'] = self.order_id.partner_id.sales_channel_ids.ids
+        elif self.order_id.partner_id.parent_id and self.order_id.partner_id.parent_id.sales_channel_ids:
+            vals['analytic_tag_ids'] = self.order_id.partner_id.parent_id.sales_channel_ids.ids
         self.update(vals)
 
         return result
@@ -160,3 +173,17 @@ class SaleOrderLine(models.Model):
                 line.single_analytic_tag_id = line.analytic_tag_ids.filtered(lambda r: r.active)[0]
             else:
                 line.single_analytic_tag_id = False
+
+    @api.model
+    def _prepare_add_missing_fields(self, values):
+        # Adding analytic_tag_ids to onchange_fields to make it populate on order lines from website sale orders.
+        res = {}
+        onchange_fields = ['name', 'price_unit', 'product_uom', 'tax_id', 'analytic_tag_ids']
+        if values.get('order_id') and values.get('product_id') and any(f not in values for f in onchange_fields):
+            with self.env.do_in_onchange():
+                line = self.new(values)
+                line.product_id_change()
+                for field in onchange_fields:
+                    if field not in values:
+                        res[field] = line._fields[field].convert_to_write(line[field], line)
+        return res
