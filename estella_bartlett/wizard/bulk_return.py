@@ -42,89 +42,92 @@ class BulkReturn(models.TransientModel):
             qty_to_return = line.quantity
             for matching_line in matching_lines:
                 diff = matching_line.product_uom_qty - sum(matching_line.move_dest_ids.mapped('product_uom_qty'))
-                if diff > 0:
+                if qty_to_return > 0:
                     # v - If there's still product from the Bulk Wizard to return, keep going. Otherwise, append a part
                     # return and break.
-                    if qty_to_return - matching_line.product_uom_qty >= 0:
-                        # v - Search if the found move's picking is already in the results list. If so, append to that
-                        # picking's entry for allowing to return multiple moves if in same picking.
-                        for matching_picking in matching_pickings_moves:
-                            if matching_picking.get('picking') == matching_line.picking_id.id:
-                                matching_picking['moves'].append({'move': matching_line.id,
-                                                                  'sale_line': matching_line.sale_line_id.id,
-                                                                  'scrap': line.scrap_product,
-                                                                  'qty': diff,
-                                                                  'product': matching_line.product_id.id,
-                                                                  'uom': matching_line.product_uom.id
-                                                                  })
+                    if diff > 0:
+                        if qty_to_return - matching_line.product_uom_qty >= 0:
+                            # v - Search if the found move's picking is already in the results list. If so, append to that
+                            # picking's entry for allowing to return multiple moves if in same picking.
+                            for matching_picking in matching_pickings_moves:
+                                if matching_picking.get('picking') == matching_line.picking_id.id:
+                                    matching_picking['moves'].append({'move': matching_line.id,
+                                                                      'sale_line': matching_line.sale_line_id.id,
+                                                                      'scrap': line.scrap_product,
+                                                                      'qty': diff,
+                                                                      'product': matching_line.product_id.id,
+                                                                      'uom': matching_line.product_uom.id
+                                                                      })
+                                    qty_to_return -= diff
+                                    break
+                            else:
+                                # No move from move's picking in list yet, create new list item for the picking
+                                # with the move in.
+                                matching_pickings_moves.append({'picking': matching_line.picking_id.id,
+                                                                'location': matching_line.location_id.id,
+                                                                'sale': matching_line.picking_id.sale_id.id,
+                                                                'moves': [{'move': matching_line.id,
+                                                                           'sale_line': matching_line.sale_line_id.id,
+                                                                           'scrap': line.scrap_product,
+                                                                           'qty': diff,
+                                                                           'product': matching_line.product_id.id,
+                                                                           'uom': matching_line.product_uom.id
+                                                                           }]
+                                                                })
                                 qty_to_return -= diff
-                                break
+                            # Check to see if the sale order of the matching line has been found before. If not, create a
+                            # new entry for the sale order. If so, add the matching line's sale id under the sale order.
+                            for matching_sale in matching_sale_orders_lines:
+                                if matching_sale.get('sale') == matching_line.picking_id.sale_id.id:
+                                    matching_sale['lines'].append({'line': matching_line.sale_line_id.id})
+                                    break
+                            else:
+                                matching_sale_orders_lines.append({'sale': matching_line.picking_id.sale_id.id,
+                                                                   'lines': [{'line': matching_line.sale_line_id.id
+                                                                              }]
+                                                                   })
                         else:
-                            # No move from move's picking in list yet, create new list item for the picking
-                            # with the move in.
-                            matching_pickings_moves.append({'picking': matching_line.picking_id.id,
-                                                            'location': matching_line.location_id.id,
-                                                            'sale': matching_line.picking_id.sale_id.id,
-                                                            'moves': [{'move': matching_line.id,
-                                                                       'sale_line': matching_line.sale_line_id.id,
-                                                                       'scrap': line.scrap_product,
-                                                                       'qty': diff,
-                                                                       'product': matching_line.product_id.id,
-                                                                       'uom': matching_line.product_uom.id
-                                                                       }]
-                                                            })
-                            qty_to_return -= diff
-                        # Check to see if the sale order of the matching line has been found before. If not, create a
-                        # new entry for the sale order. If so, add the matching line's sale id under the sale order.
-                        for matching_sale in matching_sale_orders_lines:
-                            if matching_sale.get('sale') == matching_line.picking_id.sale_id.id:
-                                matching_sale['lines'].append({'line': matching_line.sale_line_id.id})
-                                break
-                        else:
-                            matching_sale_orders_lines.append({'sale': matching_line.picking_id.sale_id.id,
-                                                               'lines': [{'line': matching_line.sale_line_id.id
-                                                                          }]
-                                                               })
-                    else:
-                        # The entire move can't be returned, so part of the move is being returned instead.
-                        for matching_picking in matching_pickings_moves:
-                            if matching_picking.get('picking') == matching_line.picking_id.id:
-                                matching_picking['moves'].append({'move': matching_line.id,
-                                                                  'sale_line': matching_line.sale_line_id.id,
-                                                                  'scrap': line.scrap_product,
-                                                                  'qty': qty_to_return,
-                                                                  'product': matching_line.product_id.id,
-                                                                  'uom': matching_line.product_uom.id
-                                                                  })
+                            # The entire move can't be returned, so part of the move is being returned instead.
+                            for matching_picking in matching_pickings_moves:
+                                if matching_picking.get('picking') == matching_line.picking_id.id:
+                                    matching_picking['moves'].append({'move': matching_line.id,
+                                                                      'sale_line': matching_line.sale_line_id.id,
+                                                                      'scrap': line.scrap_product,
+                                                                      'qty': qty_to_return,
+                                                                      'product': matching_line.product_id.id,
+                                                                      'uom': matching_line.product_uom.id
+                                                                      })
+                                    qty_to_return -= qty_to_return
+                                    # Picking found in results, move added inside it, breaking to avoid creating new
+                                    # picking in results.
+                                    break
+                            else:
+                                matching_pickings_moves.append({'picking': matching_line.picking_id.id,
+                                                                'location': matching_line.location_id.id,
+                                                                'sale': matching_line.picking_id.sale_id.id,
+                                                                'moves': [{'move': matching_line.id,
+                                                                           'sale_line': matching_line.sale_line_id.id,
+                                                                           'scrap': line.scrap_product,
+                                                                           'qty': qty_to_return,
+                                                                           'product': matching_line.product_id.id,
+                                                                           'uom': matching_line.product_uom.id
+                                                                           }]
+                                                                })
                                 qty_to_return -= qty_to_return
-                                # Picking found in results, move added inside it, breaking to avoid creating new
-                                # picking in results.
-                                break
-                        else:
-                            matching_pickings_moves.append({'picking': matching_line.picking_id.id,
-                                                            'location': matching_line.location_id.id,
-                                                            'sale': matching_line.picking_id.sale_id.id,
-                                                            'moves': [{'move': matching_line.id,
-                                                                       'sale_line': matching_line.sale_line_id.id,
-                                                                       'scrap': line.scrap_product,
-                                                                       'qty': qty_to_return,
-                                                                       'product': matching_line.product_id.id,
-                                                                       'uom': matching_line.product_uom.id
-                                                                       }]
-                                                            })
-                            qty_to_return -= qty_to_return
-                        for matching_sale in matching_sale_orders_lines:
-                            if matching_sale.get('sale') == matching_line.picking_id.sale_id.id:
-                                matching_sale['lines'].append({'line': matching_line.sale_line_id.id})
-                                break
-                        else:
-                            matching_sale_orders_lines.append({'sale': matching_line.picking_id.sale_id.id,
-                                                               'lines': [{'line': matching_line.sale_line_id.id
-                                                                          }]
-                                                               })
-                        # All product in Bulk Return Line returned, breaking to move onto the next line in the
-                        # return_line_ids.
-                        break
+                            for matching_sale in matching_sale_orders_lines:
+                                if matching_sale.get('sale') == matching_line.picking_id.sale_id.id:
+                                    matching_sale['lines'].append({'line': matching_line.sale_line_id.id})
+                                    break
+                            else:
+                                matching_sale_orders_lines.append({'sale': matching_line.picking_id.sale_id.id,
+                                                                   'lines': [{'line': matching_line.sale_line_id.id
+                                                                              }]
+                                                                   })
+                            # All product in Bulk Return Line returned, breaking to move onto the next line in the
+                            # return_line_ids.
+                            break
+                else:
+                    break
 
             if qty_to_return > 0 and matching_lines:
                 insufficient_qty_products.append(line.returned_product_id.name)
