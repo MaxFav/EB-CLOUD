@@ -1,0 +1,48 @@
+<odoo>
+    <data>
+        <record id="batch_validation_draft_invoice" model="ir.actions.server">
+            <field name="name">Confirm and process to draft invoice</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+            <field name="state">code</field>
+            <field name="code"><![CDATA[
+for rec in records:
+    env.cr.execute('SAVEPOINT validate_batch_validation')
+    try:
+        rec.action_confirm()
+        for picking in rec.picking_ids:
+            picking.action_assign()
+            picking.button_validate()
+        rec.action_invoice_create()
+        env.cr.commit()
+    except Exception as e:
+        env.cr.execute('ROLLBACK TO SAVEPOINT validate_batch_validation')
+]]>
+            </field>
+        </record>
+    </data>
+</odoo>
+<!-- 
+for rec in records:
+    env.cr.execute('SAVEPOINT validate_batch_validation')
+    try:
+        rec.action_confirm()
+        for picking in rec.picking_ids:
+            picking.action_assign()
+            picking.button_validate()
+        rec.action_invoice_create()
+        env.cr.commit()
+    except Exception as e:
+        env.cr.execute('ROLLBACK TO SAVEPOINT validate_batch_validation') -->
+
+<!-- for rec in records:
+    try:
+        rec.action_confirm()
+        for picking in rec.picking_ids:
+            picking.action_assign()
+            picking.button_validate_estella()
+        rec.action_invoice_create()
+        env.cr.commit()
+    except:
+        pass
+]]-->
