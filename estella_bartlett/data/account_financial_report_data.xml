@@ -6,17 +6,11 @@
             <field name="tag">account_report</field>
             <field name="context" eval="{'model': 'account.aged.receivable.currency'}"/>
         </record>
-<<<<<<< HEAD
-=======
 
->>>>>>> CR748 and CR727 Deployment
         <menuitem id="menu_action_account_report_aged_receivable_currency"
                   name="Aged Receivable By Currency"
                   action="action_account_report_arc"
                   parent="account_reports.account_reports_partners_reports_menu"/>
-<<<<<<< HEAD
 
-=======
->>>>>>> CR748 and CR727 Deployment
     </data>
 </odoo>
