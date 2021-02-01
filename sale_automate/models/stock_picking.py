@@ -8,6 +8,9 @@ class StockPicking(models.Model):
 
     def button_validate_action(self):
         self.ensure_one()
+        #-------Avoid error thrown when cancelled stock picking already linked to sale order-----#
+        if self.state == 'cancel':
+            return
         #-------New instruction to set qty_done------------
         for line in self.move_ids_without_package:
             line.quantity_done = line.product_uom_qty if (line.quantity_done != line.product_uom_qty) else line.quantity_done
