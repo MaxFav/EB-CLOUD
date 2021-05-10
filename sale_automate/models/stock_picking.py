@@ -8,10 +8,10 @@ class StockPicking(models.Model):
 
     def button_validate(self):
         self.ensure_one()
-        #-------New instruction to set qty_done------------
+        if not self.env.context.get('set_quantity_done_from_cron'):
+            return super().button_validate()
+        # -------New instruction to set qty_done------------
         for line in self.move_ids_without_package:
             line.quantity_done = line.product_uom_qty if (line.quantity_done != line.product_uom_qty) else line.quantity_done
 
         return super().button_validate()
-    
-
