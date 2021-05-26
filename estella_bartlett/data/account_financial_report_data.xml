@@ -6,10 +6,10 @@
             <field name="tag">account_report</field>
             <field name="context" eval="{'model': 'account.aged.receivable.currency'}"/>
         </record>
-
         <menuitem id="menu_action_account_report_aged_receivable_currency"
                   name="Aged Receivable By Currency"
                   action="action_account_report_arc"
                   parent="account_reports.account_reports_partners_reports_menu"/>
+
     </data>
 </odoo>

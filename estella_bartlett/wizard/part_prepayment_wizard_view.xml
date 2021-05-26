@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="part_prepayment_wizard" model="ir.ui.view">
+        <field name="name">Part Prepayment Wizard</field>
+        <field name="model">part.prepayment.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Part Prepayment Wizard">
+                <field name="rel_outstanding_debit_ids" nolabel="1"/>
+                <group>
+                    <field name="invoice_id" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="outstanding_debit_move_line_ids" domain="[('id', 'in', rel_outstanding_debit_ids)]"
+                           options="{'no_create_edit': True}" context="{'prepayment_wizard': True}"/>
+                    <field name="payment_money"/>
+                    <field name="part_payment"/>
+                    <field name="invoice_amount_total"/>
+                    <field name="invoice_amount_due"/>
+                </group>
+                <footer>
+                    <button class="btn-primary" type="object" name="button_save" string="Save"/>
+                    <button string="DISCARD" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

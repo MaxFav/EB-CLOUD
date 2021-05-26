@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="wizard_commission_summary_form_view_estella" model="ir.ui.view">
+        <field name="name">wizard.commission.summary.form</field>
+        <field name="model">wizard.commission.summary</field>
+        <field name="inherit_id" ref="aspl_sales_commission_ee.wizard_commission_summary_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='job_ids']" position="replace">
+            </xpath>
+            <xpath expr="//field[@name='user_ids']" position="attributes">
+                <attribute name="domain">[('is_sales_agent', '=', True)]</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="sales_commission_payment_form_view_estella" model="ir.ui.view">
+        <field name="name">sales.commission.payment.form</field>
+        <field name="model">sales.commission.payment</field>
+        <field name="inherit_id" ref="aspl_sales_commission_ee.sales_commission_payment_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="domain">[('is_sales_agent', '=', True)]</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
