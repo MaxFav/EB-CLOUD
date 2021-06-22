@@ -53,7 +53,8 @@ class ResPartnerCommission(models.Model):
     commission_pay_by = fields.Selection([('invoice', 'Invoice'), ('salary', 'Salary')], string="Commission Pay By",
                                          default='invoice')
 
-    commission_account_id = fields.Many2one('account.account', string="Commission Account")
+    commission_account_id = fields.Many2one('account.account', string="Commission Account",
+                                            domain=[('is_sales_commission_account', '=', True)])
 
 
 class res_users(models.Model):

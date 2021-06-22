@@ -50,40 +50,42 @@ class account_invoice(models.Model):
                 if self.commission_pay_on == 'invoice_validate':
                     if self.commission_calc == 'product' and emp_id:
                         for invline in self.invoice_line_ids:
-                            for lineid in invline.product_id.product_comm_ids:
-                                lines = {'user_id': self.user_id.id, 'job_id': emp_id.job_id.id}
-                                if lineid.user_ids and self.user_id.id in [user.id for user in lineid.user_ids]:
-                                    lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
-                                    member_lst.append(lines)
-                                    break
-                                elif lineid.job_id and not lineid.user_ids:
-                                    if self.user_id.id in self.job_related_users(lineid.job_id):
+                            if invline.product_id.categ_id.name != 'Deliveries':
+                                for lineid in invline.product_id.product_comm_ids:
+                                    lines = {'user_id': self.user_id.id, 'job_id': emp_id.job_id.id}
+                                    if lineid.user_ids and self.user_id.id in [user.id for user in lineid.user_ids]:
                                         lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
                                         member_lst.append(lines)
                                         break
+                                    elif lineid.job_id and not lineid.user_ids:
+                                        if self.user_id.id in self.job_related_users(lineid.job_id):
+                                            lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
+                                            member_lst.append(lines)
+                                            break
                     elif self.commission_calc == 'product_categ' and emp_id:
                         for invline in self.invoice_line_ids:
-                            for lineid in invline.product_id.categ_id.prod_categ_comm_ids:
-                                lines = {'user_id': self.user_id.id, 'job_id': emp_id.job_id.id}
-                                if lineid.user_ids and self.user_id.id in [user.id for user in lineid.user_ids]:
-                                    lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
-                                    member_lst.append(lines)
-                                    break
-                                elif lineid.job_id and not lineid.user_ids:
-                                    if self.user_id.id in self.job_related_users(lineid.job_id):
+                            if invline.product_id.categ_id.name != 'Deliveries':
+                                for lineid in invline.product_id.categ_id.prod_categ_comm_ids:
+                                    lines = {'user_id': self.user_id.id, 'job_id': emp_id.job_id.id}
+                                    if lineid.user_ids and self.user_id.id in [user.id for user in lineid.user_ids]:
                                         lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
                                         member_lst.append(lines)
                                         break
+                                    elif lineid.job_id and not lineid.user_ids:
+                                        if self.user_id.id in self.job_related_users(lineid.job_id):
+                                            lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
+                                            member_lst.append(lines)
+                                            break
                     elif self.commission_calc == 'sale_team' and self.team_id and emp_id:
                         for lineid in self.team_id.sale_team_comm_ids:
                             lines = {'user_id': self.user_id.id, 'job_id': emp_id.job_id.id}
                             if lineid.user_ids and self.user_id.id in [user.id for user in lineid.user_ids]:
-                                lines['commission'] = self.amount_total * lineid.commission / 100 if lineid.compute_price_type == 'per' else (lineid.commission * self.amount_total) / sale_id.amount_total
+                                lines['commission'] = self.calculate_commission_sans_delivery(lineid, sale_id)
                                 member_lst.append(lines)
                                 break
                             elif lineid.job_id and not lineid.user_ids:
                                 if self.user_id.id in self.job_related_users(lineid.job_id):
-                                    lines['commission'] = self.amount_total * lineid.commission / 100 if lineid.compute_price_type == 'per' else (lineid.commission * self.amount_total) / sale_id.amount_total
+                                    lines['commission'] = self.calculate_commission_sans_delivery(lineid, sale_id)
                                     member_lst.append(lines)
                                     break
                 else:
@@ -97,7 +99,7 @@ class account_invoice(models.Model):
                                 for user in lineid.user_ids:
                                     emp_id = self.env['hr.employee'].search([('user_id', '=', user.id)], limit=1)
                                     lines = {'user_id': user.id, 'job_id': emp_id.job_id.id}
-                                    lines['commission'] = self.amount_total * lineid.commission / 100 if lineid.compute_price_type == 'per' else (lineid.commission * self.amount_total) / sale_id.amount_total
+                                    lines['commission'] = self.calculate_commission_sans_delivery(lineid, sale_id)
                                     member_lst.append(lines)
                 if self.partner_id.type == 'invoice' and self.partner_id.parent_id:
                     partner = self.partner_id.parent_id
@@ -176,6 +178,18 @@ class account_invoice(models.Model):
                         line.sale_commission_id.write({'state': 'invoiced', 'invoice_id': invoice.id})
         return res
 
+    def calculate_commission_sans_delivery(self, lineid, sale_id):
+        commission = 0
+        price_total = 0
+        if lineid.compute_price_type == 'per':
+            for invline in self.invoice_line_ids:
+                if invline.product_id.categ_id.name != 'Deliveries':
+                    price_total += invline.price_subtotal
+            commission = price_total * lineid.commission / 100
+        else:
+            commission = (lineid.commission * self.amount_untaxed) / sale_id.amount_untaxed
+        return commission
+
 
 class account_invoice_line(models.Model):
     _inherit = 'account.invoice.line'
@@ -219,40 +233,42 @@ class AccountPayment(models.Model):
                         if invoice.commission_pay_on == 'invoice_pay':
                             if invoice.commission_calc == 'product' and emp_id:
                                 for invline in invoice.invoice_line_ids:
-                                    for lineid in invline.product_id.product_comm_ids:
-                                        lines = {'user_id': invoice.user_id.id, 'job_id': emp_id.job_id.id}
-                                        if lineid.user_ids and invoice.user_id.id in [user.id for user in lineid.user_ids]:
-                                            lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
-                                            member_lst.append(lines)
-                                            break
-                                        elif lineid.job_id and not lineid.user_ids:
-                                            if invoice.user_id.id in self.job_related_users(lineid.job_id):
+                                    if invline.product_id.categ_id.name != 'Deliveries':
+                                        for lineid in invline.product_id.product_comm_ids:
+                                            lines = {'user_id': invoice.user_id.id, 'job_id': emp_id.job_id.id}
+                                            if lineid.user_ids and invoice.user_id.id in [user.id for user in lineid.user_ids]:
                                                 lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
                                                 member_lst.append(lines)
                                                 break
+                                            elif lineid.job_id and not lineid.user_ids:
+                                                if invoice.user_id.id in self.job_related_users(lineid.job_id):
+                                                    lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
+                                                    member_lst.append(lines)
+                                                    break
                             elif invoice.commission_calc == 'product_categ' and emp_id:
                                 for invline in invoice.invoice_line_ids:
-                                    for lineid in invline.product_id.categ_id.prod_categ_comm_ids:
-                                        lines = {'user_id': invoice.user_id.id, 'job_id': emp_id.job_id.id}
-                                        if lineid.user_ids and invoice.user_id.id in [user.id for user in lineid.user_ids]:
-                                            lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
-                                            member_lst.append(lines)
-                                            break
-                                        elif lineid.job_id and not lineid.user_ids:
-                                            if invoice.user_id.id in self.job_related_users(lineid.job_id):
+                                    if invline.product_id.categ_id.name != 'Deliveries':
+                                        for lineid in invline.product_id.categ_id.prod_categ_comm_ids:
+                                            lines = {'user_id': invoice.user_id.id, 'job_id': emp_id.job_id.id}
+                                            if lineid.user_ids and invoice.user_id.id in [user.id for user in lineid.user_ids]:
                                                 lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
                                                 member_lst.append(lines)
                                                 break
+                                            elif lineid.job_id and not lineid.user_ids:
+                                                if invoice.user_id.id in self.job_related_users(lineid.job_id):
+                                                    lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
+                                                    member_lst.append(lines)
+                                                    break
                             elif invoice.commission_calc == 'sale_team' and invoice.team_id and invoice.commission_pay_on == 'invoice_pay' and emp_id:
                                 for lineid in invoice.team_id.sale_team_comm_ids:
                                     lines = {'user_id': invoice.user_id.id, 'job_id': emp_id.job_id.id}
                                     if lineid.user_ids and invoice.user_id.id in [user.id for user in lineid.user_ids]:
-                                        lines['commission'] = invoice.amount_total * lineid.commission / 100 if lineid.compute_price_type == 'per' else (lineid.commission * invoice.amount_total) / sale_id.amount_total
+                                        lines['commission'] = invoice.calculate_commission_sans_delivery(lineid, sale_id)
                                         member_lst.append(lines)
                                         break
                                     elif lineid.job_id and not lineid.user_ids:
                                         if invoice.user_id.id in self.job_related_users(lineid.job_id):
-                                            lines['commission'] = invoice.amount_total * lineid.commission / 100 if lineid.compute_price_type == 'per' else (lineid.commission * invoice.amount_total) / sale_id.amount_total
+                                            lines['commission'] = invoice.calculate_commission_sans_delivery(lineid, sale_id)
                                             member_lst.append(lines)
                                             break
                         else:
@@ -266,7 +282,7 @@ class AccountPayment(models.Model):
                                         for user in lineid.user_ids:
                                             emp_id = self.env['hr.employee'].search([('user_id', '=', user.id)], limit=1)
                                             lines = {'user_id': user.id, 'job_id': emp_id.job_id.id, 'commission_pay_on': 'invoice_pay'}
-                                            lines['commission'] = invoice.amount_total * lineid.commission / 100 if lineid.compute_price_type == 'per' else (lineid.commission * invoice.amount_total) / sale_id.amount_total
+                                            lines['commission'] = invoice.calculate_commission_sans_delivery(lineid, sale_id)
                                             member_lst.append(lines)
                     if invoice.partner_id.type == 'invoice' and invoice.partner_id.parent_id:
                         partner = invoice.partner_id.parent_id

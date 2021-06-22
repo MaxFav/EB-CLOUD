@@ -140,30 +140,34 @@ class sale_order(models.Model):
             emp_id = self.env['hr.employee'].search([('user_id', '=', self.user_id.id)], limit=1)
             if self.commission_calc == 'product' and emp_id:
                 for soline in self.order_line:
-                    for lineid in soline.product_id.product_comm_ids:
-                        lines = {'user_id': self.user_id.id, 'job_id': emp_id.job_id.id}
-                        if lineid.user_ids and self.user_id.id in [user.id for user in lineid.user_ids]:
-                            lines['commission'] = soline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * soline.product_uom_qty
-                            member_lst.append(lines)
-                            break
-                        elif lineid.job_id and not lineid.user_ids:
-                            if self.user_id.id in self.job_related_users(lineid.job_id):
+                    if soline.product_id.categ_id.name != 'Deliveries':
+                        for lineid in soline.product_id.product_comm_ids:
+                            lines = {'user_id': self.user_id.id, 'job_id': emp_id.job_id.id}
+                            if lineid.user_ids and self.user_id.id in [user.id for user in lineid.user_ids]:
                                 lines['commission'] = soline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * soline.product_uom_qty
                                 member_lst.append(lines)
                                 break
+                            elif lineid.job_id and not lineid.user_ids:
+                                if self.user_id.id in self.job_related_users(lineid.job_id):
+                                    lines['commission'] = soline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * soline.product_uom_qty
+                                    member_lst.append(lines)
+                                    break
             elif self.commission_calc == 'product_categ' and emp_id:
                 for soline in self.order_line:
-                    for lineid in soline.product_id.categ_id.prod_categ_comm_ids:
-                        lines = {'user_id': self.user_id.id, 'job_id': emp_id.job_id.id}
-                        if lineid.user_ids and self.user_id.id in [user.id for user in lineid.user_ids]:
-                            lines['commission'] = soline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * soline.product_uom_qty
-                            member_lst.append(lines)
-                            break
-                        elif lineid.job_id and not lineid.user_ids:
-                            if self.user_id.id in self.job_related_users(lineid.job_id):
+                    if soline.product_id.categ_id.name != 'Deliveries':
+                        for lineid in soline.product_id.categ_id.prod_categ_comm_ids:
+                            lines = {'user_id': self.user_id.id, 'job_id': emp_id.job_id.id}
+                            if lineid.user_ids and self.user_id.id in [user.id for user in lineid.user_ids]:
                                 lines['commission'] = soline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * soline.product_uom_qty
+                                lines['commission_pay_on'] = self.commission_pay_on
                                 member_lst.append(lines)
                                 break
+                            elif lineid.job_id and not lineid.user_ids:
+                                if self.user_id.id in self.job_related_users(lineid.job_id):
+                                    lines['commission'] = soline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * soline.product_uom_qty
+                                    lines['commission_pay_on'] = self.commission_pay_on
+                                    member_lst.append(lines)
+                                    break
             elif self.commission_calc == 'customer' and self.partner_id:
                 for lineid in self.partner_id.comm_ids:
                     if lineid.commission_pay_on == 'order_confirm':
@@ -173,18 +177,20 @@ class sale_order(models.Model):
                             lines['commission_pay_on'] = lineid.commission_pay_on
                             lines['commission_pay_by'] = lineid.commission_pay_by
                             lines['commission_account_id'] = lineid.commission_account_id.id
-                            lines['commission'] = self.amount_total * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission
+                            lines['commission'] = self.calculate_commission_sans_delivery(lineid)
                             member_lst.append(lines)
             elif self.commission_calc == 'sale_team' and self.team_id:
                 for lineid in self.team_id.sale_team_comm_ids:
                     lines = {'user_id': self.user_id.id, 'job_id': emp_id.job_id.id}
                     if lineid.user_ids and self.user_id.id in [user.id for user in lineid.user_ids]:
-                        lines['commission'] = self.amount_total * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission
+                        lines['commission'] = self.calculate_commission_sans_delivery(lineid)
+                        lines['commission_pay_on'] = self.commission_pay_on
                         member_lst.append(lines)
                         break
                     elif lineid.job_id and not lineid.user_ids:
                         if self.user_id.id in self.job_related_users(lineid.job_id):
-                            lines['commission'] = self.amount_total * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission
+                            lines['commission'] = self.calculate_commission_sans_delivery(lineid)
+                            lines['commission_pay_on'] = self.commission_pay_on
                             member_lst.append(lines)
                             break
         userby = {}
@@ -197,6 +203,18 @@ class sale_order(models.Model):
         for user in userby:
             member_lst.append((0, 0, userby[user]))
         self.sale_order_comm_ids = member_lst
+
+    def calculate_commission_sans_delivery(self, lineid):
+        commission = 0
+        price_total = 0
+        if lineid.compute_price_type == 'per':
+            for soline in self.order_line:
+                if soline.product_id.categ_id.name != 'Deliveries':
+                    price_total += soline.price_subtotal
+            commission = price_total * lineid.commission / 100
+        else:
+            commission = lineid.commission
+        return commission
 
     sale_order_comm_ids = fields.One2many('sales.order.commission', 'order_id', string="Sale Order Commission",
                                           compute="_compute_commission_data", store=True)

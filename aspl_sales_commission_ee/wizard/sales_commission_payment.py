@@ -37,43 +37,46 @@ class SalesCommissionPayment(models.TransientModel):
                                                'company_id': self.env.user.company_id.id})._default_journal()
         if not journal_id:
             raise Warning(_('Account Journal not found.'))
-        IrDefault = self.env['ir.default'].sudo()
-        commission_account_id = IrDefault.get('res.config.settings', "commission_account_id", company_id=self.env.user.company_id.id)
-        if not commission_account_id:
-            raise Warning(_('Commission Account is not Found. Please go to Sales Configuration and set the Sales commission account.'))
-        else:
-            account_id = self.env['account.account'].search([('id', '=', commission_account_id)])
-            if not account_id:
-                raise Warning(_('Commission Account is not Found. Please go to Sales Configuration and set the Sales commission account.'))
-        if account_id:
-            inv_line_data = []
+
+        inv_line_data = []
+        for commid in commission_ids:
+            customer = commid.sale_order_id.partner_id
+            account = self.env['account.account']
+            for line in customer.comm_ids:
+                if self.user_id in line.user_ids:
+                    account = line.commission_account_id
+                    break
+            if not account:
+                raise Warning(_("A Commission Account was not found for a commission from %s. For the Customer of "
+                                "this sale order (%s), please ensure that their Contact record's Sales Commission "
+                                "table contains a line Payable To %s, with a Commission Account set.") %
+                              (commid.sale_order_id.name, commid.sale_order_id.partner_id.name, self.user_id.name))
+            inv_line_data.append((0, 0, {'account_id': account.id,
+                                         'name': commid.name + " Commission",
+                                         'quantity': 1,
+                                         'price_unit': commid.amount,
+                                         'sale_commission_id': commid.id}))
+        if inv_line_data:
+            invoice_vals = {'partner_id': self.user_id.partner_id.id,
+                            'company_id': self.env.user.company_id.id,
+                            'commission_invoice': True,
+                            'type': 'in_invoice',
+                            'journal_id': journal_id.id,
+                            'invoice_line_ids': inv_line_data,
+                            'origin': 'Commission Invoice',
+                            'date_due': datetime.today().date(),
+                            }
+            invoice_id = invoice_obj.search(
+                [('partner_id', '=', self.user_id.partner_id.id), ('state', '=', 'draft'),
+                 ('type', '=', 'in_invoice'), ('commission_invoice', '=', True),
+                 ('company_id', '=', self.env.user.company_id.id)])
+            if invoice_id:
+                invoice_id.write({'invoice_line_ids': inv_line_data, 'commission_invoice': True})
+            else:
+                invoice_id = invoice_obj.create(invoice_vals)
+                invoice_id._onchange_partner_id()
             for commid in commission_ids:
-                inv_line_data.append((0, 0, {'account_id': account_id.id,
-                                             'name': commid.name + " Commission",
-                                             'quantity': 1,
-                                             'price_unit': commid.amount,
-                                             'sale_commission_id': commid.id}))
-            if inv_line_data:
-                invoice_vals = {'partner_id': self.user_id.partner_id.id,
-                                'company_id': self.env.user.company_id.id,
-                                'commission_invoice': True,
-                                'type': 'in_invoice',
-                                'journal_id': journal_id.id,
-                                'invoice_line_ids': inv_line_data,
-                                'origin': 'Commission Invoice',
-                                'date_due': datetime.today().date(),
-                                }
-                invoice_id = invoice_obj.search(
-                    [('partner_id', '=', self.user_id.partner_id.id), ('state', '=', 'draft'),
-                     ('type', '=', 'in_invoice'), ('commission_invoice', '=', True),
-                     ('company_id', '=', self.env.user.company_id.id)])
-                if invoice_id:
-                    invoice_id.write({'invoice_line_ids': inv_line_data, 'commission_invoice': True})
-                else:
-                    invoice_id = invoice_obj.create(invoice_vals)
-                    invoice_id._onchange_partner_id()
-                for commid in commission_ids:
-                    commid.write({'invoice_id': invoice_id.id, 'state': 'invoiced'})
+                commid.write({'invoice_id': invoice_id.id, 'state': 'invoiced'})
         if invoice_id:
             view_id = self.env.ref("account.invoice_supplier_form")
             return {
