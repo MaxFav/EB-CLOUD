@@ -249,7 +249,7 @@ class AccountPayment(models.Model):
                                 for invline in invoice.invoice_line_ids:
                                     if invline.product_id.categ_id.name != 'Deliveries':
                                         for lineid in invline.product_id.categ_id.prod_categ_comm_ids:
-                                            lines = {'user_id': invoice.user_id.id, 'job_id': emp_id.job_id.id}
+                                            lines = {'user_id': invoice.user_id.id, 'job_id': emp_id.job_id.id, 'commission_pay_on': 'invoice_pay'}
                                             if lineid.user_ids and invoice.user_id.id in [user.id for user in lineid.user_ids]:
                                                 lines['commission'] = invline.price_subtotal * lineid.commission / 100 if lineid.compute_price_type == 'per' else lineid.commission * invline.quantity
                                                 member_lst.append(lines)
@@ -261,7 +261,7 @@ class AccountPayment(models.Model):
                                                     break
                             elif invoice.commission_calc == 'sale_team' and invoice.team_id and invoice.commission_pay_on == 'invoice_pay' and emp_id:
                                 for lineid in invoice.team_id.sale_team_comm_ids:
-                                    lines = {'user_id': invoice.user_id.id, 'job_id': emp_id.job_id.id}
+                                    lines = {'user_id': invoice.user_id.id, 'job_id': emp_id.job_id.id, 'commission_pay_on': 'invoice_pay'}
                                     if lineid.user_ids and invoice.user_id.id in [user.id for user in lineid.user_ids]:
                                         lines['commission'] = invoice.calculate_commission_sans_delivery(lineid, sale_id)
                                         member_lst.append(lines)
