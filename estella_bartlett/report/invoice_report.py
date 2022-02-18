@@ -10,7 +10,8 @@ class AccountInvoiceReport(models.Model):
     single_analytic_tag_id = fields.Many2one('account.analytic.tag', string="Analytic Tag", readonly=True)
 
     def _select(self):
-        return super(AccountInvoiceReport, self)._select() + ", sub.single_analytic_tag_id as single_analytic_tag_id"
+        # todo: sub.single_analytic_tag_id causing error?
+        return super(AccountInvoiceReport, self)._select() + ", line.single_analytic_tag_id as single_analytic_tag_id"
 
     def _sub_select(self):
         return super(AccountInvoiceReport, self)._sub_select() + ", ail.single_analytic_tag_id as single_analytic_tag_id"

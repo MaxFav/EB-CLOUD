@@ -1,32 +1,33 @@
 odoo.define('product_listing_cart.add_to_cart', function (require) {
     "use strict"
 
-    var WebsiteSaleOptions = require('website_sale_options.website_sale');
-    var weContext = require('web_editor.context');
+var publicWidget = require('web.public.widget');
+var VariantMixin = require('sale.VariantMixin');
+var wSaleUtils = require('website_sale.utils');
+const wUtils = require('website.utils');
+require("web.zoomodoo");
 
-    WebsiteSaleOptions.include({
 
-        events: _.extend({
-            "click a.submit-qty": 'async _AddQtyToCart'
-        }, WebsiteSaleOptions.prototype.events),
+publicWidget.registry.WebsiteSale.include({
+    
+    _submitForm: function () {
+        let params = this.rootProduct;
+        params.add_qty = params.quantity;
+        params.product_custom_attribute_values = JSON.stringify(params.product_custom_attribute_values);
+        params.no_variant_attribute_values = JSON.stringify(params.no_variant_attribute_values);
+        params.current_url = window.location.href
+        var active_btn =  '#btn_' +params.product_id.toString();
+        const $record = $(active_btn);
+        $record.hide();
+        params.disabeld_btn = true;
+        if (this.isBuyNow) {
+            params.express = true;
+        }
 
-        _AddQtyToCart: function (ev) {
-            this.$form = $(ev.currentTarget).closest('form');
-            this.$form.ajaxSubmit({
-                url: '/shop/cart/update_option',
-                data: {
-                    lang: weContext.get().lang,
-                    from_product_grid: true,
-                },
-                success: function (quantity) {
-                    var $quantity = $(".my_cart_quantity");
-                    var $divcart = $(ev.currentTarget).closest('div.js_add_to_cart')
-                    $quantity.parent().parent().removeClass("d-none", !quantity);
-                    $quantity.html(quantity).hide().fadeIn(600);
-                    $divcart.hide(400);
-                }
-            });
-        },
-
+        return wUtils.sendRequest('/shop/cart/update', params);
+    },
+    
+    
+    
     });
 });

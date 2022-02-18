@@ -1,36 +1,13 @@
 <odoo>
-    <record id="act_res_partner_2_purchase_order_outstanding" model="ir.actions.act_window">
-        <field name="name">Outstanding Purchase Orders</field>
-        <field name="res_model">purchase.order</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form,graph</field>
-        <field name="view_id" ref="outstanding_purchase_order_tree"/>
-        <field name="domain">[('outstanding_balance', '&gt;', 0.00), ('state', '=', 'purchase')]</field>
-        <field name="context">{'search_default_partner_id': active_id}</field>
-        <field name="groups_id" eval="[(4, ref('purchase.group_purchase_user'))]"/>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                This vendor has no outstanding purchase orders. Create a new RfQ
-            </p>
-        </field>
-    </record>
-    <record id="res_partner_form_view_estella" model="ir.ui.view">
+
+    <record id="res_partner_form_view_naturiste" model="ir.ui.view">
         <field name="name">res.partner.form</field>
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='lang']" position="after">
+            <xpath expr="//field[@name='website']" position="after">
                 <field name="territory_id" />
                 <field name="sales_channel_ids" widget="many2many_tags" />
-            </xpath>
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <button class="oe_stat_button"
-                        name="%(estella_bartlett.act_res_partner_2_purchase_order_outstanding)d"
-                        type="action"
-                        groups="purchase.group_purchase_user"
-                        attrs="{'invisible': [('supplier', '=', False)]}" icon="fa-align-justify">
-                    <field string="Outstanding Purchases" name="outstanding_purchase_order_count" widget="statinfo"/>
-                </button>
             </xpath>
         </field>
     </record>

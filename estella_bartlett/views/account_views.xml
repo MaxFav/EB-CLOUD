@@ -7,35 +7,32 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='deprecated']" position="after">
                 <field name="mandatory_analytic_account"/>
-                <field name="is_sales_commission_account"/>
             </xpath>
         </field>
     </record>
 
-    <record id="account_invoice_supplier_form_view_eb" model="ir.ui.view">
-        <field name="name">account.invoice.supplier.form</field>
-        <field name="model">account.invoice</field>
-        <field name="inherit_id" ref="account.invoice_supplier_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="after">
-                <field name="mandatory_analytic_account"/>
-            </xpath>
-            <xpath expr="//button[@name='257']" position="after">
-                <button type="object" name="action_part_prepayment" string="Part Prepayment"
-                        attrs="{'invisible': [('state', '!=', 'open')]}"/>
-            </xpath>
-        </field>
-    </record>
+    <!-- account.invoice_supplier_form -->
+    <!--    <record id="account_invoice_supplier_form_view_eb" model="ir.ui.view">-->
+    <!--        <field name="name">account.invoice.supplier.form</field>-->
+    <!--        <field name="model">account.invoice</field>-->
+    <!--        <field name="inherit_id" ref="account.invoice_supplier_form"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_id']" position="after">-->
+    <!--                <field name="mandatory_analytic_account" />-->
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
 
-    <record id="account_invoice_form_view_eb" model="ir.ui.view">
-        <field name="name">account.invoice.form</field>
-        <field name="model">account.invoice</field>
-        <field name="inherit_id" ref="account.invoice_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//tree/field[@name='analytic_tag_ids']" position="after">
-                <field name="single_analytic_tag_id" groups="analytic.group_analytic_tags" invisible="1"/>
-            </xpath>
-        </field>
-    </record>
+    <!-- account.invoice_form -->
+    <!--    <record id="account_invoice_form_view_eb" model="ir.ui.view">-->
+    <!--        <field name="name">account.invoice.form</field>-->
+    <!--        <field name="model">account.invoice</field>-->
+    <!--        <field name="inherit_id" ref="account.invoice_form"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//tree/field[@name='analytic_tag_ids']" position="after">-->
+    <!--                <field name="single_analytic_tag_id" groups="analytic.group_analytic_tags" invisible="1"/>-->
+    <!--            </xpath>-->
+    <!--        </field>-->
+    <!--    </record>-->
 
 </odoo>

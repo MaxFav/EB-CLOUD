@@ -9,5 +9,5 @@ class GeneralSettings(models.Model):
     def recalculate_single_analytic_tag_ids(self):
         sale_order_lines = self.env['sale.order.line'].search([])
         sale_order_lines._compute_single_analytic_tag_id()
-        account_invoice_lines = self.env['account.invoice.line'].search([])
+        account_invoice_lines = self.env['account.move.line'].search([])
         account_invoice_lines._compute_single_analytic_tag_id()
