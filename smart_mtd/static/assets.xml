@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend_1" name="smart_assets" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/smart_mtd/static/src/js/form_view.js"></script>
+        </xpath>
+    </template>
+
+</odoo>

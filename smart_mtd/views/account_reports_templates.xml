@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Template to add in an extra filter for HMRC submitted
+         Toggle for showing all lines and just unsent lines
+    -->
+    <template id="search_template_extra_options_generic_tax_report_mtd"
+              inherit_id="account_reports.search_template_extra_options">
+        <xpath expr="//div[@role='menu']" position="inside">
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter"
+               t-if="options.get('unsubmitted') != None" title="Not Submitted to HMRC" data-filter="unsubmitted"
+               groups="account.group_account_user">Not Submitted to HMRC
+            </a>
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter"
+               t-if="options.get('submitted') != None" title="Submitted to HMRC" data-filter="submitted"
+               groups="account.group_account_user">Submitted to HMRC
+            </a>
+        </xpath>
+    </template>
+
+</odoo>
