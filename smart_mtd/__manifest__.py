@@ -1,0 +1,27 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'Smart MTD',
+    'author': 'Smart IT',
+    'version': '1',
+    'summary': 'Changes to the MTD Module',
+    'description': 'Changes to the MTD Module',
+    'category': 'Other',
+    'sequence': 1,
+    'depends': ['l10n_uk', 'l10n_uk_reports', 'account_reports', 'account'],
+    'installable': True,
+    'auto_install': False,
+    'data': [
+        'wizard/hmrc_send_wizard_view.xml',
+        'wizard/fuel_scale_wizard_view.xml',
+        'wizard/bad_debt_wizard_view.xml',
+        'static/assets.xml',
+        'data/account_account_data.xml',
+        'data/account_tax_data.xml',
+        'data/product_data.xml',
+        'views/account_reports_templates.xml',
+        'views/general_settings_view.xml',
+        'views/account_view.xml',
+        'reports/vat_return_report.xml',
+        'security/ir.model.access.csv',
+    ],
+}
