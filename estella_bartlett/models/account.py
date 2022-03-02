@@ -22,7 +22,7 @@ class AccountMove(models.Model):
                     raise UserError(
                         _(
                             "Analytic Account or Analytic Tag not set for one or more invoice lines"
-                        )
+                        ) 
                     )
 
         return super(AccountMove, self).action_post()
