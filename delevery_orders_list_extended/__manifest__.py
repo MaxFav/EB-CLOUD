@@ -1,25 +1,16 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "delevery_orders_list_extended",
-
+    'name': "Estella : Delivery Orders List Extended",
     'summary': """
         """,
-
     'description': """
-        
-    """,
-
-    'author': "Odoo sa",
-    'website': "http://www.odoo.com",
-
+        """,
+    'author': "Smart IT Ltd",
+    'website': "smart-ltd.co.uk",
     'category': 'stock',
-    'version': '0.1',
-
+    'version': '1.0',
     'depends': ['base', 'stock', 'delivery'],
-
     'data': [
         'views/stock_picking.xml',
-    ],
-    'demo': [
     ],
 }

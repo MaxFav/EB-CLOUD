@@ -2,6 +2,7 @@
 
 from odoo import models, fields
 
+
 class SaleReport(models.Model):
     _inherit = 'sale.report'
 

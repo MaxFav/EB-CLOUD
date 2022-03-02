@@ -1,12 +1,14 @@
+# -*- coding: utf-8 -*-
 {
-    "name": "Estella Sale Automate",
-    "summary": """
-        Estella Sale Automate scaffold module
+    'name': "Estella : Sale Automate",
+    'summary': """
+        Estella Sale Automate scaffold module""",
+    'description': """
         """,
-    "version": "12.0.1.0.0",
-    "author": "Odoo PS",
-    "license": "OEEL-1",
-    "depends": ['base','sale','stock','batch_validation','sale_management'],
+    'author': "Smart IT Ltd",
+    'website': "smart-ltd.co.uk",
+    'version': '1.0',
+    'depends': ['base', 'sale', 'stock', 'batch_validation', 'sale_management'],
     'data': [
         'actions/sale_order.xml'
     ],

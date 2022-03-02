@@ -1,6 +1,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
+
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
@@ -9,13 +10,13 @@ class SaleOrderLine(models.Model):
     quantity_reserved11 = fields.Float(compute='_compute_qty_reserved', string='Quantity Reserved', store=True)
     quantity_undelivered13 = fields.Float(compute='_compute_qty_undelivered', string='Quantity Undelivered', store=True)
 
-    @api.multi
+#     @api.multi
     @api.depends('move_ids', 'move_ids.state', 'price_unit', 'move_ids.reserved_availability')
     def _compute_untaxed_reserved(self):
         for so_line in self:
             for delivery in so_line.move_ids:
                 if so_line.move_ids and delivery.state not in ['cancel', 'done']:
-                    if so_line.order_id.confirmation_date:
+                    if so_line.order_id.date_order:
                         currency_rate = so_line.env['res.currency.rate'].search(
                             ['&', ('currency_id.name', '=', so_line.order_id.pricelist_id.currency_id.name),
                              ('name', '<=', so_line.order_id.create_date)], limit=1)
@@ -24,13 +25,13 @@ class SaleOrderLine(models.Model):
                 elif so_line.move_ids and delivery.state in ['cancel', 'done']:
                     so_line.untaxed_amount_reserved11 = 0
 
-    @api.multi
+#     @api.multi
     @api.depends('move_ids', 'move_ids.state', 'price_unit', 'move_ids.product_uom_qty', 'move_ids.quantity_done')
     def _compute_untaxed_undelivered(self):
         for so_line in self:
             for delivery in so_line.move_ids:
                 if so_line.move_ids and delivery.state not in ['cancel', 'done']:
-                    if so_line.order_id.confirmation_date:
+                    if so_line.order_id.date_order:
                         currency_rate = so_line.env['res.currency.rate'].search(
                             ['&', ('currency_id.name', '=', so_line.order_id.pricelist_id.currency_id.name),
                              ('name', '<=', so_line.order_id.create_date)], limit=1)
@@ -41,7 +42,7 @@ class SaleOrderLine(models.Model):
                 elif so_line.move_ids and delivery.state in ['cancel', 'done']:
                     so_line.untaxed_amount_undelivered13 = 0
 
-    @api.multi
+#     @api.multi
     @api.depends('move_ids', 'move_ids.state', 'move_ids.reserved_availability')
     def _compute_qty_reserved(self):
         for so_line in self:
@@ -51,7 +52,7 @@ class SaleOrderLine(models.Model):
                 elif so_line.move_ids and delivery.state in ['cancel', 'done']:
                     so_line.quantity_reserved11 = 0
 
-    @api.multi
+#     @api.multi
     @api.depends('move_ids', 'move_ids.state', 'move_ids.product_uom_qty', 'move_ids.quantity_done')
     def _compute_qty_undelivered(self):
         for so_line in self:

@@ -8,7 +8,7 @@
     'maintainer': "Smart IT ltd",
     'website': 'smart-ltd.co.uk',
     'images': [],
-    "depends" : ['base', 'account', 'sale', 'account_reports'],
+    "depends" : ['base', 'account', 'sale', 'account_reports', 'stock'],
     "init_xml": [],
     "demo_xml": [],
     "data": [

@@ -16,14 +16,14 @@
                    </form>
             </field>
 		</record>
-		
+
 	    <record id="action_general_settings_estella" model="ir.actions.act_window">
             <field name="name">Estella Bartlett General Settings</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">estella.general_settings</field>
             <field name="view_mode">tree,form</field>
 	    </record>
-	    
+
 	    <menuitem id="menu_general_settings_estella" name="Estella Bartlett General Settings" groups="base.group_no_one"
 	              parent="base.menu_administration" action="action_general_settings_estella" sequence="20"/>
 	</data>

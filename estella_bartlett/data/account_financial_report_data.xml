@@ -2,13 +2,13 @@
 <odoo>
     <data>
         <record id="action_account_report_arc" model="ir.actions.client">
-            <field name="name">Aged Receivable By Currency</field>
+            <field name="name">Aged Receivable by Currency</field>
             <field name="tag">account_report</field>
             <field name="context" eval="{'model': 'account.aged.receivable.currency'}"/>
         </record>
 
         <menuitem id="menu_action_account_report_aged_receivable_currency"
-                  name="Aged Receivable By Currency"
+                  name="Aged Receivable by Currency"
                   action="action_account_report_arc"
                   parent="account_reports.account_reports_partners_reports_menu"/>
     </data>

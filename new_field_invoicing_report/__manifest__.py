@@ -1,22 +1,15 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "new_field_invoicing_report",
-
+    'name': "Estella : New Field Invoicing Report",
     'summary': """
         Add territory and category from partner_id in invoice reports""",
-
     'description': """
-        Add territory and category from partner_id in invoice reports
-    """,
-
-    'author': "Odoo sa",
-    'website': "http://www.odoo.com",
-
+        Add territory and category from partner_id in invoice reports""",
+    'author': "Smart IT Ltd",
+    'website': "smart-ltd.co.uk",
     'category': 'invoice',
-    'version': '0.2',
-
-    'depends': ['base', 'account', 'sale'],
-
+    'version': '1.0',
+    'depends': ['base', 'account', 'sale', 'sale_module_reporting'],
     'data': [
     ],
 }
