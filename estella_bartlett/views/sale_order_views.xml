@@ -7,6 +7,9 @@
             <xpath expr="//tree/field[@name='analytic_tag_ids']" position="after">
                 <field name="single_analytic_tag_id" groups="analytic.group_analytic_tags" invisible="1"/>
             </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="domain"></attribute>
+            </xpath>
         </field>
     </record>
 </odoo>
