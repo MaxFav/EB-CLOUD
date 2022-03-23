@@ -38,6 +38,12 @@
       </div>
       </xpath>
     </template>
+
+    <template id="product_quantity" inherit_id="website_sale.product_quantity" active="True" name="update add to cart qty">
+      <xpath expr="//div[hasclass('css_quantity')]/input[@name='add_qty']" position="attributes">
+        <attribute name="t-att-value">5</attribute>
+      </xpath>
+    </template>
  
   </data>
 </odoo>

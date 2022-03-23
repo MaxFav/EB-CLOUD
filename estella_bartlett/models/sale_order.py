@@ -7,6 +7,9 @@ from odoo.exceptions import UserError
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
+    # Remove domain from salesperson field
+    user_id = fields.Many2one('res.users', domain=False)
+
     @api.onchange("partner_id")
     def onchange_partner_id(self):
         """
