@@ -12,5 +12,6 @@ class ResPartner(models.Model):
 
     territory_id = fields.Many2one('account.analytic.account', string="Territory")
     sales_channel_ids = fields.Many2many('account.analytic.tag', string="Sales Channel")
+    x_studio_field_EpOAQ = fields.Many2one(comodel_name='stock.warehouse', string='Warehouse')
 
 
