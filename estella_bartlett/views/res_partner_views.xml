@@ -12,6 +12,13 @@
             <xpath expr="//group[@name='sale']/field[@name='user_id']" position="attributes">
                 <attribute name="domain">[]</attribute>
             </xpath>
+            <page name="sales_purchases" position="after">
+                <page string="Inventory" name="inventory">
+                    <group name="warehouse">
+                        <field name="x_studio_field_EpOAQ"/>
+                    </group>
+                </page>
+            </page>
         </field>
     </record>
 </odoo>
