@@ -10,6 +10,13 @@ class SaleOrder(models.Model):
     # Remove domain from salesperson field
     user_id = fields.Many2one('res.users', domain=False)
 
+    @api.onchange('user_id')
+    def onchange_user_id_for_warehouse(self):
+        # Ticket 25712: Ensure correct warehouse is set
+        super(SaleOrder, self).onchange_user_id()
+        if self.partner_id and self.partner_id.x_studio_field_EpOAQ:
+            self.warehouse_id = self.partner_id.x_studio_field_EpOAQ
+
     @api.onchange("partner_id")
     def onchange_partner_id(self):
         """
