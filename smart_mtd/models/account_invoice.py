@@ -1,20 +1,24 @@
 from odoo import models, fields, api, _
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-class AccountInvoice(models.Model):
 
-    _inherit = 'account.invoice'
-    
+
+class AccountInvoice(models.Model):
+    _inherit = 'account.move'
+
     bad_debt_enabled = fields.Boolean(compute='_compute_bad_debt_enabled')
-    
-    @api.multi
+
     def _compute_bad_debt_enabled(self):
         for record in self:
-            if record.date_invoice:
-                if datetime.today().date() >= record.date_invoice + relativedelta(months = +6) and record.residual == record.amount_total:
+            if record.invoice_date:
+                if datetime.today().date() >= record.invoice_date + relativedelta(
+                        months=+6) and record.amount_residual > 0:
                     record.bad_debt_enabled = True
-                
-    @api.multi
+                else:
+                    record.bad_debt_enabled = False
+            else:
+                record.bad_debt_enabled = False
+
     def bad_debt(self):
         view_id = self.env.ref('smart_mtd.bad_debt_wizard_form').id
         return {'type': 'ir.actions.act_window',
@@ -24,14 +28,19 @@ class AccountInvoice(models.Model):
                 'view_mode': 'form',
                 'view_type': 'form',
                 'views': [[view_id, 'form']],
-        }
-    
-    @api.multi
-    def invoice_validate(self):
-        res = super(AccountInvoice, self).invoice_validate()
-        reverse_charge_taxes = self.env.ref('smart_mtd.Reverse_Charge_UK') + self.env.ref('smart_mtd.Reverse_Charge_EU')
-        reverse_charge_lines = self.mapped('invoice_line_ids').filtered(lambda x: x.invoice_line_tax_ids in reverse_charge_taxes)
-        if reverse_charge_lines:
-            reverse_charge_lines.create_notional_invoices()        
+                }
+
+    def auto_pay_invoice(self):
+        if not self.sudo().env['smart_mtd.general_settings'].search([], limit=1).auto_pay_invoice:
+            return
+        for record in self:
+            payment_wizard_vals = record.action_register_payment()
+            payment_wizard = self.env['account.payment.register'].with_context(payment_wizard_vals['context']).create({})
+            payment_wizard.action_create_payments()
+
+    def action_post(self):
+        res = super(AccountInvoice, self).action_post()
+        for record in self:
+            if all(line.tax_ids == self.env.ref('smart_mtd.tax_postponed_import_vat') for line in record.invoice_line_ids):
+                record.auto_pay_invoice()
         return res
-    

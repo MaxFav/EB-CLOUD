@@ -18,7 +18,8 @@ class FuelScaleWizard(models.TransientModel):
     def create_journal_entry(self):
         misc_operations_journal = self.env['account.journal'].search([('code', '=', 'MISC')])
         fuel_scale_tax = self.env.ref('smart_mtd.fuel_scale_tax')
-        
+        base_tag = fuel_scale_tax.invoice_repartition_line_ids.filtered(lambda x: x.repartition_type == 'base').tag_ids
+        tax_tag = fuel_scale_tax.invoice_repartition_line_ids.filtered(lambda x: x.repartition_type == 'tax').tag_ids
         #Create move with information from wizard
         new_move = {
             'date': self.date,
@@ -30,31 +31,33 @@ class FuelScaleWizard(models.TransientModel):
         #Create 3 lines for journal entry
         debit_line = {
             'account_id': self.env.ref('smart_mtd.account_fuel_scale_charge').id,
-            'debit': self.total_charge,
-            'credit': 0,
+            'debit': 0,
+            'credit': self.total_charge,
             'name': self.driver_name + ' ' + self.registration_number,
             'move_id': new_move.id
             }
         
         credit_line = {
             'account_id': self.env.ref('smart_mtd.account_fuel_scale_charge').id,
-            'debit': 0,
-            'credit': round((self.total_charge / (1 + fuel_scale_tax.amount/100)), 2),
+            'debit': round((self.total_charge / (1 + fuel_scale_tax.amount/100)), 2),
+            'credit': 0,
             'name': self.driver_name + ' ' + self.registration_number,
             'move_id': new_move.id,
             'tax_ids': [[6, False, [fuel_scale_tax.id]]],
+            'tax_tag_ids': [(6, 0, base_tag.ids)]
             }
         
         #Compute tax
         tax_dict = fuel_scale_tax.compute_all(self.total_charge / (1 + fuel_scale_tax.amount/100))['taxes'][0]
         
         tax_line = {
-            'account_id': fuel_scale_tax.account_id.id,
-            'debit': 0,
-            'credit': tax_dict['amount'],
+            'account_id': tax_dict['account_id'],
+            'debit': tax_dict['amount'],
+            'credit': 0,
             'name': self.driver_name + ' ' + self.registration_number,
             'move_id': new_move.id,
             'tax_line_id': tax_dict['id'],
+            'tax_tag_ids': [(6, 0, tax_tag.ids)]
             }
         
         #Create move lines and post the journal entry

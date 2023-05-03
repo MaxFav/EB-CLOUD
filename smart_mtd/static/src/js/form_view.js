@@ -5,7 +5,7 @@ odoo.define('smart_mtd.ActionManager', function (require) {
     var core = require('web.core');
 
     function wizard_keep_open(parent, action){
-        parent.currentDialogController.widget.update();
+        parent.currentDialogController.widget.reload();
         return false;
     }
     core.action_registry.add('wizard_keep_open', wizard_keep_open);

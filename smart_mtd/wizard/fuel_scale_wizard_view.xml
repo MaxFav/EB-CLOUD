@@ -21,10 +21,10 @@
             </field>
         </record>
         
+         
         <act_window
           name="Fuel Scale Wizard"
 	       res_model="smart_mtd.fuel.scale.wizard"         
-	       view_type="form"
 	       view_mode="form"
 	       target="new"
 	       id="action_fuel_scale_wizard" />
@@ -36,6 +36,6 @@
 			 sequence="140"
 			 parent="account.menu_finance_receivables"
 			 />
-	 
+	  
     </data>
 </odoo> 

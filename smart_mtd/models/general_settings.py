@@ -2,7 +2,7 @@
 from odoo import tools
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
-from odoo.addons.l10n_uk_reports_hmrc.models import hmrc_service as HmrcSvc
+from odoo.addons.l10n_uk_reports.models import hmrc_service as HmrcSvc
 
 class GeneralSettings(models.Model):
     _name = 'smart_mtd.general_settings'
@@ -10,37 +10,33 @@ class GeneralSettings(models.Model):
     default_end_date = fields.Date(string="Default End Date (Account Move Line)",
                                     help="Setting this date and pressing the button, will find all invoice lines before this and set it as HMRC submitted")
     test_mode = fields.Boolean(string="HMRC Test Mode", compute='compute_test_mode')
+    auto_pay_invoice = fields.Boolean(string="Auto Pay Invoice",
+                                      help="If ticked, invoices with postponed VAT will be auto-paid")
         
     def set_hmrc_submitted(self):
         if not self.default_end_date:
             raise UserError("Set a default default end date")
         
-        sql = """select distinct aml.id from account_move_line_account_tax_rel aml_rel
-                    inner join account_move_line aml
-                    on aml.id = aml_rel.account_move_line_id
-                    inner join account_tax_smart_mtd_mtd_tag_rel taxtag
-                    on taxtag.account_tax_id = aml_rel.account_tax_id
-                    inner join smart_mtd_mtd_tag tag
-                    on taxtag.smart_mtd_mtd_tag_id = tag.id
-                    where aml.date <= '%s'
-                    and tag.name ilike '%%Box%%'""" % (str(self.default_end_date))
+        sql = """SELECT account_move_line.id
+                     FROM account_account_tag_account_move_line_rel aml_tag
+                     JOIN account_move_line
+                     ON aml_tag.account_move_line_id = account_move_line.id
+                     JOIN account_move
+                     ON account_move_line.move_id = account_move.id
+                     JOIN account_journal
+                     ON account_move.journal_id = account_journal.id
+                     JOIN account_account_tag acc_tag
+                     ON aml_tag.account_account_tag_id = acc_tag.id
+                     JOIN account_tax_report_line_tags_rel
+                     ON acc_tag.id = account_tax_report_line_tags_rel.account_account_tag_id
+                     WHERE account_move_line.date <= '%s'
+                     AND account_move_line.tax_exigible
+                     AND account_journal.id = account_move_line.journal_id""" % (str(self.default_end_date))
         self.env.cr.execute(sql)
         aml_ids = [rec[0] for rec in self.env.cr.fetchall()]
         
-        
-        sql = """select distinct aml.id from account_move_line aml
-                    inner join account_tax_smart_mtd_mtd_tag_rel taxtag
-                    on aml.tax_line_id = taxtag.account_tax_id
-                    inner join smart_mtd_mtd_tag tag
-                    on taxtag.smart_mtd_mtd_tag_id = tag.id
-                    where tax_line_id is not null and date <= '%s'
-                    and tag.name ilike '%%Box%%'""" % str(self.default_end_date)
-                    
-        self.env.cr.execute(sql)
-        tax_line_aml_ids = [rec[0] for rec in self.env.cr.fetchall()]
-        
-        if aml_ids or tax_line_aml_ids:
-            sql = """UPDATE account_move_line SET hmrc_submitted = True, date_on_vat_return = '%s' where id in (%s) """ % (str(self.default_end_date), str(aml_ids + tax_line_aml_ids)[1:-1])
+        if aml_ids:
+            sql = """UPDATE account_move_line SET hmrc_submitted = True, date_on_vat_return = '%s' where id in (%s) """ % (str(self.default_end_date), str(aml_ids)[1:-1])
             self.env.cr.execute(sql)
         
     def create_test_obligations(self):
