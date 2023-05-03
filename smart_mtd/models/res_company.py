@@ -13,3 +13,14 @@ class ResCompany(models.Model):
         if not uk_company:
             raise ValidationError('UK Accounting is not set against any company')
         return uk_company
+
+
+    def get_sales_control_tax(self):
+        company_id = self.get_uk_company()
+        id_ref = 'l10n_uk.%s_2200' % company_id.id
+        return self.env.ref(id_ref).id
+
+    def get_purchase_control_tax(self):
+        company_id = self.get_uk_company()
+        id_ref = 'l10n_uk.%s_2201' % company_id.id
+        return self.env.ref(id_ref).id

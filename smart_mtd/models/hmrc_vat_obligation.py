@@ -14,12 +14,15 @@ _logger = logging.getLogger(__name__)
   
 class HmrcVatObligation(models.Model):
     """ VAT obligations retrieved from HMRC """
-
     _inherit = 'l10n_uk.vat.obligation'
+
+    submission_message = fields.Html('Submission Message')
+    report_attachment_name = fields.Char(string="VAT Report Name", default='VAT Report.pdf')
+    report_attachment_id = fields.Binary(string="VAT Report", readonly=True)
 
     # hard overrideen to set submitted on relevant account move lines after success, and pass through
     # filtering from report that normally gets reset to default by report._get_options()
-    def action_submit_vat_return(self):
+    def action_submit_vat_return(self, data=None):
         self.ensure_one()
         report = self.env['account.generic.tax.report']
         options = report._get_options()   
@@ -47,7 +50,7 @@ class HmrcVatObligation(models.Model):
         res = self.env['hmrc.service']._login()
         if res: # If you can not login, return url for re-login
             return res
-        headers = self._get_auth_headers(self.env.user.l10n_uk_hmrc_vat_token)
+        headers = self._get_auth_headers(self.env.user.l10n_uk_hmrc_vat_token, data)
         url = self.env['hmrc.service']._get_endpoint_url('/organisations/vat/%s/returns' % vat)
         data = values.copy()
         data.update({
@@ -77,8 +80,17 @@ class HmrcVatObligation(models.Model):
                 if sent_key != 'periodKey':
                     msg += '<b>' + sent_key + '</b>: ' + str(data[sent_key]) + '<br/>'
             self.sudo().message_post(body = msg)
-            self.sudo().write({'status': "fulfilled"})    
-            return user_message
+            self.sudo().write({'status': "fulfilled"})
+
+            report = self.env.ref('smart_mtd.vat_return_report')
+            if report:
+                self.sudo().write({'submission_message': user_message})
+                pdf = report.with_context(submission_msg=user_message)._render_qweb_pdf(
+                    [self.id])[0]
+                pdf_file = base64.b64encode(pdf)
+                self.sudo().write({'report_attachment_name': 'VAT Return Report - ' + self.display_name + '.pdf'})
+                self.sudo().write({'report_attachment_id': pdf_file})
+
         elif r.status_code == 401:  # auth issue
             _logger.exception(_("HMRC auth issue : %s"), r.content)
             raise UserError(_(
@@ -94,8 +106,7 @@ class HmrcVatObligation(models.Model):
                     msgs += err.get('message', '')
             else:
                 msgs = response.get('message') or response
-                return msgs
-            raise UserError(_("Sorry, something went wrong: %s") %  msgs)
+            raise UserError(_("Sorry, something went wrong: %s") % msgs)
         
     def update_move_lines(self, options, report):
         #Function will find the move line for each financial report line

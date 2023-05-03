@@ -17,7 +17,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('l10n_uk.2200'),
+                'account_id': obj().env.company.get_sales_control_tax(),
                 'tag_ids': obj().env['account.account.tag'].smart_get_tags('GB', ['+1']),
             }),
         ]"/>
@@ -30,7 +30,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('l10n_uk.2200'),
+                'account_id': obj().env.company.get_sales_control_tax(),
                 'tag_ids': obj().env['account.account.tag'].smart_get_tags('GB', ['-1']),
             }),
         ]"/>
@@ -55,7 +55,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('l10n_uk.2201'),
+                'account_id': obj().env.company.get_purchase_control_tax(),
                 'tag_ids': obj().env['account.account.tag'].smart_get_tags('GB', ['+4'])
             }),
         ]"/>
@@ -67,7 +67,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('l10n_uk.2201'),
+                'account_id': obj().env.company.get_purchase_control_tax(),
                 'tag_ids': obj().env['account.account.tag'].smart_get_tags('GB', ['-4'])
             }),
         ]"/>
@@ -123,7 +123,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('l10n_uk.2201'),
+                'account_id': obj().env.company.get_purchase_control_tax(),
                 'tag_ids': obj().env['account.account.tag'].smart_get_tags('GB', ['+1', '+4'])
             }),
         ]"/>
@@ -135,7 +135,7 @@
             (0,0, {
                 'factor_percent': 100,
                 'repartition_type': 'tax',
-                'account_id': ref('l10n_uk.2201'),
+                'account_id': obj().env.company.get_purchase_control_tax(),
                 'tag_ids': obj().env['account.account.tag'].smart_get_tags('GB', ['-1', '-4'])
             }),
         ]"/>
@@ -160,7 +160,7 @@
                 'factor_percent': 100,
                 'repartition_type': 'tax',
                 'tag_ids': obj().env['account.account.tag'].smart_get_tags('GB', ['+1']),
-                'account_id': ref('l10n_uk.2200')
+                'account_id': obj().env.company.get_sales_control_tax()
             }),
         ]"/>
          <field name="refund_repartition_line_ids" model="account.tax.repartition.line" eval="[(5,0,0),
@@ -173,7 +173,7 @@
                 'factor_percent': 100,
                 'repartition_type': 'tax',
                 'tag_ids': obj().env['account.account.tag'].smart_get_tags('GB', ['-1']),
-                'account_id': ref('l10n_uk.2200')
+                'account_id': obj().env.company.get_sales_control_tax()
             }),
         ]"/>
 	    </record>

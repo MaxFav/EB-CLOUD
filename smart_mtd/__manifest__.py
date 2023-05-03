@@ -21,6 +21,7 @@
         'views/account_reports_templates.xml',
         'views/general_settings_view.xml',
         'views/account_view.xml',
+        'views/vat_obligation_view.xml',
         'reports/vat_return_report.xml',
         'security/ir.model.access.csv',
     ],

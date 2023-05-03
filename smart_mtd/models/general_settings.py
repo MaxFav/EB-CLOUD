@@ -10,6 +10,8 @@ class GeneralSettings(models.Model):
     default_end_date = fields.Date(string="Default End Date (Account Move Line)",
                                     help="Setting this date and pressing the button, will find all invoice lines before this and set it as HMRC submitted")
     test_mode = fields.Boolean(string="HMRC Test Mode", compute='compute_test_mode')
+    auto_pay_invoice = fields.Boolean(string="Auto Pay Invoice",
+                                      help="If ticked, invoices with postponed VAT will be auto-paid")
         
     def set_hmrc_submitted(self):
         if not self.default_end_date:
