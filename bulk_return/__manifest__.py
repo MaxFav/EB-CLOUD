@@ -1,0 +1,21 @@
+{
+    "name" : "Bulk Return Module",
+    "version" : "1.0",
+    "author" : "Jamie",
+    "category" : "Other",
+    "summary": "Bulk Return Wizard",
+    'description': "",
+    'maintainer': "Jamie",
+    'website': '',
+    'images': [],
+    "depends" : ['base', 'stock'],
+    "init_xml": [],
+    "demo_xml": [],
+    "data": [   
+        'bulk_return_view.xml',
+        ],
+    'qweb': [],
+    "auto_install": False,
+    "application": False,
+    "installable": True,
+}
