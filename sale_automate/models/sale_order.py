@@ -19,7 +19,7 @@ class SaleOrder(models.Model):
                 for picking in rec.picking_ids:
                     picking.action_assign()
                     picking.action_set_quantities_to_reservation()
-                    picking.action_validate()
+                    picking.button_validate()
                 rec._create_invoices()
             except Exception as e:
                 raise UserError(e) 
