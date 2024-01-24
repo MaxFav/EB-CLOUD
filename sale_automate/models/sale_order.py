@@ -13,7 +13,7 @@ class SaleOrder(models.Model):
         return invoice_vals
 
     def confirm_and_process_to_draft(self):
-        for rec in self:
+        for rec in self:            
             try:
                 rec.action_confirm()
                 for picking in rec.picking_ids:
@@ -21,5 +21,5 @@ class SaleOrder(models.Model):
                     picking.action_set_quantities_to_reservation()
                     picking.action_validate()
                 rec._create_invoices()
-            except:
-                raise UserError("Error") 
+            except Exception as e:
+                raise UserError(e) 
