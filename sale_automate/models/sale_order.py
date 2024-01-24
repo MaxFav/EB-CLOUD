@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 import pytz
 
 class SaleOrder(models.Model):
@@ -13,15 +14,12 @@ class SaleOrder(models.Model):
 
     def confirm_and_process_to_draft(self):
         for rec in self:
-            self.env.cr.execute('SAVEPOINT validate_batch_validation')
             try:
                 rec.action_confirm()
                 for picking in rec.picking_ids:
                     picking.action_assign()
-                    for line in picking:
-                        line.quantity_done = line.product_uom_qty if (line.quantity_done != line.product_uom_qty) else line.quantity_done
-                    picking.with_context(set_quantity_done_from_cron=True).button_validate()
-                rec.with_context(set_quantity_done_from_cron=True)._create_invoices()
-                self.env.cr.commit()
-            except Exception as e:
-                self.env.cr.execute('ROLLBACK TO SAVEPOINT validate_batch_validation')
+                    picking.action_set_quantities_to_reservation()
+                    picking.action_validate()
+                rec._create_invoices()
+            except:
+                raise UserError("Error") 
