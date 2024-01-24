@@ -18,6 +18,8 @@ class SaleOrder(models.Model):
                 rec.action_confirm()
                 for picking in rec.picking_ids:
                     picking.action_assign()
+                    for line in picking:
+                        line.quantity_done = line.product_uom_qty if (line.quantity_done != line.product_uom_qty) else line.quantity_done
                     picking.with_context(set_quantity_done_from_cron=True).button_validate()
                 rec.with_context(set_quantity_done_from_cron=True)._create_invoices()
                 self.env.cr.commit()
