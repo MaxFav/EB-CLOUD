@@ -20,6 +20,6 @@ class SaleOrder(models.Model):
                     picking.action_assign()
                     picking.action_set_quantities_to_reservation()
                     picking.button_validate()
-                rec._create_invoices()
+                #rec._create_invoices()
             except Exception as e:
                 raise UserError(e) 
