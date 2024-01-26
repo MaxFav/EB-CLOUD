@@ -10,12 +10,13 @@ class SaleReport(models.Model):
     effective_date = fields.Date(string='Effective Date', readonly=True)
     commitment_date = fields.Date(string='Commitment Date', readonly=True)
 
-    def _query(self, with_clause='', fields={}, groupby='', from_clause=''):
-        fields['untaxed_amount_reserved11'] = ', sum(l.untaxed_amount_reserved11) as untaxed_amount_reserved11'
-        fields['untaxed_amount_undelivered13'] = ', sum(l.untaxed_amount_undelivered13) as untaxed_amount_undelivered13'
-        fields['quantity_reserved11'] = ', sum(l.quantity_reserved11) as quantity_reserved11'
-        fields['quantity_undelivered13'] = ', sum(l.quantity_undelivered13) as quantity_undelivered13'
-        fields['effective_date'] = ', s.effective_date'
-        fields['commitment_date'] = ', s.commitment_date'
-
-        return super(SaleReport, self)._query(with_clause, fields, groupby, from_clause)
+    def _select_additional_fields(self):
+       fields = {
+            'untaxed_amount_reserved11': ', sum(l.untaxed_amount_reserved11)',
+            'untaxed_amount_undelivered13': ', sum(l.untaxed_amount_undelivered13)',
+            'quantity_reserved11': ', sum(l.quantity_reserved11)',
+            'quantity_undelivered13': ', sum(l.quantity_undelivered13)',
+            'effective_date': ', s.effective_date',
+            'commitment_date': ', s.commitment_date'
+       }
+       return fields
