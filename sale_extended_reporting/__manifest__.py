@@ -6,5 +6,6 @@
     'author': "Jamie",
     'depends': ['base','sale_stock'],    
     'data': [
+        
     ],
 }
