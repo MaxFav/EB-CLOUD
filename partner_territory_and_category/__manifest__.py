@@ -5,6 +5,6 @@
     "license": "LGPL-3",
     "version": "1.0",
     "author": "Jamie",
-    "depends": ["base", "account", "sale", "sale_module_reporting"],
+    "depends": ["base", "account", "sale", "sale_extended_reporting"],
     "data": [],
 }
