@@ -1,10 +1,10 @@
 {
     'name': "Estella Bartlett",
-    'version': "1.0",
+    'description': "Estella Bartlett Addons Module",
     'license': "LGPL-3",
-    'depends': ['base','stock','sale_management','web_studio','point_of_sale','account_accountant','purchase','hr'],
+    'version': "1.0",
     'author': "Jamie",
-    'description': "Automate Module",
+    'depends': ['base','web_studio','point_of_sale','account_accountant','purchase','hr','sale_quotation_to_invoice','sale_extended_reporting'],
     'data': [       
     ],
     'auto_install': True

@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="batch_validation_draft_invoice" model="ir.actions.server">
+            <field name="name">Confirm and process to draft invoice</field>
+            <field name="model_id" ref="sale.model_sale_order" />
+            <field name="binding_model_id" ref="sale.model_sale_order" />
+            <field name="state">code</field>
+            <field name="code"><![CDATA[
+records.confirm_and_process_to_draft()
+]]>
+            </field>
+        </record>        
+    </data>
+</odoo>
