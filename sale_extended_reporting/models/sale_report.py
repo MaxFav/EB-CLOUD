@@ -12,11 +12,11 @@ class SaleReport(models.Model):
 
     def _select_additional_fields(self):
        fields = {
-            'untaxed_amount_reserved11': ', sum(l.untaxed_amount_reserved11)',
-            'untaxed_amount_undelivered13': ', sum(l.untaxed_amount_undelivered13)',
-            'quantity_reserved11': ', sum(l.quantity_reserved11)',
-            'quantity_undelivered13': ', sum(l.quantity_undelivered13)',
-            'effective_date': ', s.effective_date',
-            'commitment_date': ', s.commitment_date'
+            'untaxed_amount_reserved11': 'sum(l.untaxed_amount_reserved11)',
+            'untaxed_amount_undelivered13': 'sum(l.untaxed_amount_undelivered13)',
+            'quantity_reserved11': 'sum(l.quantity_reserved11)',
+            'quantity_undelivered13': 'sum(l.quantity_undelivered13)',
+            'effective_date': 's.effective_date',
+            'commitment_date': 's.commitment_date'
        }
        return fields
