@@ -12,6 +12,7 @@ class SaleReport(models.Model):
 
     def _select_additional_fields(self):
        fields = {
+            'invoice_status':'s.invoice_status',
             'untaxed_amount_reserved11': 'sum(l.untaxed_amount_reserved11)',
             'untaxed_amount_undelivered13': 'sum(l.untaxed_amount_undelivered13)',
             'quantity_reserved11': 'sum(l.quantity_reserved11)',

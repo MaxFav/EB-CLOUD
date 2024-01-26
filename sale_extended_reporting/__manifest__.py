@@ -5,7 +5,6 @@
     'version': "1.0",
     'author': "Jamie",
     'depends': ['base','sale_stock'],    
-    'data': [
-        
+    'data': [ 
     ],
 }
