@@ -4,8 +4,6 @@ from odoo import fields, models
 class ResPartner(models.Model):
     _inherit = "res.partner"
 
-    territory_id = fields.Many2one("account.analytic.account", string="Territory")
-
     territory = fields.Selection(
         string="Territory", selection=[("UK", "UK"), ("EU", "EU"), ("USA", "USA"), ("ROW", "ROW")]
     )
