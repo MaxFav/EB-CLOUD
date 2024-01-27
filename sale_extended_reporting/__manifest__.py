@@ -4,6 +4,6 @@
     "license": "LGPL-3",
     "version": "1.0",
     "author": "Jamie",
-    "depends": ["base", "sale_stock"],
+    "depends": ["base","sale", "sale_stock", "account"],
     "data": [],
 }
