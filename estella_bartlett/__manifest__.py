@@ -6,11 +6,10 @@
     "author": "Jamie",
     "depends": [
         "base",
+        "website",
         "web_studio",
-        "account_accountant",
-        "purchase",
-        "sale_quotation_to_invoice",
-        "sale_extended_reporting",
+        "eb_sales_quotation_to_invoice",
+        "eb_extended_reporting",
     ],
     "data": [],
 }
