@@ -11,7 +11,6 @@
         "purchase",
         "sale_quotation_to_invoice",
         "sale_extended_reporting",
-        "partner_territory_and_category",
     ],
     "data": [],
 }
