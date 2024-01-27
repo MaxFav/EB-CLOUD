@@ -6,12 +6,8 @@
     "author": "Jamie",
     "depends": [
         "base",
-        "sale",
-        "sale_stock",
         "account",
-        "account_accountant",
-        "contacts",
-        "contacts_enterprise",
+        "sale_stock",
     ],
     "data": [],
 }

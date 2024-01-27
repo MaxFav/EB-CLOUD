@@ -4,6 +4,11 @@
     "license": "LGPL-3",
     "version": "1.0",
     "author": "Jamie",
-    "depends": ["base", "sale", "stock", "sale_management"],
+    "depends": [
+        "base",
+        "sale",
+        "stock",
+        "sale_management",
+    ],
     "data": ["actions/sale_order.xml"],
 }
