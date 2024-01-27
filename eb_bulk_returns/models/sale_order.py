@@ -10,5 +10,5 @@ class SaleOrder(models.Model):
     def onchange_user_id_for_warehouse(self):
         # Ticket 25712: Ensure correct warehouse is set
         super(SaleOrder, self).onchange_user_id()
-        if self.partner_id and self.partner_id.x_studio_field_EpOAQ:
-            self.warehouse_id = self.partner_id.x_studio_field_EpOAQ
+        if self.partner_id and self.partner_id.warehouse_id:
+            self.warehouse_id = self.partner_id.warehouse_id
