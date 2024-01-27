@@ -13,6 +13,23 @@ class SaleReport(models.Model):
     effective_date = fields.Date(string="Effective Date", readonly=True)
     commitment_date = fields.Date(string="Commitment Date", readonly=True)
 
+    territory = fields.Selection([("UK", "UK"), ("EU", "EU"), ("USA", "USA"), ("ROW", "ROW")])
+    category = fields.Selection(
+        [
+            ("Department Store", "Department Store"),
+            ("Multiple Retailer", "Multiple Retailer"),
+            ("Online Retailer", "Online Retailer"),
+            ("Indies", "Indies"),
+            ("Travel Retail", "Travel Retail"),
+            ("Websales", "Websales"),
+            ("Retail", "Retail"),
+            ("Concession", "Concession"),
+            ("White Label", "White Label"),
+            ("Discount Retailer", "Discount Retailer"),
+            ("General", "General"),
+        ]
+    )
+
     def _select_additional_fields(self):
         fields = {
             "warehouse_id": "s.warehouse_id",
@@ -23,5 +40,7 @@ class SaleReport(models.Model):
             "quantity_undelivered13": "sum(l.quantity_undelivered13)",
             "effective_date": "s.effective_date",
             "commitment_date": "s.commitment_date",
+            "territory": "s.territory",
+            "category": "s.category",
         }
         return fields
