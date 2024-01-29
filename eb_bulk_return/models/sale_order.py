@@ -13,7 +13,7 @@ class SaleOrder(models.Model):
         if self.partner_id and self.partner_id.warehouse_id:
             self.warehouse_id = self.partner_id.warehouse_id
 
-    def create_bulk_return_credit_note(self,gruped=False,final=False,lines=False):
+    def create_bulk_return_credit_note(self,grouped=False,final=False,lines=False):
         inv_obj = self.env["account.move"]
         precision = self.env["decimal.precision"].precision_get(
             "Product Unit of Measure"
