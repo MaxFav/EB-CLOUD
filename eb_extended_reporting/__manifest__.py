@@ -10,4 +10,5 @@
         "sale_stock",
     ],
     "data": [],
+    "auto_install" : True
 }

@@ -1,3 +1,6 @@
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
@@ -11,6 +14,9 @@ class BulkReturn(models.TransientModel):
         "bulk.return.line", "return_id", string="Return Lines", required=True
     )
     scrap_all = fields.Boolean(string="Scrap All")
+
+    def button_return(self):
+        pass
 
 class BulkReturnLine(models.TransientModel):
     _name = "bulk.return.line"

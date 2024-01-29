@@ -11,4 +11,5 @@
         "sale_management",
     ],
     "data": ["actions/sale_order.xml"],
+    "auto_install" : True
 }
