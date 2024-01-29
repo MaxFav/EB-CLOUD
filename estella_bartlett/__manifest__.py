@@ -10,6 +10,7 @@
         "account_accountant",        
         "eb_sales_quotation_to_invoice",
         "eb_extended_reporting",
+        "eb_bulk_return",
     ],
     "data": [],
 }
