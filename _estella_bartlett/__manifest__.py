@@ -7,10 +7,11 @@
     "depends": [
         "base",
         "web_studio",
-        "account_accountant",        
+        "account_accountant",
         "eb_sales_quotation_to_invoice",
         "eb_extended_reporting",
         "eb_bulk_return",
+        "eb_sales_team_for_customer",
     ],
     "data": [],
 }

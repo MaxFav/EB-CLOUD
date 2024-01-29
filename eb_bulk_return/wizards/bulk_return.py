@@ -69,10 +69,7 @@ class BulkReturn(models.TransientModel):
                             # If so, append to that pickings entry for allowing to return multiple moves
                             # if in same picking.
                             for matching_picking in matching_pickings_moves:
-                                if (
-                                    matching_picking.get("picking")
-                                    == matching_line.picking_id.id
-                                ):
+                                if matching_picking.get("picking") == matching_line.picking_id.id:
                                     matching_picking["moves"].append(
                                         {
                                             "move": matching_line.id,
@@ -110,10 +107,7 @@ class BulkReturn(models.TransientModel):
                             # If not, create a new entry for the sale order. If so, add the matching line's sale id
                             # under the sale order.
                             for matching_sale in matching_sale_orders_lines:
-                                if (
-                                    matching_sale.get("sale")
-                                    == matching_line.picking_id.sale_id.id
-                                ):
+                                if matching_sale.get("sale") == matching_line.picking_id.sale_id.id:
                                     matching_sale["lines"].append(
                                         {"line": matching_line.sale_line_id.id}
                                     )
@@ -122,18 +116,13 @@ class BulkReturn(models.TransientModel):
                                 matching_sale_orders_lines.append(
                                     {
                                         "sale": matching_line.picking_id.sale_id.id,
-                                        "lines": [
-                                            {"line": matching_line.sale_line_id.id}
-                                        ],
+                                        "lines": [{"line": matching_line.sale_line_id.id}],
                                     }
                                 )
                         else:
                             # The entire move can't be returned, so part of the move is being returned instead.
                             for matching_picking in matching_pickings_moves:
-                                if (
-                                    matching_picking.get("picking")
-                                    == matching_line.picking_id.id
-                                ):
+                                if matching_picking.get("picking") == matching_line.picking_id.id:
                                     matching_picking["moves"].append(
                                         {
                                             "move": matching_line.id,
@@ -168,10 +157,7 @@ class BulkReturn(models.TransientModel):
                                 )
                                 qty_to_return -= qty_to_return
                             for matching_sale in matching_sale_orders_lines:
-                                if (
-                                    matching_sale.get("sale")
-                                    == matching_line.picking_id.sale_id.id
-                                ):
+                                if matching_sale.get("sale") == matching_line.picking_id.sale_id.id:
                                     matching_sale["lines"].append(
                                         {"line": matching_line.sale_line_id.id}
                                     )
@@ -180,9 +166,7 @@ class BulkReturn(models.TransientModel):
                                 matching_sale_orders_lines.append(
                                     {
                                         "sale": matching_line.picking_id.sale_id.id,
-                                        "lines": [
-                                            {"line": matching_line.sale_line_id.id}
-                                        ],
+                                        "lines": [{"line": matching_line.sale_line_id.id}],
                                     }
                                 )
                             # All product in Bulk Return Line returned, breaking to move onto the next line in the
@@ -236,12 +220,12 @@ class BulkReturn(models.TransientModel):
 
             # Browse to find the newly-created return picking and validate said stock picking
             # (and the immediate transfer when applicable).
-            returned_picking = self.env["stock.picking"].browse(
-                stock_return.get("res_id")
-            )
+            returned_picking = self.env["stock.picking"].browse(stock_return.get("res_id"))
 
             returned_picking.action_assign()
-            for move in returned_picking.move_ids.filtered(lambda m: m.state not in ['done', 'cancel']):
+            for move in returned_picking.move_ids.filtered(
+                lambda m: m.state not in ["done", "cancel"]
+            ):
                 for move_line in move.move_line_ids:
                     move_line.qty_done = move_line.reserved_uom_qty
             returned_picking._action_done()
@@ -249,9 +233,7 @@ class BulkReturn(models.TransientModel):
             # Go through each line that was marked as scrap and create a new scrap record for it,
             # then validate that scrap record.
             for move in (
-                scrap_move
-                for scrap_move in picking.get("moves")
-                if scrap_move.get("scrap") is True
+                scrap_move for scrap_move in picking.get("moves") if scrap_move.get("scrap") is True
             ):
                 scrap_product_dict = returned_picking.button_scrap()
                 if scrap_product_dict:
@@ -264,7 +246,7 @@ class BulkReturn(models.TransientModel):
                                 "product_id": move.get("product"),
                                 "scrap_qty": move.get("qty"),
                                 "product_uom_id": move.get("uom"),
-                                "location_id": returned_picking.location_dest_id.id
+                                "location_id": returned_picking.location_dest_id.id,
                             }
                         )
                     )
@@ -276,14 +258,11 @@ class BulkReturn(models.TransientModel):
         )
         sale_orders_lines = []
         for picking in matching_pickings_moves:
-            vals = {'sale': picking.get('sale')}
+            vals = {"sale": picking.get("sale")}
             lines = []
-            for move in picking.get('moves'):
-                lines.append({
-                    'line': move.get("sale_line"),
-                    "qty": move.get("qty")
-                })
-            vals['lines'] = lines
+            for move in picking.get("moves"):
+                lines.append({"line": move.get("sale_line"), "qty": move.get("qty")})
+            vals["lines"] = lines
             sale_orders_lines.append(vals)
         credit_note = matching_sales.create_bulk_return_credit_note(
             final=True, lines=sale_orders_lines

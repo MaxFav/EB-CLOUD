@@ -1,23 +1,22 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError
 
+
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    user_id = fields.Many2one('res.users', domain=False)
+    user_id = fields.Many2one("res.users", domain=False)
 
-    @api.onchange('user_id')
+    @api.onchange("user_id")
     def onchange_user_id_for_warehouse(self):
         # Ticket 25712: Ensure correct warehouse is set
-        
+
         if self.partner_id and self.partner_id.warehouse_id:
             self.warehouse_id = self.partner_id.warehouse_id
 
-    def create_bulk_return_credit_note(self,grouped=False,final=False,lines=False):
+    def create_bulk_return_credit_note(self, grouped=False, final=False, lines=False):
         inv_obj = self.env["account.move"]
-        precision = self.env["decimal.precision"].precision_get(
-            "Product Unit of Measure"
-        )
+        precision = self.env["decimal.precision"].precision_get("Product Unit of Measure")
         invoices = {}
         references = {}
         invoices_origin = {}
@@ -28,11 +27,7 @@ class SaleOrder(models.Model):
         # To keep lines under their section
         inv_line_sequence = 0
         for order in self:
-            group_key = (
-                order.id
-                if grouped
-                else (order.partner_invoice_id.id, order.currency_id.id)
-            )
+            group_key = order.id if grouped else (order.partner_invoice_id.id, order.currency_id.id)
 
             # We only want to create sections that have at least one invoiceable line
             pending_section = None
@@ -99,9 +94,9 @@ class SaleOrder(models.Model):
                 if order not in references[invoices[group_key]]:
                     references[invoices[group_key]] |= order
 
-            self.env["account.move.line"].with_context(
-                check_move_validity=False
-            ).create(line_vals_list)
+            self.env["account.move.line"].with_context(check_move_validity=False).create(
+                line_vals_list
+            )
 
         for group_key in invoices:
             invoices[group_key].write(
@@ -111,9 +106,11 @@ class SaleOrder(models.Model):
                 }
             )
             sale_orders = references[invoices[group_key]]
-            invoice.message_post_with_view('mail.message_origin_link',
-                                           values={'self': invoice, 'origin': sale_orders},
-                                           subtype_id=self.env.ref('mail.mt_note').id)
+            invoice.message_post_with_view(
+                "mail.message_origin_link",
+                values={"self": invoice, "origin": sale_orders},
+                subtype_id=self.env.ref("mail.mt_note").id,
+            )
             if len(sale_orders) == 1:
                 invoices[group_key].ref = sale_orders.reference
 
