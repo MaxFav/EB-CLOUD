@@ -4,6 +4,6 @@
     "license": "LGPL-3",
     "version": "1.0",
     "author": "Jamie",
-    "depends": ["base", "sale", "crm", "account", "sales_teams"],
+    "depends": ["base", "sale", "crm", "account"],
     "data": [],
 }
