@@ -13,5 +13,5 @@ class SaleOrder(models.Model):
         if self.partner_id and self.partner_id.warehouse_id:
             self.warehouse_id = self.partner_id.warehouse_id
 
-    def create_bulk_return_credit_note(self):
+    def create_bulk_return_credit_note(self,gruped=False,final=False,lines=False):
         raise UserError("Creating credit note")
