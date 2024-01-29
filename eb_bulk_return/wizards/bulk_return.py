@@ -243,7 +243,7 @@ class BulkReturn(models.TransientModel):
             returned_picking.action_assign()
             for move in returned_picking.move_ids.filtered(lambda m: m.state not in ['done', 'cancel']):
                 for move_line in move.move_line_ids:
-                    move_line.qty_done = move_line.product_uom_qty
+                    move_line.qty_done = move_line.reserved_uom_qty
             returned_picking._action_done()
 
             # Go through each line that was marked as scrap and create a new scrap record for it,
