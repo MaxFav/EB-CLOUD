@@ -10,5 +10,4 @@
         "stock",
     ],
     "data": ["security/ir.model.access.csv",'views/sale_order_view.xml',"wizards/bulk_return_view.xml"],
-    "auto_install" : True
 }
