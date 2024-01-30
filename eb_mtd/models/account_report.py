@@ -1,7 +1,7 @@
 from odoo import models, fields, api, _
 
 class TaxReport(models.AbstractModel):
-    _inherit = 'account.generic.tax.report'
+    _inherit = 'account.generic.tax.report.handler'
 
     filter_unsubmitted = False
     filter_submitted = False
