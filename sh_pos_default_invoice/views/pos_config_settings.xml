@@ -4,9 +4,9 @@
     <record id="sh_pos_res_config_settings_logo" model="ir.ui.view">
         <field name="name">pos.config.settings.logo</field>
         <field name="model">pos.config</field>
-        <field name="inherit_id" ref="point_of_sale.pos_config_view_form" />
+        <field name="inherit_id" ref="res.config.settings.view.form.inherit.point_of_sale" />
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='invoice_journal_id']" position="after">
+            <xpath expr="//field[@name='pos_receipt_footer']" position="after">
                 <div class="col-12 col-lg-6 o_setting_box" id="iface_invoicing">
                     <div class="content-group mt16">
                         <field name="sh_enable_default_invoice" attrs="{'invisible':[('module_account','=',False)]}" style="width: 10%;" />
