@@ -10,5 +10,5 @@
         "account_reports",
         "account",
     ],
-    "data": ["views/account_reports_template.xml","views/account_view.xml","views/general_settings_view.xml","wizards/hmrc_send_wizard_view.xml","wizards/fuel_scale_wizard_view.xml","wizards/bad_debt_wizard_view.xml"],
+    "data": ["views/account_reports_template.xml","views/account_view.xml","views/general_settings_view.xml","wizards/hmrc_send_wizard_view.xml","wizards/fuel_scale_wizard_view.xml","wizards/bad_debt_wizard_view.xml","reports/vat_return_report.xml"],
 }
