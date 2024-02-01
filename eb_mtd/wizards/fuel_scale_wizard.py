@@ -8,7 +8,7 @@ from datetime import datetime
 
 class FuelScaleWizard(models.TransientModel):
     _name = 'smart_mtd.fuel.scale.wizard'
-    
+    _description = 'Fuel Scale Wizard'
     date = fields.Date(string = "Date", help="Typically the quarter end date")
     driver_name = fields.Char(string = "Driver Name")
     registration_number = fields.Char(string = "Registration Number")

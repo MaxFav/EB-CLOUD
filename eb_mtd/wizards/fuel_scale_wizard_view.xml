@@ -21,21 +21,28 @@
             </field>
         </record>
         
-         
+        <!--
         <act_window
           name="Fuel Scale Wizard"
 	       res_model="smart_mtd.fuel.scale.wizard"         
 	       view_mode="form"
 	       target="new"
 	       id="action_fuel_scale_wizard" />
-         
-	     <menuitem
-			 name="Fuel Scale Wizard"	 
-			 action="action_fuel_scale_wizard"
-			 id="menu_fuel_scale_wizard"
-			 sequence="140"
-			 parent="account.menu_finance_receivables"
-			 />
+        -->
+        <record id="action_fuel_scale_wizard" model="ir.actions.act_window">
+            <field name="name">Fuel Scale Wizard</field>
+            <field name="res_model">smart_mtd.fuel.scale.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+	    <menuitem
+			name="Fuel Scale Wizard"	 
+			action="action_fuel_scale_wizard"
+			id="menu_fuel_scale_wizard"
+			sequence="140"
+			parent="account.menu_finance_receivables"
+		/>
 	  
     </data>
 </odoo> 

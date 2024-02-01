@@ -8,7 +8,7 @@ from datetime import datetime
 
 class BadDebtWizard(models.TransientModel):
     _name = 'smart_mtd.bad.debt.wizard'
-    
+    _description = 'Bad Debt Wizard'
     account_id = fields.Many2one('account.account', help="The net amount will be written off to this account")
     
     
