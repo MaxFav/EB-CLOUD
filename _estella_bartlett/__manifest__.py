@@ -14,7 +14,6 @@
         "eb_extended_reporting",
         "eb_bulk_return",
         "eb_sales_team_for_customer",
-        "eb_mtd"
     ],
     "data": [],
 }
