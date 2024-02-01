@@ -6,7 +6,9 @@
     "author": "Jamie",
     "depends": [
         "base",
+        "website",        
         "web_studio",
+        "point_of_sale",
         "account_accountant",
         "eb_sales_quotation_to_invoice",
         "eb_extended_reporting",
