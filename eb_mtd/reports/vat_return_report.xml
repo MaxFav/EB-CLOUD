@@ -107,7 +107,7 @@
                 </t>
             </t>
        </template>
-       
+       <!--
 		<report 
            id="vat_return_report"
            model="l10n_uk.vat.obligation"
@@ -118,5 +118,15 @@
            menu = "False"
            
        />  
+		-->
+		<record id="smart_mtd_report_vat_return" model="ir.actions.report">
+   			<field name="report_type">qweb-pdf</field>
+    		<field name="model">l10n_uk.vat.obligation</field>
+    		<field name="name">smart_mtd.report_vat_return_report</field>
+    		<field name="file">smart_mtd.report_vat_return_report</field>
+    		<field name="menu">False</field>
+    		<field name="report_name">VAT Return Report</field>
+		</record>
+
 	</data>
 </odoo>
