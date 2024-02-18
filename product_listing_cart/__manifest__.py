@@ -6,7 +6,7 @@
     "author": "Jamie",
     "depends": ["base", "website_sale"],
     "data": [
-        
+        "views/templates.xml"
     ],
     "license": "LGPL-3",
 }
