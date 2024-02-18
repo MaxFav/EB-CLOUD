@@ -11,9 +11,11 @@
                     <a t-attf-href="#" class="btn btn-secondary float_left js_add_cart_json" aria-label="Add one" title="Add one">
                         <i class="fa fa-plus"></i>
                     </a>  
+                    <!--
                     <a href="#" id="add_to_cart" role="button" class="btn btn-primary a-submit" aria-label="Shopping Cart">
                         <span class="fa fa-shopping-cart"></span>
-                    </a>                                  
+                    </a>
+                    -->                                  
                 </div>                
             </xpath>
         </template>
