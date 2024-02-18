@@ -7,7 +7,7 @@ class AccountInvoice(models.Model):
     _inherit = 'account.move'
 
     bad_debt_enabled = fields.Boolean(compute='_compute_bad_debt_enabled')
-
+'''
     def _compute_bad_debt_enabled(self):
         for record in self:
             if record.invoice_date:
@@ -44,3 +44,4 @@ class AccountInvoice(models.Model):
             if all(line.tax_ids == self.env.ref('smart_mtd.tax_postponed_import_vat') for line in record.invoice_line_ids):
                 record.auto_pay_invoice()
         return res
+'''

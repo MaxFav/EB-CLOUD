@@ -19,7 +19,7 @@ class HmrcVatObligation(models.Model):
     submission_message = fields.Html('Submission Message')
     report_attachment_name = fields.Char(string="VAT Report Name", default='VAT Report.pdf')
     report_attachment_id = fields.Binary(string="VAT Report", readonly=True)
-
+'''
     # hard overrideen to set submitted on relevant account move lines after success, and pass through
     # filtering from report that normally gets reset to default by report._get_options()
     def action_submit_vat_return(self, data=None):
@@ -134,3 +134,4 @@ class HmrcVatObligation(models.Model):
                 return {}
         else:
             return {}
+'''

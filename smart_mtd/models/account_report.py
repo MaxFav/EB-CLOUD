@@ -1,14 +1,14 @@
 from odoo import models, fields, api, _
 
-class TaxReport(models.AbstractModel):
+'''class TaxReport(models.AbstractModel):
     _inherit = 'account.generic.tax.report'
 
     filter_unsubmitted = False
-    filter_submitted = False
+    filter_submitted = False'''
 
 class AccountReport(models.AbstractModel):
     _inherit = 'account.report'
-
+'''
     @api.model
     def _get_options_domain(self, options):
 
@@ -37,6 +37,6 @@ class AccountReport(models.AbstractModel):
         res = [res[0] for res in self._cr.fetchall()]
 
         return res
-
+'''
 
 

@@ -12,7 +12,11 @@ class GeneralSettings(models.Model):
     test_mode = fields.Boolean(string="HMRC Test Mode", compute='compute_test_mode')
     auto_pay_invoice = fields.Boolean(string="Auto Pay Invoice",
                                       help="If ticked, invoices with postponed VAT will be auto-paid")
-        
+    
+    def compute_test_mode(self):
+        for record in self:
+            record.test_mode = False
+'''        
     def set_hmrc_submitted(self):
         if not self.default_end_date:
             raise UserError("Set a default default end date")
@@ -74,7 +78,5 @@ class GeneralSettings(models.Model):
         HmrcSvc.DEBUG = True
         HmrcSvc.HMRC_CLIENT_ID = 'dTdANDSeX4fiw63DicmUaAVQDSMa'
         HmrcSvc.PROXY_SERVER = 'https://www.test.odoo.com'
-    
-    def compute_test_mode(self):
-        for record in self:
-            record.test_mode = HmrcSvc.DEBUG
+'''  
+ 
