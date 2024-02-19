@@ -24,7 +24,7 @@ class SaleOrder(models.Model):
             except Exception as e:
                 raise UserError(e) 
             
-    @api.model
+    @api.model_create_multi
     def create(self,vals_list):
         res = super().create(vals_list)
         for vals in vals_list:
