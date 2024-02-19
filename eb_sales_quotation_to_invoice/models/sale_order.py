@@ -24,11 +24,10 @@ class SaleOrder(models.Model):
             except Exception as e:
                 raise UserError(e) 
             
-    @api.model_create_multi
-    def create(self,vals_list):
-        
-        for vals in vals_list:
-                vals['analytic_account_id'] = (vals["partner_id"].analytic_account_id.id or vals["partner_id"].parent_id.analytic_account_id.id or False)
+    @api.onchange('partner_id')
+    def _update_analytic_account(self):
+        if self.partner_id:
+            self.analytic_account_id = (self.partner_id.analytic_account_id or False)
 
-        return super().create(vals_list)
+        
 
