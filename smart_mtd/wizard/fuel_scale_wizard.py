@@ -14,7 +14,7 @@ class FuelScaleWizard(models.TransientModel):
     registration_number = fields.Char(string = "Registration Number")
     total_charge = fields.Float(string = "Total Charge (including VAT)")
     
-    
+'''    
     def create_journal_entry(self):
         misc_operations_journal = self.env['account.journal'].search([('code', '=', 'MISC')])
         fuel_scale_tax = self.env.ref('smart_mtd.fuel_scale_tax')
@@ -74,3 +74,4 @@ class FuelScaleWizard(models.TransientModel):
             'views': [[view_id, 'form']],
             'res_id': new_move.id
             }
+'''

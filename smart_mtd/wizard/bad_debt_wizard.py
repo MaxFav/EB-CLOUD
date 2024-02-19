@@ -11,7 +11,7 @@ class BadDebtWizard(models.TransientModel):
     
     account_id = fields.Many2one('account.account', help="The net amount will be written off to this account")
     
-    
+'''    
     def write_off(self):
         #Function to write off the invoice with tax
         #This function basically replicates what the reconciliation widget does, but the values needed are pulled from the invoice
@@ -65,3 +65,4 @@ class BadDebtWizard(models.TransientModel):
         data = [{'type': None, 'mv_line_ids': ids, 'new_mv_line_dicts': new_move_ids}]
         self.env['account.reconciliation.widget'].process_move_lines(data)
         test = 1
+'''

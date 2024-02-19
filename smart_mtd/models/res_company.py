@@ -3,7 +3,7 @@ from odoo.exceptions import ValidationError
 
 class ResCompany(models.Model):
     _inherit = 'res.company'
-
+'''
     def get_uk_company(self):
         company_param = self.env['ir.config_parameter'].sudo().get_param('smart_mtd.company')
         if company_param:
@@ -24,3 +24,4 @@ class ResCompany(models.Model):
         company_id = self.get_uk_company()
         id_ref = 'l10n_uk.%s_2201' % company_id.id
         return self.env.ref(id_ref).id
+'''
