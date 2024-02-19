@@ -26,10 +26,9 @@ class SaleOrder(models.Model):
             
     @api.model_create_multi
     def create(self,vals_list):
-        res = super().create(vals_list)
+        
         for vals in vals_list:
-            if 'analytic_account_id' in vals:
-                vals['analytic_account_id'] = (res.partner_id.analytic_account_id.id or res.partner_id.parent_id.analytic_account_id.id or False)
+                vals['analytic_account_id'] = (vals["partner_id"].analytic_account_id.id or vals["partner_id"].parent_id.analytic_account_id.id or False)
 
-        return res
+        return super().create(vals_list)
 
