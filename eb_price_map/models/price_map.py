@@ -8,4 +8,5 @@ class PriceMap(models.Model):
     eur = fields.Float(string="EUR",store=True)
     usd = fields.Float(string="USD",store=True)
     aud = fields.Float(string="AUD",store=True)
+    cad = fields.Float(string="CAD",store=True)
     
