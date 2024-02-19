@@ -27,8 +27,9 @@ class SaleOrder(models.Model):
     @api.model
     def create(self,vals_list):
         res = super().create(vals_list)
-        
-        res.analytic_account_id = (res.partner_id.analytic_account_id.id or res.partner_id.parent_id.analytic_account_id.id or False)
+        for vals in vals_list:
+            if 'analytic_account_id' not in vals:
+                vals['analytic_account_id'] = (res.partner_id.analytic_account_id.id or res.partner_id.parent_id.analytic_account_id.id or False)
 
         return res
 

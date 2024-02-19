@@ -7,3 +7,4 @@ def migrate(cr,version):
     util.rename_module(cr,'sale_module_reporting','eb_extended_sales_reporting')
     util.remove_module(cr,'eb_bulk_returns')
     util.rename_module(cr,'estella_bartlett','eb_bulk_returns')
+    util.rename_field(cr,'res.partner','territory_id','analytic_account_id')
