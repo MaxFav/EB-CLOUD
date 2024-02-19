@@ -23,3 +23,12 @@ class SaleOrder(models.Model):
                 rec.with_context(set_quantity_done_from_cron=True)._create_invoices()
             except Exception as e:
                 raise UserError(e) 
+            
+    @api.model
+    def create(self,vals_list):
+        res = super().create(vals_list)
+        
+        res.analytic_account_id = (res.partner_id.analytic_account_id.id or res.partner_id.parent_id.analytic_account_id.id or False)
+
+        return res
+
