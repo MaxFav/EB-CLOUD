@@ -11,6 +11,7 @@
                     <field name="eur"/>
                     <field name="usd"/>
                     <field name="aud"/>
+                    <field name="cad"/>
                 </tree>
             </field>
         </record>
