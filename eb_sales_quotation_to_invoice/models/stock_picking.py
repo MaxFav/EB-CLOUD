@@ -20,3 +20,6 @@ class StockPicking(models.Model):
                     rec.sum_initial_demand += move_id.product_uom_qty
             if rec.sum_initial_demand:
                 rec.percentage_reserved = (rec.percentage_reserved / rec.sum_initial_demand) * 100
+            if rec.state == 'done':
+                for move_line_ids in rec.move_ids_without_package:
+                    rec.sum_initial_demand += move_line_ids.qty_done
