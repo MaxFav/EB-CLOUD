@@ -30,7 +30,7 @@ class PricelistItem(models.Model):
                 price = src_currency._convert(price, target_currency, self.env.company, date, round=False)
             return price                 
         elif rule_base == "cad_rrp":
-            src_currency = product.usd_id
+            src_currency = product.cad_id
             price = product.cad_rrp
             if src_currency != target_currency:
                 price = src_currency._convert(price, target_currency, self.env.company, date, round=False)
