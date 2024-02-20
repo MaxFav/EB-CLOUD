@@ -9,7 +9,7 @@ class StockPicking(models.Model):
     sum_initial_demand = fields.Integer(compute='_compute_sum_initial_demand')
     percentage_reserved = fields.Float(compute='_compute_sum_initial_demand')
 
-    @api.depends('move_ids_without_package')
+    @api.depends('move_ids_without_package','state')
     def _compute_sum_initial_demand(self):
         delivery_product = self.env['delivery.carrier'].search([]).mapped('product_id')
         for rec in self:
