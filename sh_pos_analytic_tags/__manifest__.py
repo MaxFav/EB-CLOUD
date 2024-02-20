@@ -7,7 +7,7 @@
     "website": "https://www.softhealer.com",
     "support": "support@softhealer.com",
     "category": "Point Of Sale",
-    "summary": "Point Of Sale Analytic Account",
+    "summary": "Link Analytic Account Configure Analytic Account Set Analytic Tags Analytic Journal Items, Analytic Journal Entries Point Of Sale Analytic Account Point Of Sale Analytic Tags POS Analytic Tags Odoo",
     "description": """This module helps to configure 'Analytic Account' & 'Analytic Tags' in the POS orders. You can set analytic account and analytic tag config wise. It automatically passes 'Analytic Account' & 'Analytic Tags' into the journal entries & journal items. You can analyze POS orders based on analytic reports.""",
     "version": "16.0.2",
     "license": "OPL-1",
