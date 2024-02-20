@@ -6,12 +6,17 @@ from odoo.exceptions import UserError
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
-    def button_validate(self):
-        self.ensure_one()
-        if not self.env.context.get('set_quantity_done_from_cron'):
-            return super().button_validate()
-        # -------New instruction to set qty_done------------
-        for line in self.move_ids_without_package:
-            line.quantity_done = line.product_uom_qty if (line.quantity_done != line.product_uom_qty) else line.quantity_done
+    sum_initial_demand = fields.Integer(compute='_compute_sum_initial_demand')
+    percentage_reserved = fields.Float(compute='_compute_sum_initial_demand')
 
-        return super().button_validate()
+    @api.depends('move_ids_without_package')
+    def _compute_sum_initial_demand(self):
+        delivery_product = self.env['delivery.carrier'].search([]).mapped('product_id')
+        for rec in self:
+            rec.percentage_reserved = 0
+            for move_id in rec.move_ids_without_package:
+                if move_id.product_id not in delivery_product:
+                    rec.percentage_reserved += move_id.reserved_availability
+                    rec.sum_initial_demand += move_id.product_uom_qty
+            if rec.sum_initial_demand:
+                rec.percentage_reserved = (rec.percentage_reserved / rec.sum_initial_demand) * 100
