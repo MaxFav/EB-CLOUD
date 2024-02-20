@@ -20,3 +20,4 @@ class StockPicking(models.Model):
                     rec.sum_initial_demand += move_id.product_uom_qty
             if rec.sum_initial_demand:
                 rec.percentage_reserved = (rec.percentage_reserved / rec.sum_initial_demand)
+                rec.percentage_reserved = round(rec.percentage_reserved,2)
