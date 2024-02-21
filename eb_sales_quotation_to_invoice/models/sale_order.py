@@ -25,16 +25,17 @@ class SaleOrder(models.Model):
                 rec.with_context(set_quantity_done_from_cron=True)._create_invoices()
             except Exception as e:
                 errors.append(rec.name)
+                continue
 
         error_text:str = errors[0]
         for x in errors:
             if x in errors:
                 pass
             else:
-                error_text = error_text + x
+                error_text = error_text + "\n" + x
 
         if len(errors) > 0:
-            raise UserError(_(error_text))
+            raise UserError(_(f"Errors in Orders:\n" + error_text))
             
     @api.onchange('partner_id')
     def _update_analytic_account(self):
