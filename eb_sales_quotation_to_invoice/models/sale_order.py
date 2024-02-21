@@ -13,8 +13,8 @@ class SaleOrder(models.Model):
         return invoice_vals
 
     def confirm_and_process_to_draft(self):
-        errors = []
-        
+
+        errors = []        
         for rec in self:            
             try:
                 rec.action_confirm()
@@ -23,11 +23,12 @@ class SaleOrder(models.Model):
                     picking.action_set_quantities_to_reservation()
                     picking.button_validate()
                 rec.with_context(set_quantity_done_from_cron=True)._create_invoices()
-            except Exception as e:
+            except:
                 errors.append(rec.name)
                 continue
 
         error_text:str = errors[0]
+        
         for x in errors:
             if x in errors:
                 pass
