@@ -22,3 +22,11 @@ class StockPicking(models.Model):
                 rec.percentage_reserved = (rec.percentage_reserved / rec.sum_initial_demand)
                 rec.percentage_reserved = round(rec.percentage_reserved,2)
          
+    def action_set_quantities_to_reservation(self):
+        if not self.env.context.get('set_quantity_done_from_cron'):
+            return super().action_set_quantities_to_reservation()
+        
+        for move in self.move_ids_without_package:
+            move.quantity_done = move.product_uom_qty if (move.quantity_done != move.product_uom_qty) else move.quantity_done
+
+        return super().action_set_quantities_to_reservation()

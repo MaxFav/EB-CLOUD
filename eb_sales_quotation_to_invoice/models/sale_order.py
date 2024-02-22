@@ -20,7 +20,7 @@ class SaleOrder(models.Model):
                 rec.action_confirm()
                 for picking in rec.picking_ids:
                     picking.action_assign()
-                    picking.action_set_quantities_to_reservation()
+                    picking.with_context(set_quantity_done_from_cron=True).action_set_quantities_to_reservation()
                     picking.button_validate()
                 rec.with_context(set_quantity_done_from_cron=True)._create_invoices()
             except:
