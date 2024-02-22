@@ -4,6 +4,7 @@ class PricelistItem(models.Model):
     _inherit = "product.pricelist.item"
 
     base = fields.Selection(selection_add=[('eur_rrp', 'EUR RRP'),('usd_rrp', 'USD RRP'),('aud_rrp', 'AUD RRP')],ondelete={'eur_rrp':'set default','usd_rrp':'set default','aud_rrp':'set default'})
+    price_discount = fields.Float(string="Price Discount",default=0,digits=(16,6))
 
     def _compute_base_price(self, product, quantity, uom, date, target_currency):
 
