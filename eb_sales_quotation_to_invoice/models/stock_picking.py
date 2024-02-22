@@ -9,7 +9,7 @@ class StockPicking(models.Model):
     sum_initial_demand = fields.Integer(compute='_compute_sum_initial_demand')
     percentage_reserved = fields.Float(compute='_compute_sum_initial_demand')
 
-    @api.depends('move_ids_without_package')
+    @api.depends('move_ids_without_package','state')
     def _compute_sum_initial_demand(self):
         delivery_product = self.env['delivery.carrier'].search([]).mapped('product_id')
         for rec in self:
@@ -21,3 +21,12 @@ class StockPicking(models.Model):
             if rec.sum_initial_demand:
                 rec.percentage_reserved = (rec.percentage_reserved / rec.sum_initial_demand)
                 rec.percentage_reserved = round(rec.percentage_reserved,2)
+         
+    def action_set_quantities_to_reservation(self):
+        if not self.env.context.get('set_quantity_done_from_cron'):
+            return super().action_set_quantities_to_reservation()
+        
+        for move in self.move_ids_without_package:
+            move.quantity_done = move.product_uom_qty if (move.quantity_done != move.product_uom_qty) else move.quantity_done
+
+        return super().action_set_quantities_to_reservation()
