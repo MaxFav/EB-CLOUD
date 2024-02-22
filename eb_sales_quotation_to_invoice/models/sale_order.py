@@ -27,15 +27,13 @@ class SaleOrder(models.Model):
                 errors.append(rec.name)
                 continue
 
-        error_text:str = errors[0]
-        
-        for x in errors:
-            if x in errors:
-                pass
-            else:
-                error_text = error_text + "\n" + x
-
         if len(errors) > 0:
+            error_text:str = errors[0]
+            for x in errors:
+                if x in errors:
+                    pass
+                else:
+                    error_text = error_text + "\n" + x
             raise UserError(_(f"Errors in Orders:\n" + error_text))
             
     @api.onchange('partner_id')
