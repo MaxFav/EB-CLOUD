@@ -23,11 +23,11 @@ class ProductTemplate(models.Model):
     @api.depends("gbp_rrp")
     def _compute_prices(self):
         try:         
-            self.price_map_id = self.env["price.map"].search([("gbp","=",self.gbp_rrp)])              
-            self.eur_rrp = self.price_map_id.eur
-            self.usd_rrp = self.price_map_id.usd
-            self.aud_rrp = self.price_map_id.aud
-            self.cad_rrp = self.price_map_id.cad
+            self.price_map_id = self.env["price.map"].sudo().search([("gbp","=",self.gbp_rrp)])              
+            self.eur_rrp = self.price_map_id.sudo().eur
+            self.usd_rrp = self.price_map_id.sudo().usd
+            self.aud_rrp = self.price_map_id.sudo().aud
+            self.cad_rrp = self.price_map_id.sudo().cad
             self.list_price = self.gbp_rrp / 1.2
             self.gbp_wsp = self.gbp_rrp / 2.5
             self.eur_wsp = self.eur_rrp / 2.5
