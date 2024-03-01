@@ -5,7 +5,7 @@ from odoo.exceptions import UserError
 
 class StockPicking(models.Model):
     _inherit = "stock.picking"
-
+'''
     sum_initial_demand = fields.Integer(compute='_compute_sum_initial_demand')
     percentage_reserved = fields.Float(compute='_compute_sum_initial_demand')
 
@@ -30,3 +30,4 @@ class StockPicking(models.Model):
             move.quantity_done = move.product_uom_qty if (move.quantity_done != move.product_uom_qty) else move.quantity_done
 
         return super().action_set_quantities_to_reservation()
+'''
