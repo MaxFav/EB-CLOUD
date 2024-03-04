@@ -8,7 +8,6 @@
         "base",
         "sale",
         "stock",
-        "sale_management",
     ],
     "data": ["actions/sale_order.xml"],
     "installable": True
