@@ -4,7 +4,7 @@
     "summary": "Estella Bartlett",
     "license": "LGPL-3",
     "author": "Jamie",
-    "depends": ["base"],
+    "depends": ["base","stock"],
     "data": [],
     "installable": True
 }
