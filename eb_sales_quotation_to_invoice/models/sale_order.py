@@ -4,7 +4,7 @@ import pytz
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-
+'''
     def _prepare_invoice(self):
         invoice_vals = super()._prepare_invoice()
         tz_name = pytz.timezone(self.env.context.get('tz') or self.env.user.tz or 'UTC')
@@ -40,6 +40,6 @@ class SaleOrder(models.Model):
     def _update_analytic_account(self):
         if self.partner_id:
             self.analytic_account_id = (self.partner_id.analytic_account_id or False)
-
+'''
         
 
