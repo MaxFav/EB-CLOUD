@@ -41,5 +41,10 @@ class SaleOrder(models.Model):
         if self.partner_id:
             self.analytic_account_id = (self.partner_id.analytic_account_id or False)
 
+    @api.onchange('partner_id')
+    def _update_warehouse(self):
+        if self.partner_id:
+            self.warehouse_id = (self.partner_id.warehouse_id or False)
+
         
 
