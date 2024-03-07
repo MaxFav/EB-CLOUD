@@ -43,7 +43,7 @@ class SaleOrder(models.Model):
 
     @api.onchange('partner_id')
     def _update_warehouse(self):
-        if self.partner_id:
+        if self.partner_id and self.partner_id.warehouse_id:
             self.warehouse_id = (self.partner_id.warehouse_id or False)
 
         
