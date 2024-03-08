@@ -17,6 +17,7 @@ class ProductTemplate(models.Model):
     cad_rrp = fields.Monetary(string="CAD RRP",currency_field="cad_id",store=True,compute="_compute_prices")
     #WSP
     gbp_wsp = fields.Monetary(string="GBP WSP",currency_field="gbp_id",store=True,compute="_compute_prices")
+    eur_wsp = fields.Monetary(string="EUR WSP",currency_field="eur_id",store=True,compute="_compute_prices")
     #Price Map ID     
     price_map_id = fields.Many2one("price.map",string="Price Map Id",store=True,compute="_compute_prices")
 
@@ -30,6 +31,7 @@ class ProductTemplate(models.Model):
             product.cad_rrp = product.price_map_id.cad
             product.list_price = product.gbp_rrp / 1.2
             product.gbp_wsp = product.gbp_rrp / 2.5
+            product.eur_wsp = product.eur_rrp / 2.5
            
      
 

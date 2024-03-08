@@ -6,6 +6,7 @@ from odoo.addons.l10n_uk_reports.models import hmrc_service as HmrcSvc
 
 class GeneralSettings(models.Model):
     _name = 'smart_mtd.general_settings'
+    _description = "Old"
     
     default_end_date = fields.Date(string="Default End Date (Account Move Line)",
                                     help="Setting this date and pressing the button, will find all invoice lines before this and set it as HMRC submitted")
