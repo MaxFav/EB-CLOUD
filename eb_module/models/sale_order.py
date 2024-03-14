@@ -6,8 +6,10 @@ class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     def confirm_and_process_to_draft(self):
-        for rec in self:            
+        for sale in self:            
             try:
-                rec.action_confirm()                
+                sale.action_confirm()
+                for picking in sale.picking_ids:
+                    picking.action_assign()              
             except Exception as e:
                 pass
