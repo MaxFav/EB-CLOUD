@@ -109,6 +109,6 @@ class SaleOrder(models.Model):
 
         # self._finalize_invoices(invoices, references)
         for invoice in invoices.values():
-            invoice.action_switch_invoice_into_refund_credit_note()
+            invoice.action_switch_move_type()
 
         return [inv.id for inv in invoices.values()]
