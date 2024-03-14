@@ -1,5 +1,5 @@
 from odoo import models, fields, api, _
-
+from odoo.exceptions import UserError
 import pytz
 
 class SaleOrder(models.Model):
@@ -15,4 +15,4 @@ class SaleOrder(models.Model):
                     picking.button_validate()
                 sale._create_invoices()             
             except Exception as e:
-                pass
+                raise UserError(e)
