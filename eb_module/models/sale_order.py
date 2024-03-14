@@ -9,10 +9,10 @@ class SaleOrder(models.Model):
         for sale in self:            
             try:
                 sale.action_confirm()
-                for picking in sale.picking_ids:
-                    for move in picking.move_ids:
-                        move.quantity = move.product_uom_qty
-                    picking.button_validate()
+                picking = sale.picking_ids[0]                
+                for move in picking:
+                    move.quantity = move.product_uom_qty
+                picking.button_validate()
                 sale._create_invoices()             
             except Exception as e:
                 raise UserError(e)
