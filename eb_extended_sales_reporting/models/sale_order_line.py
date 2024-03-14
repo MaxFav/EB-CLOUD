@@ -23,19 +23,15 @@ class SaleOrderLine(models.Model):
 
     @api.depends('move_ids', 'move_ids.state', 'price_unit', 'move_ids.product_uom_qty', 'move_ids.quantity')
     def _compute_untaxed_undelivered(self):
-        for so_line in self:
-            for delivery in so_line.move_ids:
-                if so_line.move_ids and delivery.state not in ['cancel', 'done']:
-                    if so_line.order_id.date_order:
-                        currency_rate = so_line.env['res.currency.rate'].search(
-                            ['&', ('currency_id.name', '=', so_line.order_id.pricelist_id.currency_id.name),
-                             ('name', '<=', so_line.order_id.create_date)], limit=1)
-                        if currency_rate.rate != 0:
-                            so_line.untaxed_amount_undelivered13 = (so_line.product_uom_qty - so_line.qty_delivered) * (so_line.price_unit - so_line.price_unit * so_line.discount / 100) / currency_rate.rate
-                            if so_line.untaxed_amount_undelivered13 < 0:
-                                so_line.untaxed_amount_undelivered13 = 0
-                elif so_line.move_ids and delivery.state in ['cancel', 'done']:
-                    so_line.untaxed_amount_undelivered13 = 0
+        for line in self:
+            if line.move_ids:
+                for delivery in line.move_ids:
+                    if delivery.state not in ['cancel', 'done']:
+                        currency_rate = line.order_id.currency_rate
+                        if currency_rate != 0:
+                            line.untaxed_amount_undelivered13 = (line.product_uom_qty - line.qty_delivered) * (line.price_unit - line.price_unit * line.discount / 100) / currency_rate
+                    elif delivery.state in ['cancel', 'done']:
+                        line.untaxed_amount_undelivered13 = 0
 
 
     @api.depends('move_ids', 'move_ids.state', 'move_ids.quantity')
