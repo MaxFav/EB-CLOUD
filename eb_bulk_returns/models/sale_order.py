@@ -96,11 +96,7 @@ class SaleOrder(models.Model):
                 }
             )
             sale_orders = references[invoices[group_key]]
-            invoice.message_post_with_view(
-                "mail.message_origin_link",
-                values={"self": invoice, "origin": sale_orders},
-                subtype_id=self.env.ref("mail.mt_note").id,
-            )
+            
             if len(sale_orders) == 1:
                 invoices[group_key].ref = sale_orders.reference
 
