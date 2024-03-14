@@ -36,21 +36,21 @@ class SaleOrderLine(models.Model):
 
     @api.depends('move_ids', 'move_ids.state', 'move_ids.quantity')
     def _compute_qty_reserved(self):
-        for so_line in self:
-            for delivery in so_line.move_ids:
-                if so_line.move_ids and delivery.state not in ['cancel', 'done', 'draft']:
-                    so_line.quantity_reserved11 = delivery.quantity
-                elif so_line.move_ids and delivery.state in ['cancel', 'done', 'draft']:
-                    so_line.quantity_reserved11 = 0
+        for line in self:
+            if line.move_ids:
+                for delivery in line.move_ids:
+                    if delivery.state not in ['cancel', 'done']:
+                        line.quantity_reserved11 = delivery.quantity
+                    elif delivery in ['cancel', 'done']:
+                        line.quantity_reserved11 = 0
 
 
     @api.depends('move_ids', 'move_ids.state', 'move_ids.product_uom_qty', 'move_ids.quantity')
     def _compute_qty_undelivered(self):
-        for so_line in self:
-            for delivery in so_line.move_ids:
-                if so_line.move_ids and delivery.state not in ['cancel', 'done', 'draft']:
-                    so_line.quantity_undelivered13 = so_line.product_uom_qty - so_line.qty_delivered
-                    if so_line.quantity_undelivered13 < 0:
-                        so_line.quantity_undelivered13 = 0
-                elif so_line.move_ids and delivery.state in ['cancel']:
-                    so_line.quantity_undelivered13 = 0
+        for line in self:
+            if line.move_ids:
+                for delivery in line.move_ids:
+                    if delivery.state not in ['cancel', 'done']:
+                        line.quantity_undelivered13 = line.product_uom_qty - line.qty_delivered
+                    elif delivery.state in ['cancel', 'done']:
+                        line.quantity_undelivered13 = 0
