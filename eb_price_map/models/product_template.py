@@ -23,7 +23,7 @@ class ProductTemplate(models.Model):
             product.usd_rrp = product.price_map_id.usd
             product.aud_rrp = product.price_map_id.aud
             product.cad_rrp = product.price_map_id.cad
-            product.list_price = product.gbp_rrp / 1.2
+            #product.list_price = product.gbp_rrp / 1.2
            
      
 
