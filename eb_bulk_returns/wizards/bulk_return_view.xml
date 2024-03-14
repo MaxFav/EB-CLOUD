@@ -32,6 +32,6 @@
         <field name="target">new</field>
     </record>
 
-    <menuitem id="menu_bulk_return" name="Bulk Return" parent="stock.menu_stock_warehouse_mgmt"
-              action="action_bulk_return" sequence="31"/>
+    <menuitem id="menu_bulk_return" name="Bulk Return" parent="stock.menu_stock_adjustments"
+              action="action_bulk_return" sequence="100"/>
 </odoo>
