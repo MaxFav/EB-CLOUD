@@ -10,6 +10,7 @@ class SaleOrder(models.Model):
             try:
                 sale.action_confirm()
                 for picking in sale.picking_ids:
-                    picking.action_assign()              
+                    for move in picking.move_ids:
+                        move.quantity = move.product_uom_qty             
             except Exception as e:
                 pass
