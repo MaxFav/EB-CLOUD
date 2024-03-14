@@ -10,7 +10,7 @@ class SaleOrder(models.Model):
                 sale.action_confirm()
             if sale.picking_ids:
                 for picking in sale.picking_ids:               
-                    for move in picking:
+                    for move in picking.move_ids:
                         move.quantity = move.product_uom_qty
                     picking.button_validate()
                 sale._create_invoices() 
