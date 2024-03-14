@@ -12,6 +12,7 @@ class SaleOrder(models.Model):
                 for picking in sale.picking_ids:
                     for move in picking.move_ids:
                         move.quantity = move.product_uom_qty
-                    picking.button_validate()             
+                    picking.button_validate()
+                sale._create_invoices()             
             except Exception as e:
                 pass
