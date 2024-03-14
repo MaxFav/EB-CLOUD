@@ -5,8 +5,9 @@
             <field name="model_id" ref="sale.model_sale_order" />
             <field name="binding_model_id" ref="sale.model_sale_order" />
             <field name="state">code</field>
+            <field name="binding_view_types">list,form</field>
             <field name="code">
-                <![CDATA[records.confirm_and_process_to_draft()]]>
+                action = records.confirm_and_process_to_draft()
             </field>
         </record>        
     </data>

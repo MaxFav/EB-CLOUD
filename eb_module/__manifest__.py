@@ -9,9 +9,7 @@
     Description text
     """,
     # data files always loaded at installation
-    'data': [
-        'actions/sale_order.xml'
-    ],
+    'data': ["data/sale_order.xml"],
     # data files containing optionally loaded demonstration data
    
 }
