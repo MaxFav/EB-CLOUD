@@ -5,7 +5,7 @@
     "license": "LGPL-3",       
     "author": "Jamie",
     "depends": [
-        "base",     
+        "base", "sale", "stock"     
     ],
     "data": ["actions/sale_order.xml"],
     "installable": True
