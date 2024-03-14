@@ -1,7 +1,7 @@
 {
     'name': "A Module",
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base','sale','stock'],
     'author': "Author Name",
     'category': 'Category',
     'description': """
