@@ -112,3 +112,5 @@ class SaleOrder(models.Model):
             invoice.action_switch_move_type()
 
         return [inv.id for inv in invoices.values()]
+    
+    

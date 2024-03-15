@@ -21,4 +21,13 @@ class SaleOrder(models.Model):
         if self.commitment_date and self.env.context.get('set_quantity_done_from_cron'):
             invoice_vals['invoice_date'] = self.commitment_date.astimezone(tz_name).date()
         return invoice_vals            
-        
+    
+    @api.onchange('partner_id')
+    def _update_analytic_account(self):
+        if self.partner_id:
+            self.analytic_account_id = (self.partner_id.analytic_account_id or False)
+
+    @api.onchange('partner_id')
+    def _update_warehouse(self):
+        if self.partner_id and self.partner_id.warehouse_id:
+            self.warehouse_id = (self.partner_id.warehouse_id or False)
