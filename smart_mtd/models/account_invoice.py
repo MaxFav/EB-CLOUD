@@ -5,9 +5,9 @@ from dateutil.relativedelta import relativedelta
 
 class AccountInvoice(models.Model):
     _inherit = 'account.move'
-
-    bad_debt_enabled = fields.Boolean(compute='_compute_bad_debt_enabled')
 '''
+    bad_debt_enabled = fields.Boolean(compute='_compute_bad_debt_enabled')
+
     def _compute_bad_debt_enabled(self):
         for record in self:
             if record.invoice_date:
