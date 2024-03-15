@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sh_pos_default_customer_res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sh_pos_default_customer</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <block id="pos_interface_section" position="after">
+                <block title="Customer Selection">
+                    <setting>
+                        <field name="pos_sh_enable_default_customer" />
+                    </setting>
+                    <setting invisible="pos_sh_enable_default_customer != True">
+                        <field name="pos_sh_default_customer_id" />
+                    </setting>
+                </block>
+            </block>
+        </field>
+    </record>
+</odoo>
