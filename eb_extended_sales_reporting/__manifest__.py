@@ -5,7 +5,7 @@
     'category': 'Sales',
     'author': "Jamie",     
     "license": "LGPL-3",
-    'depends': ['base', 'sale_stock'],
+    'depends': ['base', 'sale_stock','eb_transfers'],
     'data': [],
     "installable": True
 }
