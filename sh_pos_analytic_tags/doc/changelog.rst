@@ -1,8 +1,3 @@
-16.0.1 
+17.0.1 (8th November 2023)
 ----------------------------
  - Initial Release 
-
-16.0.2 (06 June 2023)
--------------------------
-[FIXED] remove error if not set any analytic account in config it's throw erorr.
-

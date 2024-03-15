@@ -1,18 +1,8 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError
 
-
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-
-    user_id = fields.Many2one("res.users", domain=False)
-
-    @api.onchange("user_id")
-    def onchange_user_id_for_warehouse(self):
-        # Ticket 25712: Ensure correct warehouse is set
-
-        if self.partner_id and self.partner_id.warehouse_id:
-            self.warehouse_id = self.partner_id.warehouse_id
 
     def create_bulk_return_credit_note(self, grouped=False, final=False, lines=False):
         inv_obj = self.env["account.move"]
@@ -106,11 +96,7 @@ class SaleOrder(models.Model):
                 }
             )
             sale_orders = references[invoices[group_key]]
-            invoice.message_post_with_view(
-                "mail.message_origin_link",
-                values={"self": invoice, "origin": sale_orders},
-                subtype_id=self.env.ref("mail.mt_note").id,
-            )
+            
             if len(sale_orders) == 1:
                 invoices[group_key].ref = sale_orders.reference
 
@@ -123,6 +109,8 @@ class SaleOrder(models.Model):
 
         # self._finalize_invoices(invoices, references)
         for invoice in invoices.values():
-            invoice.action_switch_invoice_into_refund_credit_note()
+            invoice.action_switch_move_type()
 
         return [inv.id for inv in invoices.values()]
+    
+    

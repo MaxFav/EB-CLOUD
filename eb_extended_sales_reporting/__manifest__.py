@@ -1,6 +1,6 @@
 {
     'name': "EB Extended Sales Reporting",
-    'version': '1.0',
+    'version': '17.0',
     'description': "Estella Bartlett Extended Sales Reporting Module",
     'category': 'Sales',
     'author': "Jamie",     

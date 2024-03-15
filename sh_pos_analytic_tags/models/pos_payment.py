@@ -8,8 +8,3 @@ class PosPaymentInherit(models.Model):
 
     sh_analytic_account = fields.Many2one(
         'account.analytic.account', string='Analytic Account')
-
-
-
-
-

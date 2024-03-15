@@ -4,6 +4,6 @@
     'author': "Jamie",
     'license': "LGPL-3",
     'category': 'Estella Bartlett',    
-    'depends': ['base','account','sale','stock','sale_management','account_accountant'],
-    'data': ["data/sale_order_data.xml"], 
+    'depends': ['base','sale','stock','sale_management'],
+    'data': [], 
 }

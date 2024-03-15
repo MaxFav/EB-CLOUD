@@ -8,7 +8,7 @@ class SaleReport(models.Model):
     untaxed_amount_undelivered13 = fields.Float(
         string="Untaxed Amount Left to Delivered", readonly=True
     )
-    quantity_reserved11 = fields.Float(string="Quantity Reserved", readonly=True)
+    quantity_reserved11 = fields.Float(string="Qty Reserved", readonly=True)
     quantity_undelivered13 = fields.Float(string="Qty Left to Delivered", readonly=True)
     effective_date = fields.Date(string="Effective Date", readonly=True)
     commitment_date = fields.Date(string="Commitment Date", readonly=True)

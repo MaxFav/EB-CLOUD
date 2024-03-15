@@ -25,8 +25,8 @@
         <menuitem id="price_map_menu_action"
             name="Price Map"
             action="price_map_action"
-            parent="sale.product_menu_catalog"
-            sequence="15"
+            parent="stock.menu_product_in_config_stock"
+            sequence="50"
         />
     </data>
 </odoo>
