@@ -1,6 +1,6 @@
 {
     'name': "EB Sales Quotation to Invoice",
-    'version': '1.0',    
+    'version': '17.0',    
     'author': "Jamie",
     'license': "LGPL-3",
     'category': 'Estella Bartlett',    
