@@ -1,0 +1,10 @@
+<odoo>
+	<data noupdate="1">
+	   	<record model="account.account" id="smart_mtd.account_fuel_scale_charge">
+			<field name="name">Fuel Scale Charge</field>
+			<field name="code">888888</field>
+			<field name="user_type_id" ref="account.data_account_type_expenses"/>
+			<field name="company_id" model="res.company" eval="obj().env.company.get_uk_company()"/>
+	    </record>
+	</data>
+</odoo>

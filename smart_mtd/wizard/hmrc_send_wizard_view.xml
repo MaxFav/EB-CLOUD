@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<record id="hmrc_send_wizard_from_smart_inherit" model="ir.ui.view">
+            <field name="name">	hmrc_send_wizard_from_smart_inherit</field>
+            <field name="model">l10n_uk.hmrc.send.wizard</field>
+            <field name="inherit_id" ref="l10n_uk_reports.hmrc_send_wizard_form"/>
+            <field name="arch" type="xml">
+				<xpath expr="//button[@special='cancel']" position="attributes">
+					<attribute name="string">Close</attribute>
+				</xpath>
+            </field>
+        </record>
+	</data>
+</odoo>
