@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <record id="stock_picking_view_form" model="ir.ui.view">
+        <record id="stock_picking_view_form_inherit_add_warehouse" model="ir.ui.view">
             <field name="name">stock.picking.view.form.inherit.add_warehouse</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="model">stock.picking</field>
@@ -11,7 +11,7 @@
             </field>
         </record>
 
-        <record id="stock_picking_view_form" model="ir.ui.view">
+        <record id="stock_picking_view_form_inherit_add_conditional_lifecycle" model="ir.ui.view">
             <field name="name">stock.picking.view.form.inherit.add_conditional_lifecycle</field>
             <field name="inherit_id" ref="stock.view_picking_form"/>
             <field name="model">stock.picking</field>
