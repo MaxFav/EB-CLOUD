@@ -5,5 +5,5 @@
     'license': "LGPL-3",
     'category': 'Estella Bartlett',    
     'depends': ['base','sale','stock','sale_management'],
-    'data': [], 
+    'data': ["views/stock_picking_views.xml"], 
 }
