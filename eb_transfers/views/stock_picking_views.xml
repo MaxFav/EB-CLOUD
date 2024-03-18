@@ -17,8 +17,7 @@
             <field name="model">stock.picking</field>
             <field name="arch" type="xml">
                 <xpath expr="//form/sheet/notebook/page[@name='operations']/field/tree/field[@name='product_id']" position="after">
-                    <field name="x_studio_uk_lifecycle" string="UK Lifecycle"/>
-                    <field name="x_studio_usa_cycle" string="USA Lifecycle"/>
+                    <field name="x_studio_uk_lifecycle" string="UK Lifecycle"/>                    
                 </xpath>
             </field>
         </record>
