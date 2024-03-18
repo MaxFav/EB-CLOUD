@@ -19,7 +19,7 @@ class StockPicking(models.Model):
             if rec.state not in ["done"]:                
                 for move in rec.move_ids:
                     rec.sum_initial_demand = rec.sum_initial_demand + move.product_uom_qty
-                    reserved = reserved + move.quantit
+                    reserved = reserved + move.quantity
                 rec.percentage_reserved = round(reserved / rec.sum_initial_demand)                
             elif rec.state in ["done"]:
                 rec.percentage_reserved = 0
