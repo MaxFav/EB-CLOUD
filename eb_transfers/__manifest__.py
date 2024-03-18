@@ -8,6 +8,7 @@
     "application": True,    
     'depends': ['base','sale','stock','sale_management'],
     'data': [
+        "views/product_template_views.xml",
         "views/stock_picking_views.xml", 
         "data/stock_picking_eb_picking_operations.xml", 
         "data/stock_picking_reports.xml"
