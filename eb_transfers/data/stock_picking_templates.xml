@@ -4,6 +4,7 @@
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.basic_layout">
                     <div class="page">
+
                         <div class="row">
                             <div class="col-6">
                               <span t-field="o.company_id.logo" t-options-widget="&quot;image&quot;" t-options-qweb_img_raw_data="1" style="width:149px;display:inline-block"/>
@@ -12,25 +13,49 @@
                               <strong>Estella Bartlett Ltd</strong>
                               <span t-field="o.company_id.company_details"/>
                             </div>
-                        </div>
-                    </div>
+                        </div>                        
 
-                    <div class="row justify-content-end mt16 mb16">
-                        <div class="col-4">
-                            <div t-field="o.name" t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:320px;height:50px;'}"/>
+                        <div class="row justify-content-end mt-4 mb16">
+                            <div class="col-4">
+                                <div t-field="o.name" t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:350px;height:50px;'}"/>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-6">
-                            <div t-if="o.picking_type_id.code == 'outgoing'">
-                                <strong>Shipping Address:</strong>
-                                <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                        
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <div t-if="o.picking_type_id.code == 'outgoing'">
+                                    <strong>Shipping Address:</strong>
+                                    <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                </div>
+                                <div t-elif="o.picking_type_id.code == 'incoming'">
+                                    <strong>Warehouse Address:</strong>
+                                    <div t-field="o.picking_type_id.warehouse_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                </div>
                             </div>
-                            <div t-elif="o.picking_type_id.code == 'incoming'">
-                                <strong>Warehouse Address:</strong>
-                                <div t-field="o.picking_type_id.warehouse_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
-                            </div>
+                            <div class="col-5 offset-1">
+                                <t t-set="show_partner" t-value="False" />
+                                <div t-if="o.picking_type_id.code=='incoming' and o.partner_id">
+                                    <strong>Vendor Address:</strong>
+                                    <t t-set="show_partner" t-value="True" />
+                                </div>
+                                <div t-if="o.picking_type_id.code=='internal' and o.partner_id">
+                                    <strong>Warehouse Address:</strong>
+                                    <t t-set="show_partner" t-value="True" />
+                                </div>
+                                <div t-if="o.picking_type_id.code=='outgoing' and o.partner_id and o.partner_id != o.partner_id.commercial_partner_id">
+                                    <strong>Customer Address:</strong>
+                                    <t t-set="show_partner" t-value="True" />
+                                </div>
+                                <div t-if="show_partner" name="partner_header">
+                                    <div t-field="o.partner_id.commercial_partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                                </div>
+                            </div>                            
+                        </div>
+
+                        <h1 t-field="o.name"/>
+
+                        <div class="row">
+
                         </div>
                     </div>
                 </t>
