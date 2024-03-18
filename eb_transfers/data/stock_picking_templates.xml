@@ -50,7 +50,7 @@
 
                         <h1 class="mt-4" t-field="o.name"/>
 
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-auto">
                                 <strong>Status:</strong>
                                 <p t-field="o.state"></p>
@@ -73,7 +73,7 @@
                                 <strong>Scheduled Date:</strong>
                                 <p t-field="o.scheduled_date"></p>
                             </div>
-                        </div>
+                        </div> 
 
                         <table class="table table-sm" t-if="o.move_line_ids and o.move_ids_without_package">
                             <t t-set="has_barcode" t-value="any(move_line.product_id and move_line.product_id.sudo().barcode or move_line.package_id for move_line in o.move_line_ids)"/>
@@ -90,6 +90,7 @@
                                 <t t-foreach="o.move_line_ids_without_package.sorted(lambda ml: (ml.product_id.x_studio_master_number, ml.product_id.display_name))" t-as="ml">
                                     <tr>
                                         <td><span t-field="ml.product_id.display_name"/></td>
+                                        <td><span t-field="ml.quantity"/></td>                                        
                                     </tr>
                                 </t>
                             </tbody>
