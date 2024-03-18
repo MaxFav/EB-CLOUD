@@ -1,6 +1,6 @@
 <odoo>
     <data>  
-        <template id="report_eb_picking">
+        <template id="report_eb_picking_operations">
             <t t-foreach="docs" t-as="o">
                 <t t-call="web.basic_layout">
                     <div class="page">
