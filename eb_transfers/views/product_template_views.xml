@@ -5,7 +5,9 @@
             <field name="inherit_id" ref="product.template.product.form"/>
             <field name="model">product.template</field>
             <field name="arch" type="xml">
-                
+                <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="x_studio_master_number" widget="char"/>
+                  </xpath>
             </field>
         </record>        
     </data>
