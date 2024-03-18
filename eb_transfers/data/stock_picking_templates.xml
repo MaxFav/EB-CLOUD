@@ -17,7 +17,7 @@
 
                         <div class="row justify-content-end mt-4 mb16">
                             <div class="col-4">
-                                <div t-field="o.name" t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:340px;height:60px;'}"/>
+                                <div t-field="o.name" t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:346px;height:52px;'}"/>
                             </div>
                         </div>
                         
@@ -41,11 +41,7 @@
                                 <div t-if="o.picking_type_id.code=='internal' and o.partner_id">
                                     <strong>Warehouse Address:</strong>
                                     <t t-set="show_partner" t-value="True" />
-                                </div>
-                                <div t-if="o.picking_type_id.code=='outgoing' and o.partner_id and o.partner_id != o.partner_id.commercial_partner_id">
-                                    <strong>Customer Address:</strong>
-                                    <t t-set="show_partner" t-value="True" />
-                                </div>
+                                </div>                                
                                 <div t-if="show_partner" name="partner_header">
                                     <div t-field="o.partner_id.commercial_partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
                                 </div>
@@ -78,6 +74,20 @@
                                 <p t-field="o.scheduled_date"></p>
                             </div>
                         </div>
+
+                        <table class="table table-sm" t-if="o.move_line_ids and o.move_ids_without_package">
+                            <t t-set="has_barcode" t-value="any(move_line.product_id and move_line.product_id.sudo().barcode or move_line.package_id for move_line in o.move_line_ids)"/>
+                            <thead>
+                                <tr>
+                                    <th class="text-start"><strong>PRODUCT</strong></th>
+                                    <th class="text-center"><strong>QTY</strong></th>
+                                    <th class="text-center"><strong>FROM</strong></th>
+                                    <th class="text-center"><strong>TO</strong></th>
+                                    <th class="text-center"><strong>BARCODE</strong></th>                                    
+                                </tr>
+                            </thead>
+                        </table>
+
                     </div>
                 </t>
             </t>
