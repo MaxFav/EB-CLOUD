@@ -86,6 +86,13 @@
                                     <th class="text-center"><strong>BARCODE</strong></th>                                    
                                 </tr>
                             </thead>
+                            <tbody>
+                                <t t-foreach="o.move_line_ids_without_package.sorted(lambda ml: (ml.product_id.x_studio_master_number, ml.product_id.display_name))" t-as="ml">
+                                    <tr>
+                                        <td><span t-field="ml.product_id.display_name"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
                         </table>
 
                     </div>

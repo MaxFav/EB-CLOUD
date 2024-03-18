@@ -1,5 +1,5 @@
 {
-    'name': "EB Sales Quotation to Invoice",
+    'name': "EB Transfers",
     'version': '17.0',    
     'author': "Jamie",
     'license': "LGPL-3",
