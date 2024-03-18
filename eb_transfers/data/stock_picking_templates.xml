@@ -1,0 +1,32 @@
+<odoo>
+    <data>  
+        <template id="report_eb_picking">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <div class="row">
+                            <div class="col-6">
+                              <span t-field="o.company_id.logo" t-options-widget="&quot;image&quot;" t-options-qweb_img_raw_data="1" style="width:149px;display:inline-block"/>
+                            </div>
+                            <div class="col-6 text-end">
+                              <strong>Estella Bartlett Ltd</strong>
+                              <span t-field="o.company_id.company_details"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-end mb16">
+                        <div class="col-4">
+                            <div t-field="o.name" t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:300px;height:50px;'}">
+                                <div class="bg-light border-1 rounded d-flex flex-column align-items-center justify-content-center p-3 opacity-75 text-muted text-center">
+                                    (document barcode)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </t>
+            </t>
+        </template> 
+    </data>    
+</odoo>
