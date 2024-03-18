@@ -10,15 +10,13 @@ class StockPicking(models.Model):
     sum_initial_demand = fields.Integer(compute='_compute_sum_initial_demand')
     percentage_reserved = fields.Float(compute='_compute_sum_initial_demand')
 
-    @api.depends('move_ids_without_package','state')
+    @api.depends('move_ids_without_package','state','move_ids_without_package.quantity')
     def _compute_sum_initial_demand(self):
         for rec in self:            
             rec.sum_initial_demand = 0
-            rec.percentage_reserved = 0
-            if rec.state not in ["done"]:                
-                for move in rec.move_ids_without_package:
-                    rec.sum_initial_demand += move.product_uom_qty
-                    rec.percentage_reserved += move.quantity
-                rec.percentage_reserved = round(rec.percentage_reserved / rec.sum_initial_demand)                
-            elif rec.state in ["done"]:
-                rec.percentage_reserved = 0
+            rec.percentage_reserved = 0                           
+            for move in rec.move_ids_without_package:
+                rec.sum_initial_demand += move.product_uom_qty
+                rec.percentage_reserved += move.quantity
+            rec.percentage_reserved = round(rec.percentage_reserved / rec.sum_initial_demand,2)                
+        

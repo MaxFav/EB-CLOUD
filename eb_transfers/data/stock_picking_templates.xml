@@ -15,12 +15,24 @@
                         </div>
                     </div>
 
-                    <div class="row justify-content-end mt8 mb16">
-                        <div class="col-6">
-                            <div t-field="o.name" t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:300px;height:50px;'}"/>
+                    <div class="row justify-content-end mt16 mb16">
+                        <div class="col-4">
+                            <div t-field="o.name" t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:320px;height:50px;'}"/>
                         </div>
                     </div>
                     
+                    <div class="row">
+                        <div class="col-6">
+                            <div t-if="o.picking_type_id.code == 'outgoing'">
+                                <strong>Shipping Address:</strong>
+                                <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                            </div>
+                            <div t-elif="o.picking_type_id.code == 'incoming'">
+                                <strong>Warehouse Address:</strong>
+                                <div t-field="o.picking_type_id.warehouse_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                            </div>
+                        </div>
+                    </div>
                 </t>
             </t>
         </template> 
