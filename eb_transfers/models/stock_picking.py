@@ -3,6 +3,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 from odoo.exceptions import UserError
 
 
+
 class StockPicking(models.Model):
     _inherit = "stock.picking"
 
@@ -12,5 +13,13 @@ class StockPicking(models.Model):
     @api.depends('move_ids_without_package','state')
     def _compute_sum_initial_demand(self):
         for rec in self:
+            reserved = 0
             rec.sum_initial_demand = 0
             rec.percentage_reserved = 0
+            if rec.state not in ["done"]:                
+                for move in rec.move_ids:
+                    rec.sum_initial_demand = rec.sum_initial_demand + move.product_uom_qty
+                    reserved = reserved + move.quantit
+                rec.percentage_reserved = round(reserved / rec.sum_initial_demand)                
+            elif rec.state in ["done"]:
+                rec.percentage_reserved = 0
