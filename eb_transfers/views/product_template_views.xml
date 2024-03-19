@@ -21,8 +21,7 @@
                     <field name="x_studio_lifecycle" string="Lifecycle"/>
                 </xpath>
                 <xpath expr="//label[@for='list_price']" position="before">
-                    <field name="gbp_rrp" on_change="1"/>
-                    <field name="x_studio_read_only_gbp_wsp" string="GBP WSP" modifiers="{&quot;readonly&quot;: true}"/>
+                    <field name="gbp_rrp" on_change="1"/>                    
                 </xpath>
                 <xpath expr="//form[@name='Product Template']/sheet[@name='product_form']/notebook[1]/page[@name='general_information']/group[1]" position="after">
                 <group>
