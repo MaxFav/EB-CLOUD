@@ -25,7 +25,11 @@
                 </xpath>
                 <xpath expr="//form[@name='Product Template']/sheet[@name='product_form']/notebook[1]/page[@name='general_information']/group[1]" position="after">
                 <group>
-                    <group name="group_additional_info" string="Additional Info"/>
+                    <group name="group_additional_info" string="Additional Info">
+                        <xpath expr="//field[@name='detailed_type']" position="move"/>
+                        <xpath expr="//field[@name='invoice_policy']" position="move"/>
+                        <xpath expr="//field[@name='expense_policy']" position="move"/>
+                    </group>
                 </group>
                 </xpath>
             </field>
