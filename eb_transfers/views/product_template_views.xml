@@ -62,10 +62,7 @@
                             <field name="x_studio_ecom_merch"/>
                         </group>
                         <group string="Key Accounts" name="group_key_accounts">
-                            <field name="x_studio_jlp_range_status" string="JLP Range Status"/>
-                            <field name="x_studio_waitrose_range_status" string="Waitrose Range Status"/>
-                            <field name="x_studio_dfs_range_status_1" string="DFS Range Status"/>
-                            <field name="x_studio_setur_range_status_1" string="Setur Range Status"/>
+                            
                         </group>
                     </group>
                     <group>
