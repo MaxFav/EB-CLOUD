@@ -53,8 +53,7 @@
                 <xpath expr="//page[@name='merchandising']" position="inside">
                     <group>
                         <group string="EB Merch" name="group_eb_merch">
-                            <field name="x_studio_field_RpSzy"/>
-                            <field name="x_studio_field_95TNJ"/>
+                            <field name="x_studio_field_RpSzy"/>                            
                             <field name="x_studio_developed_for"/>
                             <field name="x_studio_usa_lifecycle"/>
                             <field name="x_studio_catalogue_uk_live"/>
