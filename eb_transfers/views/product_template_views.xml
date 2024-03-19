@@ -9,7 +9,8 @@
                 <xpath expr="//label[@for='product_tooltip']" position="replace"/>
                 <xpath expr="//label[@for='product_tooltip']" position="replace"/>
                 <xpath expr="//div[hasclass('fst-italic')][2]" position="replace"/>
-                <xpath expr="//field[@name='product_tooltip']" position="replace"/>              
+                <xpath expr="//field[@name='product_tooltip']" position="replace"/>
+
                 <xpath expr="//form[@name='Product Template']/sheet[@name='product_form']/notebook[1]/page[@name='general_information']/group[1]/group[@name='group_general']/div[1]" position="after">
                     <field name="x_studio_brand_owner"/>
                     <xpath expr="//field[@name='categ_id']" position="move"/>
@@ -20,17 +21,25 @@
                     <xpath expr="//field[@name='barcode']" position="move"/>
                     <field name="x_studio_lifecycle" string="Lifecycle"/>
                 </xpath>
+
                 <xpath expr="//label[@for='list_price']" position="before">
                     <field name="gbp_rrp" on_change="1"/>                    
                 </xpath>
+
+                <xpath expr="//field[@name='taxes_id']" position="after">
+                    <field name="x_studio_costing_estimate_landed"/>
+                </xpath>
+
                 <xpath expr="//form[@name='Product Template']/sheet[@name='product_form']/notebook[1]/page[@name='general_information']/group[1]" position="after">
-                <group>
-                    <group name="group_additional_info" string="Additional Info">
-                        <xpath expr="//field[@name='detailed_type']" position="move"/>
-                        <xpath expr="//field[@name='invoice_policy']" position="move"/>
-                        <xpath expr="//field[@name='expense_policy']" position="move"/>
+                    <group>
+                        <group name="group_additional_info" string="Additional Info"/>
                     </group>
-                </group>
+                </xpath>
+
+                <xpath expr="//group[@name='group_additional_info']" position="inside">
+                    <xpath expr="//field[@name='detailed_type']" position="move"/>
+                    <xpath expr="//field[@name='invoice_policy']" position="move"/>
+                    <xpath expr="//field[@name='expense_policy']" position="move"/>
                 </xpath>
             </field>
         </record>
