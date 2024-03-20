@@ -83,6 +83,9 @@
                             <field name="x_studio_message_card_code"/>
                             <field name="x_studio_field_hy996"/>
                             <field name="x_studio_outer_box"/>
+                            <field name="x_studio_opp_bag_code"/>
+                            <field name="x_studio_opp_bag_pack_5_code"/>
+                            <field name="x_studio_opp_bag_pack_50_code"/>
                         </group>
                         <group name="group_packaging_right">
                             <field name="x_studio_coo_for_custom"/>
@@ -95,10 +98,30 @@
                     <group>
                         <group name="group_customer_information_left">
                             <field name="x_studio_jlp_status"/>
+                            <field name="x_studio_jl_code"/>
+                            <field name="x_studio_jl_barcode_format_1"/>
+                            <field name="x_studio_jl_barcode_ean13"/>
+                            <field name="x_studio_jlp_barcode"/>
+                            <field name="x_studio_waitrose_status"/>
+                            <field name="x_studio_waitrose_code"/>
                         </group>
                         <group name="group_customer_information_right">
                             <field name="x_studio_avolta_product_reference_1" string="Avolta Product Ref"/>
+                            <field name="x_studio_dufry_range_status"/>
+                            <field name="x_studio_dufry_sku_on_label"/>
+                            <field name="x_studio_dufry_barcode_label"/>
+                            <field name="x_studio_dufry_euro_hook_require"/>
+                            <field name="x_studio_dufry_gbp_retail"/>
+                            <field name="x_studio_dufry_eur_retail"/>
+                            <field name="x_studio_dufry_usd_retail"/>
                         </group>
+                    </group>
+                </xpath>
+
+                <xpath expr="//page[@name='prices']" position="inside">
+                    <group>
+                        <group string="Retail" name="group_retail"></group>
+                        <group string="Wholesale" name="group_wholesale"></group>
                     </group>
                 </xpath>
             </field>
