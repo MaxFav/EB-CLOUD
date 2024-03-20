@@ -19,7 +19,7 @@
                     <field name="x_studio_master_number" widget="char"/>
                     <xpath expr="//field[@name='default_code']" position="move"/>
                     <xpath expr="//field[@name='barcode']" position="move"/>
-                    <field name="x_studio_lifecycle" string="Lifecycle"/>
+                    <field name="x_studio_read_only_lifecycle" string="Lifecycle"/>
                 </xpath>
 
                 <xpath expr="//label[@for='list_price']" position="before">
@@ -53,7 +53,8 @@
                 <xpath expr="//page[@name='merchandising']" position="inside">
                     <group>
                         <group string="EB Merch" name="group_eb_merch">
-                            <field name="x_studio_field_RpSzy"/>                            
+                            <field name="x_studio_field_RpSzy"/>
+                            <field name="x_studio_lifecycle" string="Lifecycle"/>                           
                             <field name="x_studio_developed_for"/>
                             <field name="x_studio_usa_lifecycle"/>
                             <field name="x_studio_catalogue_uk_live"/>
@@ -62,7 +63,10 @@
                             <field name="x_studio_ecom_merch"/>
                         </group>
                         <group string="Key Accounts" name="group_key_accounts">
-                            
+                            <field name="x_studio_read_only_jlp_status"/>
+                            <field name="x_studio_read_only_waitrose_status"/>
+                            <field name="x_studio_read_only_dfs_range_status"/>
+                            <field name="x_studio_read_only_setur_range_status"/>
                         </group>
                     </group>
                     <group>
