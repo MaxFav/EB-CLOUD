@@ -75,6 +75,21 @@
                         </group>
                     </group>
                 </xpath>
+
+                <xpath expr="//page[@name='packaging']" position="inside">
+                    <group>
+                        <group name="group_packaging_left">
+                            <field name="x_studio_message"/>
+                            <field name="x_studio_message_card_code"/>
+                            <field name="x_studio_field_hy996"/>
+                            <field name="x_studio_outer_box"/>
+                        </group>
+                        <group name="group_packaging_right">
+                            <field name="x_studio_coo_for_custom"/>
+                            <field name="x_studio_packaging_image" widget="image"/>
+                        </group>
+                    </group>
+                </xpath>
             </field>
         </record>
                
