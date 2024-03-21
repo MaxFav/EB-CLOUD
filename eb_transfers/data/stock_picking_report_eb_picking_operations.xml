@@ -1,110 +1,112 @@
 <odoo>
     <data>  
         <template id="report_eb_picking_operations">
-            <t t-foreach="docs" t-as="o">
-                <t t-call="web.basic_layout">
-                    <div class="page">
-                        <div class="row">
-                            <div class="col-6">
-                              <span t-field="o.company_id.logo" t-options-widget="&quot;image&quot;" t-options-qweb_img_raw_data="1" style="width:149px;display:inline-block"/>
-                            </div>
-                            <div class="col-6 text-end">
-                              <strong>Estella Bartlett Ltd</strong>
-                              <span t-field="o.company_id.company_details"/>
-                            </div>
-                        </div>                        
-
-                        <div class="row justify-content-end mt-4 mb16">
-                            <div class="col-4">
-                                <div t-field="o.name" t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:346px;height:52px;'}"/>
-                            </div>
-                        </div>
-                        
-                        <div class="row mt-4">
-                            <div class="col-6">
-                                <div t-if="o.picking_type_id.code == 'outgoing'">
-                                    <strong style="font-size:16px">Shipping Address:</strong>
-                                    <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+            <t t-name="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.basic_layout">
+                        <div class="page">
+                            <div class="row">
+                                <div class="col-6">
+                                <span t-field="o.company_id.logo" t-options-widget="&quot;image&quot;" t-options-qweb_img_raw_data="1" style="width:149px;display:inline-block"/>
                                 </div>
-                                <div t-elif="o.picking_type_id.code == 'incoming'">
-                                    <strong style="font-size:16px">Warehouse Address:</strong>
-                                    <div t-field="o.picking_type_id.warehouse_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                <div class="col-6 text-end">
+                                <strong>Estella Bartlett Ltd</strong>
+                                <span t-field="o.company_id.company_details"/>
+                                </div>
+                            </div>                        
+
+                            <div class="row justify-content-end mt-4 mb16">
+                                <div class="col-4">
+                                    <div t-field="o.name" t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:346px;height:52px;'}"/>
                                 </div>
                             </div>
-                            <div class="col-5 offset-1">
-                                <t t-set="show_partner" t-value="False" />
-                                <div t-if="o.picking_type_id.code=='incoming' and o.partner_id">
-                                    <strong style="font-size:16px">Vendor Address:</strong>
-                                    <t t-set="show_partner" t-value="True" />
+                            
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <div t-if="o.picking_type_id.code == 'outgoing'">
+                                        <strong style="font-size:16px">Shipping Address:</strong>
+                                        <div t-field="o.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                    </div>
+                                    <div t-elif="o.picking_type_id.code == 'incoming'">
+                                        <strong style="font-size:16px">Warehouse Address:</strong>
+                                        <div t-field="o.picking_type_id.warehouse_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                    </div>
                                 </div>
-                                <div t-if="o.picking_type_id.code=='internal' and o.partner_id">
-                                    <strong style="font-size:16px">Warehouse Address:</strong>
-                                    <t t-set="show_partner" t-value="True" />
-                                </div>                                
-                                <div t-if="show_partner" name="partner_header">
-                                    <div t-field="o.partner_id.commercial_partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                                <div class="col-5 offset-1">
+                                    <t t-set="show_partner" t-value="False" />
+                                    <div t-if="o.picking_type_id.code=='incoming' and o.partner_id">
+                                        <strong style="font-size:16px">Vendor Address:</strong>
+                                        <t t-set="show_partner" t-value="True" />
+                                    </div>
+                                    <div t-if="o.picking_type_id.code=='internal' and o.partner_id">
+                                        <strong style="font-size:16px">Warehouse Address:</strong>
+                                        <t t-set="show_partner" t-value="True" />
+                                    </div>                                
+                                    <div t-if="show_partner" name="partner_header">
+                                        <div t-field="o.partner_id.commercial_partner_id" t-options='{"widget": "contact", "fields": ["address", "name", "phone", "vat"], "no_marker": True, "phone_icons": True}'/>
+                                    </div>
+                                </div>                            
+                            </div>
+
+                            <h1 class="mt-4" t-field="o.name"/>
+
+                            <div class="row mb-3">
+                                <div class="col-auto">
+                                    <strong>Status:</strong>
+                                    <p t-field="o.state"></p>
                                 </div>
-                            </div>                            
-                        </div>
+                                <div t-if="o.origin" class="col-auto">
+                                    <strong>Order:</strong>
+                                    <p t-field="o.origin"></p>
+                                </div>
+                                <div t-if="o.carrier_id" class="col-auto">
+                                    <strong>Carrier:</strong>
+                                    <p t-field="o.carrier_id"></p>
+                                </div>  
+                                <div t-if="o.weight" class="col-auto">
+                                    <strong>Weight:</strong>
+                                    <br/>
+                                    <span t-field="o.weight"/>
+                                    <span t-field="o.weight_uom_name"/>
+                                </div>                    
+                                <div class="col-auto">
+                                    <strong>Scheduled Date:</strong>
+                                    <p t-field="o.scheduled_date"></p>
+                                </div>
+                            </div> 
 
-                        <h1 class="mt-4" t-field="o.name"/>
-
-                        <div class="row mb-3">
-                            <div class="col-auto">
-                                <strong>Status:</strong>
-                                <p t-field="o.state"></p>
-                            </div>
-                            <div t-if="o.origin" class="col-auto">
-                                <strong>Order:</strong>
-                                <p t-field="o.origin"></p>
-                            </div>
-                            <div t-if="o.carrier_id" class="col-auto">
-                                <strong>Carrier:</strong>
-                                <p t-field="o.carrier_id"></p>
-                            </div>  
-                            <div t-if="o.weight" class="col-auto">
-                                <strong>Weight:</strong>
-                                <br/>
-                                <span t-field="o.weight"/>
-                                <span t-field="o.weight_uom_name"/>
-                            </div>                    
-                            <div class="col-auto">
-                                <strong>Scheduled Date:</strong>
-                                <p t-field="o.scheduled_date"></p>
-                            </div>
-                        </div> 
-
-                        <table class="table table-sm table-bordered" t-if="o.move_line_ids and o.move_ids_without_package">
-                            <t t-set="has_barcode" t-value="any(move_line.product_id and move_line.product_id.sudo().barcode or move_line.package_id for move_line in o.move_line_ids)"/>
-                            <thead>
-                                <tr>
-                                    <th class="text-start"><strong>PRODUCT</strong></th>
-                                    <th class="text-center"><strong>QTY</strong></th>
-                                    <th class="text-center" t-if="o.picking_type_id.code != 'incoming'"><strong>FROM</strong></th>
-                                    <th class="text-center" t-if="o.picking_type_id.code != 'outgoing'"><strong>TO</strong></th>                                                                       
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="o.move_line_ids_without_package.sorted(lambda ml: (ml.product_id.x_studio_master_number, ml.product_id.display_name))" t-as="ml">
+                            <table class="table table-sm table-bordered" t-if="o.move_line_ids and o.move_ids_without_package">
+                                <t t-set="has_barcode" t-value="any(move_line.product_id and move_line.product_id.sudo().barcode or move_line.package_id for move_line in o.move_line_ids)"/>
+                                <thead>
                                     <tr>
-                                        <td class="text-start"><span t-field="ml.product_id.display_name"/></td>
-                                        <td class="text-center"><span t-field="ml.quantity"/></td>
-                                        <td class="text-center" t-if="o.picking_type_id.code != 'incoming'"><span t-field="ml.location_id.display_name"/></td>
-                                        <td class="text-center" t-if="o.picking_type_id.code != 'outgoing'"><span t-field="ml.location_dest_id"/></td>                    
+                                        <th class="text-start"><strong>PRODUCT</strong></th>
+                                        <th class="text-center"><strong>QTY</strong></th>
+                                        <th class="text-center" t-if="o.picking_type_id.code != 'incoming'"><strong>FROM</strong></th>
+                                        <th class="text-center" t-if="o.picking_type_id.code != 'outgoing'"><strong>TO</strong></th>                                                                       
                                     </tr>
-                                </t>
-                            </tbody>
-                        </table>
-                        
-                        <t t-set="no_reserved_product" t-value="o.move_ids.filtered(lambda x: x.product_uom_qty != x.quantity and x.move_line_ids and x.state!='done')"/>
-                        <p t-if="o.state in ['draft', 'waiting', 'confirmed'] or no_reserved_product"><i class="fa fa-exclamation-triangle"/>
-                            All products could not be reserved. Click on the "Check Availability" button to try to reserve products.
-                        </p>
-                        <p t-else=""/>
-                        <div class="oe_structure"/>
-                        <p t-field="o.note"/>
-                        <div class="oe_structure"/>
-                    </div>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="o.move_line_ids_without_package.sorted(lambda ml: (ml.product_id.x_studio_master_number, ml.product_id.display_name))" t-as="ml">
+                                        <tr>
+                                            <td class="text-start"><span t-field="ml.product_id.display_name"/></td>
+                                            <td class="text-center"><span t-field="ml.quantity"/></td>
+                                            <td class="text-center" t-if="o.picking_type_id.code != 'incoming'"><span t-field="ml.location_id.display_name"/></td>
+                                            <td class="text-center" t-if="o.picking_type_id.code != 'outgoing'"><span t-field="ml.location_dest_id"/></td>                    
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                            
+                            <t t-set="no_reserved_product" t-value="o.move_ids.filtered(lambda x: x.product_uom_qty != x.quantity and x.move_line_ids and x.state!='done')"/>
+                            <p t-if="o.state in ['draft', 'waiting', 'confirmed'] or no_reserved_product"><i class="fa fa-exclamation-triangle"/>
+                                All products could not be reserved. Click on the "Check Availability" button to try to reserve products.
+                            </p>
+                            <p t-else=""/>
+                            <div class="oe_structure"/>
+                            <p t-field="o.note"/>
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
                 </t>
             </t>
         </template> 
