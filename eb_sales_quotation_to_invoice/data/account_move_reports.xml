@@ -9,5 +9,15 @@
             <field name="binding_model_id" ref="model_account_payment"/>
             <field name="binding_type">report</field>
         </record>
+
+        <record id="action_report_eb_invoice_barcode" model="ir.actions.report">
+            <field name="name">Invoice w/ EAN</field>
+            <field name="model">account.payment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">eb_sales_quotation_to_invoice.report_eb_invoice_barcode</field>
+            <field name="report_file">eb_sales_quotation_to_invoice.report_eb_invoice_barcode</field>
+            <field name="binding_model_id" ref="model_account_payment"/>
+            <field name="binding_type">report</field>
+        </record>
     </data>
 </odoo>
