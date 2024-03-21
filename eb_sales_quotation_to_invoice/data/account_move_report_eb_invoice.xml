@@ -2,10 +2,8 @@
     <data>
         <template id="report_eb_invoice">
             <t t-foreach="doc" t-as="o">
-                <t t-call="web.basic_layout">
-                    <t t-set="o" t-value="o.with_context(lang=lang)"/>
-                    
-                    <div class="page mt-4">
+                <t t-call="web.basic_layout">                                       
+                    <div class="page">
                         <div class="row">
                             <div class="col-6">
                                 <span t-field="o.company_id.logo" t-options-widget="image" t-options-qweb_img_raw_data="1" style="width:149px;display:inline-block"/>
