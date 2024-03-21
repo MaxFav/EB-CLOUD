@@ -10,6 +10,7 @@
     'data': [
         "data/sale_order_data.xml",
         "data/account_move_report_eb_invoice.xml",
+        "data/account_move_report_eb_invoice_barcode.xml",
         "data/account_move_reports.xml"
     ],
     "installable": True
