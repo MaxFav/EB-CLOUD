@@ -75,7 +75,7 @@
                                 <t t-foreach="lines" t-as="line">
                                     <tr class="small">
                                         <t t-if="line.display_type == 'product'" name="account_invoice_line_accountable">
-                                            <td name="product_name"><span t-field="line.product_id.display_name"/></td>
+                                            <td name="td_name"><span t-field="line.product_id.display_name"/></td>
                                             <td class="text-center"><span t-field="line.quantity"/></td>
                                             <td class="text-center"><span t-field="line.price_unit"/></td>
                                             <td class="text-center" t-if="display_discount"><span t-field="line.discount"/></td>
