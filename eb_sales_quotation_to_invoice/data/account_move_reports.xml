@@ -7,9 +7,9 @@
             <field name="report_name">eb_sales_quotation_to_invoice.report_eb_invoice</field>
             <field name="report_file">eb_sales_quotation_to_invoice.report_eb_invoice</field>
             <field name="print_report_name">(object._get_report_base_filename())</field>
-            <field name="attachment"/>
             <field name="binding_model_id" ref="model_account_move"/>
             <field name="binding_type">report</field>
+            <field name="paperformat_id">9</field>
         </record>
 
         <record id="action_report_eb_invoice_barcode" model="ir.actions.report">
@@ -19,9 +19,9 @@
             <field name="report_name">eb_sales_quotation_to_invoice.report_eb_invoice_barcode</field>
             <field name="report_file">eb_sales_quotation_to_invoice.report_eb_invoice_barcode</field>
             <field name="print_report_name">(object._get_report_base_filename())</field>
-            <field name="attachment"/>
             <field name="binding_model_id" ref="model_account_move"/>
             <field name="binding_type">report</field>
+            <field name="paperformat_id">9</field>
         </record>
     </data>
 </odoo>
