@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <template id="report_eb_invoice">
+            <t t-foreach="doc" t-as="o">
+                <t t-call="web.basic_layout">
+                    
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>

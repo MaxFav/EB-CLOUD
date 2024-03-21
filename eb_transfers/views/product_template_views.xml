@@ -117,6 +117,8 @@
                             <field name="x_studio_dufry_gbp_retail"/>
                             <field name="x_studio_dufry_eur_retail"/>
                             <field name="x_studio_dufry_usd_retail"/>
+                            <field name="x_studio_dfs_range_status"/>
+                            <field name="x_studio_setur_range_status"/>
                         </group>
                     </group>
                 </xpath>
@@ -130,6 +132,8 @@
                             <field name="usd_rrp"/>
                             <field name="aud_id" invisible="1"/>
                             <field name="aud_rrp"/>
+                            <field name="cad_id" invisible="1"/>
+                            <field name="cad_rrp"/>
                         </group>
                         <group string="Wholesale" name="group_wholesale"></group>
                     </group>
