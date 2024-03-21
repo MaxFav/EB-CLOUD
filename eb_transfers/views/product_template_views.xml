@@ -120,7 +120,14 @@
 
                 <xpath expr="//page[@name='prices']" position="inside">
                     <group>
-                        <group string="Retail" name="group_retail"></group>
+                        <group string="Retail" name="group_retail">
+                            <field name="eur_id" invisible="1"/>
+                            <field name="eur_rrp"/>
+                            <field name="usd_id" invisible="1"/>
+                            <field name="usd_rrp"/>
+                            <field name="aud_id" invisible="1"/>
+                            <field name="aud_rrp"/>
+                        </group>
                         <group string="Wholesale" name="group_wholesale"></group>
                     </group>
                 </xpath>
