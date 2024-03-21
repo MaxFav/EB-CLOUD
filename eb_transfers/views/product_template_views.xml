@@ -40,6 +40,9 @@
                     <xpath expr="//field[@name='detailed_type']" position="move"/>
                     <xpath expr="//field[@name='invoice_policy']" position="move"/>
                     <xpath expr="//field[@name='expense_policy']" position="move"/>
+                    <xpath expr="//field[@name='expense_policy']" position="attributes">
+                        <attribute name="options">{"horizontal":true}</attribute>
+                    </xpath>
                     <xpath expr="//field[@name='company_id']" position="move"/>
                 </xpath>
 
