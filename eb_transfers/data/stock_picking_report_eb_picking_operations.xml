@@ -80,9 +80,8 @@
                                 <tr>
                                     <th class="text-start"><strong>PRODUCT</strong></th>
                                     <th class="text-center"><strong>QTY</strong></th>
-                                    <th class="text-center" t-if="o.picking_type_id.code == 'outgoing'"><strong>FROM</strong></th>
-                                    <th class="text-center" t-if="o.picking_type_id.code == 'incoming'"><strong>TO</strong></th>
-                                    <th class="text-center"><strong>BARCODE</strong></th>                                    
+                                    <th class="text-center" t-if="o.picking_type_id.code != 'incoming'"><strong>FROM</strong></th>
+                                    <th class="text-center" t-if="o.picking_type_id.code != 'outgoing'"><strong>TO</strong></th>                                                                       
                                 </tr>
                             </thead>
                             <tbody>
@@ -90,9 +89,8 @@
                                     <tr>
                                         <td class="text-start"><span t-field="ml.product_id.display_name"/></td>
                                         <td class="text-center"><span t-field="ml.quantity"/></td>
-                                        <td class="text-center" t-if="o.picking_type_id.code == 'outgoing'"><span t-field="ml.location_id.display_name"/></td>
-                                        <td class="text-center" t-if="o.picking_type_id.code == 'incoming'"><span t-field="ml.location_dest_id"/></td>
-                                        <td class="text-center"><span t-field="ml.product_id.barcode" t-options="{'widget': 'barcode', 'symbology': 'auto', 'width': 400, 'height': 100, 'quiet': 0, 'img_style': 'height:35px;'}"/></td>                       
+                                        <td class="text-center" t-if="o.picking_type_id.code != 'incoming'"><span t-field="ml.location_id.display_name"/></td>
+                                        <td class="text-center" t-if="o.picking_type_id.code != 'outgoing'"><span t-field="ml.location_dest_id"/></td>                    
                                     </tr>
                                 </t>
                             </tbody>
