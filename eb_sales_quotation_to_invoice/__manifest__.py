@@ -8,7 +8,9 @@
     "application": True, 
     'depends': ['base','account','sale','stock','sale_management','account_accountant'],
     'data': [
-        "data/sale_order_data.xml",        
+        "data/sale_order_data.xml", 
+        "data/acount_move_report_eb_invioce.xml",
+        "data/account_move_reports.xml"       
     ],
     "installable": True
 }
