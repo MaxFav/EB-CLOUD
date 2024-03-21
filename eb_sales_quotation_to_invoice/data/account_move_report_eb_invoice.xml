@@ -8,7 +8,7 @@
                     <div class="page mt-4">
                         <div class="row">
                             <div class="col-6">
-                                <span t-field="o.company_id.logo" t-options-widget="&quot;image&quot;" t-options-qweb_img_raw_data="1" style="width:149px;display:inline-block"/>
+                                <span t-field="o.company_id.logo" t-options-widget="image" t-options-qweb_img_raw_data="1" style="width:149px;display:inline-block"/>
                             </div>
                             <div class="col-6 text-end">
                                 <strong>Estella Bartlett Ltd</strong>
@@ -19,11 +19,11 @@
                         <div class="row mt-4">
                             <div class="col-6">
                                 <strong t-if="o.partner_shipping_id">Shipping Address:</strong>
-                                <address class="mb-0" t-field="o.partner_shipping_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True}"/>
+                                <address class="mb-0" t-field="o.partner_shipping_id" t-options="{widget: contact, fields: [address, phone], no_marker: True, 'phone_icons': True}"/>
                             </div>
                             <div class="col-6">
                                 <strong>Customer:</strong>
-                                <address class="mb-0" t-field="o.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True}"/>
+                                <address class="mb-0" t-field="o.partner_id" t-options="{widget: contact, fields: [address, phone], no_marker: True, 'phone_icons': True}"/>
                             </div>
                         </div>
                     
