@@ -1,8 +1,0 @@
-<odoo>
-    <data>
-        <template id="report_eb_invoice_barcode">
-            <t t-call="eb_sales_quotation_to_invoice.report_eb_invoice"/>
-            
-        </template>
-    </data>
-</odoo>
