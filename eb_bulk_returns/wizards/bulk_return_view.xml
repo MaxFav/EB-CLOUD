@@ -13,7 +13,7 @@
                 <field name="return_line_ids">
                     <tree editable="bottom">
                         <field name="returned_product_id"/>
-                        <field name="quantity" widget="integer" class="text-center" style="width:128px !important;"/>
+                        <field name="quantity" widget="integer"/>
                         <field name="scrap_product"/>
                     </tree>
                 </field>
