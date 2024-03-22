@@ -278,7 +278,7 @@ class BulkReturnLine(models.TransientModel):
     returned_product_id = fields.Many2one(
         "product.product", string="Returned Product", required=True
     )
-    quantity = fields.Float(string="Quantity", required=True)
+    quantity = fields.Float(string="Quantity", required=True, default=1.0)
     scrap_product = fields.Boolean(string="Scrap")
 
     @api.constrains("quantity")
