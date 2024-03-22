@@ -1,6 +1,6 @@
 {
     "name": "EB Price Map",
-    "version": "1.0",
+    "version": "1.1",
     "summary": "Adding price map for pricelist formula",
     "author": "Jamie",
     "depends": ['base','stock','sale'],
