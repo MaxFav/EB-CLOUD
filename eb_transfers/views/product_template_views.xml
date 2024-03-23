@@ -92,7 +92,7 @@
                         </group>
                         <group name="group_packaging_right">
                             <field name="x_studio_coo_for_custom"/>
-                            <field name="x_studio_packaging_image" widget="image" options="{'size':[0,90]}"/>
+                            <field name="packaging_image" widget="image" options="{'size':[0,90]}"/>
                         </group>
                     </group>
                 </xpath>
