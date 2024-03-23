@@ -1,6 +1,6 @@
 {
     "name": "EB Misc",
-    "version": "1.0",
+    "version": "1.1",
     "summary": "Estella Bartlett Small Customisations",
     "author": "Jamie",
     "depends": ['base','stock','sale','account'],
