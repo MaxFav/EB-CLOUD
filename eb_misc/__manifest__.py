@@ -4,7 +4,7 @@
     'license': 'LGPL-3',
     'summary': 'Estella Bartlett Small Customisations',
     'author': 'Jamie', 
-    'depends': ['base','product'],
+    'depends': ['base','product','sale_stock'],
     'data': [
         'views/product_template_views.xml'
     ],
