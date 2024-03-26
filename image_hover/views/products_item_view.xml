@@ -1,0 +1,5 @@
+<template id="products_image_hover" inherit_id="website_sale.products_item" active="True" name="Product Image Hover">
+    <xpath expr="//span[hasclass('oe_product_image_img_wrapper')]" position="after">
+        <t t-set="images" t-value="product._get_images()"/>
+    </xpath>
+</template>
