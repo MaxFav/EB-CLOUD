@@ -18,8 +18,8 @@
             <field name="model">stock.picking</field>
             <field name="arch" type="xml">
                 <xpath expr="//form/sheet/notebook/page[@name='operations']/field/tree/field[@name='product_id']" position="after">
-                    <field name="x_studio_uk_lifecycle" string="UK Lifecycle" column_invisible="parent.x_studio_warehouse not in ['UKDC']"/>
-                    <field name="x_studio_usa_lifecycle" string="USA Lifecycle" column_invisible="parent.x_studio_warehouse not in ['USAWH']"/>
+                    <field name="x_studio_uk_lifecycle" string="UK Lifecycle" column_invisible="parent.x_studio_warehouse not in ['UKDC','UKRBY','UKWEB','JLP','HQ','DUFRY','NEXT','RETAIL']"/>
+                    <field name="x_studio_usa_lifecycle" string="USA Lifecycle" column_invisible="parent.x_studio_warehouse not in ['USAWH','DUFUS']"/>
                     <field name="x_studio_oz_lifecycle" string="OZ Lifecycle" column_invisible="parent.x_studio_warehouse not in ['OZDC']"/>
                 </xpath>
             </field>
