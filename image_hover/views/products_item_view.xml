@@ -3,7 +3,8 @@
         <template id="products_image_hover" inherit_id="website_sale.products_item" active="True" name="Product Image Hover">
             <xpath expr="//span[hasclass('oe_product_image_img_wrapper')]" position="after">
                 <t t-set="images" t-value="product._get_images()"/>
-                <span t-field="images.image_1920"
+                <t t-set="second_image" t-value="images[1]"/>
+                <span t-if="second_image" t-field="second_image.image_1920"
                         t-options="{'widget': 'image', 'preview_image': image_type, 'itemprop': 'image', 'class': 'h-100 w-100 position-absolute'}"
                         class="oe_product_image_img_wrapper d-flex h-100 justify-content-center align-items-center position-absolute"/>
             </xpath>
