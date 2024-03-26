@@ -10,9 +10,7 @@ class BulkReturn(models.TransientModel):
     _description = "Bulk Return"
 
     partner_id = fields.Many2one("res.partner", string="Customer", required=True)
-    return_line_ids = fields.One2many(
-        "bulk.return.line", "return_id", string="Return Lines", required=True
-    )
+    return_line_ids = fields.One2many("bulk.return.line", "return_id", string="Return Lines", required=True)
     scrap_all = fields.Boolean(string="Scrap All")
 
     @api.onchange("scrap_all")

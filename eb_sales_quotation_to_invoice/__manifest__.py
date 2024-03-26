@@ -1,14 +1,13 @@
 {
-    'name': "EB Sales Quotation to Invoice",
+    'name': 'EB Sales Quotation to Invoice',
     'version': '17.0',
-    'license': "LGPL-3",
-    "summary": "Sales order to invoice automation",    
-    'author': "Jamie",
-    'category': 'Customizations',
-    "application": True, 
-    'depends': ['base','account','sale','stock','sale_management','account_accountant'],
+    'license': 'LGPL-3',
+    'summary': 'Sales order to invoice automation',    
+    'author': 'Jamie',     
+    'depends': ['base','account_accountant','sale_management','stock'],
     'data': [
-        "data/sale_order_data.xml",     
+        'data/sale_order_data.xml',     
     ],
-    "installable": True
+    'application': True,
+    'installable': True
 }
